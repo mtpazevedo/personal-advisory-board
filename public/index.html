@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Advisory Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="header-inner">
+      <div>
+        <h1>Personal Advisory Board</h1>
+        <p class="header-sub">Your private council of thinkers, investors, and leaders</p>
+      </div>
+      <button class="btn-edit" onclick="openEditModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit Board
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Main ── -->
+  <main>
+
+    <!-- Board member chips -->
+    <section class="section-board">
+      <div class="section-label">
+        Board Members
+        <span class="label-hint">— click to include in response</span>
+      </div>
+      <div id="advisor-chips" class="advisor-chips"></div>
+      <div class="chip-actions">
+        <button class="btn-link" onclick="selectAll()">Select all</button>
+        <span class="dot-sep">·</span>
+        <button class="btn-link" onclick="deselectAll()">Deselect all</button>
+      </div>
+    </section>
+
+    <!-- Question input -->
+    <section class="section-question">
+      <label class="section-label" for="question">Your Question</label>
+      <div class="textarea-wrap">
+        <textarea
+          id="question"
+          placeholder="Ask your board anything — a business decision, a leadership challenge, a career choice, an ethical dilemma…"
+          rows="4"
+          onkeydown="handleKey(event)"
+        ></textarea>
+      </div>
+      <div class="question-footer">
+        <span class="question-hint" id="question-hint">⌘ + Enter to ask</span>
+        <button class="btn-ask" id="ask-btn" onclick="askBoard()">
+          Ask the Board
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Responses -->
+    <section id="responses-section" class="section-responses" style="display:none">
+      <div class="responses-header">
+        <div class="section-label">Board Responses</div>
+        <button class="btn-link" onclick="newQuestion()">← New question</button>
+      </div>
+      <div class="question-echo" id="question-echo"></div>
+      <div id="responses" class="responses-grid"></div>
+
+      <!-- Board Synthesis -->
+      <div id="synthesis-section" class="synthesis-section" style="display:none">
+        <div class="synthesis-card">
+          <div class="synthesis-header">
+            <div class="synthesis-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M3 12h18"/><circle cx="12" cy="12" r="10"/></svg>
+            </div>
+            <div>
+              <div class="synthesis-title">Board Recommendation</div>
+              <div class="synthesis-subtitle">Weighted synthesis across all perspectives</div>
+            </div>
+          </div>
+          <div class="synthesis-body" id="synthesis-body"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Edit Modal ── -->
+  <div id="edit-modal" class="modal-overlay" style="display:none" onclick="overlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Advisory Board</h2>
+        <button class="btn-close" onclick="closeEditModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">
+          Customize your board members. Changes are saved permanently to <code>advisors.json</code> — easy to update every month.
+        </p>
+        <div id="edit-list" class="edit-list"></div>
+        <div class="modal-add">
+          <button class="btn-add" onclick="addAdvisor()">+ Add New Advisor</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveAdvisors()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
