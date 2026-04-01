@@ -174,3 +174,4 @@ if (!process.env.VERCEL) {
 }
 
 module.exports = app;
+module.exports.config = { supportsResponseStreaming: true };
