@@ -166,6 +166,11 @@ FORMAT:
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`\n  Personal Advisory Board running at http://localhost:${PORT}\n`);
-});
+// Start server locally (Vercel uses the exported app directly)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`\n  Personal Advisory Board running at http://localhost:${PORT}\n`);
+  });
+}
+
+module.exports = app;
