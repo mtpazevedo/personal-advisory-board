@@ -1,8 +1,3 @@
-const Anthropic = require('@anthropic-ai/sdk');
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const MODEL = process.env.MODEL || 'claude-opus-4-6';
-
 const SYSTEM_PROMPT = `You are the Chair of a Personal Advisory Board. You have just heard each board member's individual perspective on a question. Your role is to produce a weighted Board Recommendation that synthesizes their collective wisdom.
 
 PROCESS:
@@ -27,9 +22,16 @@ FORMAT:
 **Board Recommendation**
 [Synthesized recommendation, 3-5 paragraphs. Weight HIGH advisors' views more heavily. Lead with the key insight. Be direct.]`;
 
+const MODEL = process.env.MODEL || 'claude-opus-4-6';
+
 async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
   const { question, responses } = req.body;
@@ -44,30 +46,63 @@ async function handler(req, res) {
     )
     .join('\n\n---\n\n');
 
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-cache');
-
   try {
-    const stream = client.messages.stream({
-      model: MODEL,
-      max_tokens: 2000,
-      system: SYSTEM_PROMPT,
-      messages: [
-        {
-          role: 'user',
-          content: `Question posed to the board:\n"${question}"\n\nIndividual responses:\n\n${advisorInputs}`,
-        },
-      ],
+    const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 2000,
+        stream: true,
+        system: SYSTEM_PROMPT,
+        messages: [
+          {
+            role: 'user',
+            content: `Question posed to the board:\n"${question}"\n\nIndividual responses:\n\n${advisorInputs}`,
+          },
+        ],
+      }),
     });
 
-    for await (const event of stream) {
-      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-        res.write(event.delta.text);
+    if (!apiRes.ok) {
+      const err = await apiRes.text();
+      return res.status(apiRes.status).json({ error: err });
+    }
+
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+
+    const reader = apiRes.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6);
+        if (data === '[DONE]') continue;
+        try {
+          const event = JSON.parse(data);
+          if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') {
+            res.write(event.delta.text);
+          }
+        } catch {}
       }
     }
     res.end();
   } catch (err) {
-    console.error('Synthesis error:', err.message);
+    console.error('Synthesis error:', err);
     if (!res.headersSent) {
       res.status(500).json({ error: err.message });
     } else {
