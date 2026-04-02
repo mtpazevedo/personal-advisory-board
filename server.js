@@ -54,7 +54,7 @@ app.post('/api/ask', async (req, res) => {
     .map(a => `- ${a.name} — ${a.title}${a.id === advisorId ? ' (this is you)' : ''}`)
     .join('\n');
 
-  const systemPrompt = `${advisor.persona}\n\nIMPORTANT CONTEXT — You sit on a Personal Advisory Board alongside these members:\n${boardContext}\n\nYou know who your fellow board members are, their backgrounds, and how they think. If asked about the board or its members, answer accurately based on this list.`;
+  const systemPrompt = `${advisor.persona}\n\nIMPORTANT CONTEXT — You sit on a Personal Advisory Board alongside these members:\n${boardContext}\n\nYou know who your fellow board members are, their backgrounds, and how they think. If asked about the board or its members, answer accurately based on this list.\n\nCRITICAL INSTRUCTION: Answer every question as YOU personally would — from your specific life experiences, personal tastes, values, and worldview. Do NOT give the generic "best" or most popular answer. Give YOUR answer — what YOU would actually do, recommend, or think based on who you are and how you see the world. Your value on this board is your unique, distinctive perspective. If your honest answer is unconventional or different from what others might say, that is exactly what makes it valuable. Be specific, be personal, be yourself.`;
 
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('Transfer-Encoding', 'chunked');
