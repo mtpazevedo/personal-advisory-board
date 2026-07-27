@@ -18,15 +18,37 @@
         <h1>Personal Advisory Board</h1>
         <p class="header-sub">Your private council of thinkers, investors, and leaders</p>
       </div>
-      <button class="btn-edit" onclick="openEditModal()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Edit Board
-      </button>
+      <div class="header-actions">
+        <button class="btn-edit" onclick="openProfileModal()" title="Tell the board about yourself">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          About You
+        </button>
+        <button class="btn-edit" onclick="openPicksModal()" title="What the board recommends">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Board Picks
+        </button>
+        <button class="btn-edit" onclick="openHistoryView()" title="Past sessions">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          History
+        </button>
+        <button class="btn-edit" onclick="openEditModal()" title="Edit board members">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit Board
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- ── Main ── -->
-  <main>
+  <main id="main-ask">
+
+    <!-- Profile prompt banner (shown when profile is empty) -->
+    <div id="profile-banner" class="profile-banner" style="display:none">
+      <div>
+        <strong>Help the board know you better.</strong> Fill in a quick profile so each advisor speaks to your real life — not an abstract leader.
+      </div>
+      <button class="btn-link" onclick="openProfileModal()">Tell them about yourself →</button>
+    </div>
 
     <!-- Board member chips -->
     <section class="section-board">
@@ -79,8 +101,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M3 12h18"/><circle cx="12" cy="12" r="10"/></svg>
             </div>
             <div>
-              <div class="synthesis-title">Board Recommendation</div>
-              <div class="synthesis-subtitle">Weighted synthesis across all perspectives</div>
+              <div class="synthesis-title">Board Verdict</div>
+              <div class="synthesis-subtitle">Weighted synthesis with each advisor's voice scored for this question</div>
             </div>
           </div>
           <div class="synthesis-body" id="synthesis-body"></div>
@@ -90,7 +112,23 @@
 
   </main>
 
-  <!-- ── Edit Modal ── -->
+  <!-- ── History View ── -->
+  <main id="main-history" style="display:none">
+    <div class="history-header">
+      <div>
+        <div class="section-label">Past Sessions</div>
+        <p class="history-subtitle">Every question you've asked the board, kept on this device.</p>
+      </div>
+      <button class="btn-link" onclick="closeHistoryView()">← Back to ask</button>
+    </div>
+    <div id="history-list" class="history-list"></div>
+    <div id="history-detail" class="history-detail" style="display:none"></div>
+    <div class="history-footer">
+      <button class="btn-link history-clear" onclick="clearHistoryAll()">Clear all history</button>
+    </div>
+  </main>
+
+  <!-- ── Edit Board Modal ── -->
   <div id="edit-modal" class="modal-overlay" style="display:none" onclick="overlayClick(event)">
     <div class="modal">
       <div class="modal-header">
@@ -99,7 +137,7 @@
       </div>
       <div class="modal-body">
         <p class="modal-intro">
-          Customize your board members. Changes are saved permanently to <code>advisors.json</code> — easy to update every month.
+          Customize your board members. Add a photo, edit personas. Changes save to <code>advisors.json</code> locally — photos also save to your browser as a fallback when running in deployed (read-only) mode.
         </p>
         <div id="edit-list" class="edit-list"></div>
         <div class="modal-add">
@@ -109,6 +147,144 @@
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
         <button class="btn-primary" onclick="saveAdvisors()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── About You Modal ── -->
+  <div id="profile-modal" class="modal-overlay" style="display:none" onclick="profileOverlayClick(event)">
+    <div class="modal modal-profile">
+      <div class="modal-header">
+        <h2>About You</h2>
+        <button class="btn-close" onclick="closeProfileModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">
+          Your board reads this before every answer. The more honest and specific you are — including about your habits, mistakes, and weaknesses — the more your advisors can speak to <em>your</em> life. Saved privately on this browser.
+        </p>
+
+        <!-- Identity -->
+        <div class="profile-section">
+          <div class="profile-section-title">Identity</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Name</label>
+              <input id="p-name" type="text" placeholder="Maria" />
+            </div>
+            <div class="form-group">
+              <label>Pronouns</label>
+              <input id="p-pronouns" type="text" placeholder="she/her" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Age / life stage</label>
+              <input id="p-lifeStage" type="text" placeholder="Mid-30s, two young children" />
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input id="p-location" type="text" placeholder="São Paulo, Brazil" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Profession / role</label>
+              <input id="p-profession" type="text" placeholder="VP of Product, fintech" />
+            </div>
+            <div class="form-group">
+              <label>Industry</label>
+              <input id="p-industry" type="text" placeholder="Financial services / SaaS" />
+            </div>
+          </div>
+        </div>
+
+        <!-- How you are wired -->
+        <div class="profile-section">
+          <div class="profile-section-title">How you are wired</div>
+          <div class="form-group">
+            <label>Top values (3-5)</label>
+            <input id="p-values" type="text" placeholder="Integrity, family, intellectual honesty, beauty, freedom" />
+          </div>
+          <div class="form-group">
+            <label>Strengths — what you do exceptionally well</label>
+            <textarea id="p-strengths" rows="3" placeholder="Pattern recognition across messy data. Building trust quickly with senior people. Holding the long view when others panic."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Weaknesses / blind spots — be brutally honest</label>
+            <textarea id="p-weaknesses" rows="3" placeholder="I avoid hard conversations until they explode. I confuse motion with progress. I underweight my own intuition when men in suits push back."></textarea>
+          </div>
+        </div>
+
+        <!-- Where you are now -->
+        <div class="profile-section">
+          <div class="profile-section-title">Where you are right now</div>
+          <div class="form-group">
+            <label>Daily habits / routines</label>
+            <textarea id="p-habits" rows="3" placeholder="6:30am ocean swim three days a week. Read 30 min before bed. Sunday family lunch. No work after 8pm — try, anyway."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Top concerns right now (3-5)</label>
+            <textarea id="p-topConcerns" rows="3" placeholder="Whether I am building the right thing. Whether my marriage has enough oxygen. Whether I am still growing or just performing."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Current goals (next 3-12 months)</label>
+            <textarea id="p-goals" rows="3" placeholder="Ship the new credit product. Hire two senior PMs. Decide whether to relocate to NYC."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Current challenges</label>
+            <textarea id="p-challenges" rows="3" placeholder="Tension with my CEO over scope. Burnout creeping in. Aging parents."></textarea>
+          </div>
+        </div>
+
+        <!-- Self-reflection -->
+        <div class="profile-section">
+          <div class="profile-section-title">Self-reflection &amp; instructions to the board</div>
+          <div class="form-group">
+            <label>Past mistakes / lessons learned</label>
+            <textarea id="p-pastMistakes" rows="3" placeholder="Stayed too long at my last role. Hired a friend as COO and couldn't fire him. Said yes to a board seat I didn't want."></textarea>
+          </div>
+          <div class="form-group">
+            <label>What you want from this board</label>
+            <textarea id="p-boardPurpose" rows="3" placeholder="A counterweight to my own thinking. People who will tell me the truth, not what I want to hear."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Notes the board should remember (your standing instructions)</label>
+            <textarea id="p-boardNotes" rows="3" placeholder="Don't let me rationalize away discomfort. Push me on whether something is actually working, not whether I want it to. Always ask about my health and my marriage before strategy."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Anything else</label>
+            <textarea id="p-personalContext" rows="3" placeholder="Brazilian, lived in London for 6 years, deeply into Lispector and Sakamoto, recovering perfectionist, long ocean swims."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeProfileModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveProfile()">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Member Bio Modal ── -->
+  <div id="bio-modal" class="modal-overlay" style="display:none" onclick="bioOverlayClick(event)">
+    <div class="modal modal-bio">
+      <div class="modal-header">
+        <h2 id="bio-title">About</h2>
+        <button class="btn-close" onclick="closeBioModal()">✕</button>
+      </div>
+      <div class="modal-body" id="bio-body"></div>
+    </div>
+  </div>
+
+  <!-- ── Board Picks Modal ── -->
+  <div id="picks-modal" class="modal-overlay" style="display:none" onclick="picksOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Board Picks</h2>
+        <button class="btn-close" onclick="closePicksModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">What your board recommends: books, songs, articles, and the lines they live by.</p>
+        <div id="picks-body"></div>
       </div>
     </div>
   </div>
