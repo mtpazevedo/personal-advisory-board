@@ -25,4 +25,4 @@ How to refresh the advisory board's knowledge so every member reflects their mos
 - Update marker: `--- RECENT VIEWS & ACTIVITY (updated YYYY-MM) ---` (regex-replaceable, idempotent).
 - Headshots live in `public/headshots/<id>.<ext>`, referenced via the `photo` field. New members: try Wikipedia REST API thumbnail first, then the person's company site.
 - New members need: id, name, title, avatar initials, photo, color, expertise[], persona (base + RECENT section), bio, picks[].
-- Last full refresh: **2026-07-27** (all 12 members, Bloisi added).
+- Last full refresh: **2026-08-01** (all 12 members refreshed; Bloisi's RECENT VIEWS & ACTIVITY section added for the first time; SEP faculty roster re-verified with no changes).
