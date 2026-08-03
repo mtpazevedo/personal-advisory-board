@@ -1255,3 +1255,61 @@ input[type="color"] {
   gap: 12px;
   margin-bottom: 12px;
 }
+
+/* ── Formal vote badges & ballot ── */
+.position-badge {
+  margin-left: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  border-radius: 999px;
+  padding: 3px 10px;
+  border: 1px solid transparent;
+  flex-shrink: 0;
+  cursor: help;
+}
+
+.pos-yes { background: #E7F3EB; color: #1E6B3A; border-color: #CBE5D4; }
+.pos-no { background: #FBEAEA; color: #A83232; border-color: #F2D2D2; }
+.pos-conditional { background: #FBF3E0; color: #8A6410; border-color: #F0E2BC; }
+
+.ballot {
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-2);
+}
+
+.ballot-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 9px;
+}
+
+.ballot-summary {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--text);
+  margin-left: 8px;
+}
+
+.ballot-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ballot-chip {
+  font-size: 0.72rem;
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 3px 11px;
+  border: 1px solid;
+  cursor: help;
+}

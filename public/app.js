@@ -161,6 +161,7 @@ async function askBoard() {
           <div class="card-name name-link" onclick="openBioModal('${advisor.id}')" title="About ${escAttr(advisor.name)}">${escText(advisor.name)}</div>
           <div class="card-role">${escText(advisor.title)}</div>
         </div>
+        <span class="position-badge" id="pos-${advisor.id}" style="display:none"></span>
       </div>
       <div class="card-body" id="body-${advisor.id}">
         <span class="thinking" style="--color:${advisor.color}">Thinking</span>
@@ -198,6 +199,49 @@ async function askBoard() {
   btn.innerHTML = 'Ask the Board <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 }
 
+// ── Formal vote (POSITION line) parsing ──────────────────────────────────────
+const POSITION_RE = /(^|\n)\s*POSITION:\s*(YES|NO|CONDITIONAL)\s*(?:[—–\-:]\s*)?(.*?)\s*$/i;
+
+function parsePosition(text) {
+  const m = String(text || '').trimEnd().match(POSITION_RE);
+  if (!m) return null;
+  return { vote: m[2].toUpperCase(), reason: m[3].trim() };
+}
+
+function stripPositionLine(text) {
+  return String(text || '').trimEnd().replace(POSITION_RE, '').trimEnd();
+}
+
+function positionBadgeHTML(pos) {
+  if (!pos) return '';
+  const cls = pos.vote.toLowerCase();
+  return `<span class="position-badge pos-${cls}" title="${escAttr(pos.reason)}">${pos.vote}</span>`;
+}
+
+function renderBallotHTML(entries) {
+  const voted = entries.filter(e => e.pos);
+  if (!voted.length) return '';
+  const counts = { YES: 0, NO: 0, CONDITIONAL: 0 };
+  voted.forEach(e => counts[e.pos.vote]++);
+  const abstained = entries.length - voted.length;
+  const parts = [];
+  if (counts.YES) parts.push(`${counts.YES} YES`);
+  if (counts.NO) parts.push(`${counts.NO} NO`);
+  if (counts.CONDITIONAL) parts.push(`${counts.CONDITIONAL} CONDITIONAL`);
+  if (abstained) parts.push(`${abstained} no vote`);
+  const chips = voted.map(e => `
+    <span class="ballot-chip pos-${e.pos.vote.toLowerCase()}" style="--color:${e.color}" title="${escAttr(e.pos.reason)}">
+      ${escText(e.name.split(' ').slice(0, 2).join(' '))} · ${e.pos.vote}
+    </span>
+  `).join('');
+  return `
+    <div class="ballot">
+      <div class="ballot-title">Board ballot <span class="ballot-summary">${parts.join(' · ')}</span></div>
+      <div class="ballot-chips">${chips}</div>
+    </div>
+  `;
+}
+
 async function streamResponse(advisor, question) {
   const bodyEl = document.getElementById(`body-${advisor.id}`);
   bodyEl.innerHTML = '';
@@ -231,6 +275,19 @@ async function streamResponse(advisor, question) {
       bodyEl.innerHTML = renderMarkdown(fullText);
     }
     responseTexts[advisor.id] = fullText;
+
+    // Formal vote: strip the POSITION line from the body, show it as a badge
+    const pos = parsePosition(fullText);
+    if (pos) {
+      bodyEl.innerHTML = renderMarkdown(stripPositionLine(fullText));
+      const badge = document.getElementById(`pos-${advisor.id}`);
+      if (badge) {
+        badge.textContent = pos.vote;
+        badge.className = `position-badge pos-${pos.vote.toLowerCase()}`;
+        badge.title = pos.reason;
+        badge.style.display = 'inline-flex';
+      }
+    }
   } catch (err) {
     bodyEl.innerHTML = `<span style="color:#c0392b">Error: ${err.message}</span>`;
   }
@@ -287,6 +344,11 @@ async function synthesizeBoard(question, selected) {
   const synthesisBody = document.getElementById('synthesis-body');
   synthesisSection.style.display = 'block';
   synthesisBody.innerHTML = '<span class="thinking" style="--color:#1A1A1A">Tallying the board verdict</span>';
+
+  // Render the formal ballot from the independently cast POSITION lines
+  document.getElementById('ballot').innerHTML = renderBallotHTML(
+    selected.map(a => ({ name: a.name, color: a.color, pos: parsePosition(responseTexts[a.id]) }))
+  );
 
   setTimeout(() => synthesisSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 
@@ -596,6 +658,7 @@ function openHistoryDetail(i) {
     const avatarHTML = photo
       ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
       : `<span class="card-avatar" style="background:${ad.color}">${escText(ad.avatar || ad.name.slice(0,2).toUpperCase())}</span>`;
+    const pos = parsePosition(text);
     return `
       <div class="response-card" style="--color:${ad.color}">
         <div class="card-header">
@@ -604,11 +667,17 @@ function openHistoryDetail(i) {
             <div class="card-name name-link" onclick="openBioModal('${escAttr(advId)}')" title="About ${escAttr(ad.name)}">${escText(ad.name)}</div>
             <div class="card-role">${escText(ad.title || '')}</div>
           </div>
+          ${positionBadgeHTML(pos)}
         </div>
-        <div class="card-body">${renderMarkdown(text || '')}</div>
+        <div class="card-body">${renderMarkdown(pos ? stripPositionLine(text) : (text || ''))}</div>
       </div>
     `;
   }).join('');
+
+  const ballotHTML = renderBallotHTML(Object.entries(s.responses || {}).map(([advId, text]) => {
+    const ad = advisorById(advId);
+    return { name: ad.name, color: ad.color, pos: parsePosition(text) };
+  }));
 
   let synthesisHTML = '';
   if (s.synthesis) {
@@ -632,6 +701,7 @@ function openHistoryDetail(i) {
               <div class="synthesis-subtitle">From this session</div>
             </div>
           </div>
+          ${ballotHTML}
           <div class="synthesis-body">${bodyHTML}</div>
         </div>
       </div>`;
