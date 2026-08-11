@@ -1335,3 +1335,27 @@ input[type="color"] {
 .tts-btn:hover { border-color: var(--color); color: var(--color); }
 .tts-btn.playing { background: var(--color); border-color: var(--color); color: #fff; }
 .tts-btn.loading { opacity: 0.6; cursor: wait; }
+
+/* ── Floating stop-voice button ── */
+.stop-voice-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--text);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-lift);
+  transition: transform var(--transition);
+}
+
+.stop-voice-btn:hover { transform: scale(1.04); }

@@ -583,6 +583,8 @@ function stopSpeaking() {
   if (currentAudioId) resetSpeakBtn(currentAudioId);
   currentAudio = null;
   currentAudioId = null;
+  const stopBtn = document.getElementById('stop-voice');
+  if (stopBtn) stopBtn.style.display = 'none';
 }
 
 async function toggleSpeak(id) {
@@ -618,6 +620,8 @@ async function toggleSpeak(id) {
     btn.textContent = '■';
     btn.classList.remove('loading');
     btn.classList.add('playing');
+    const stopBtn = document.getElementById('stop-voice');
+    if (stopBtn) stopBtn.style.display = 'inline-flex';
   } catch (err) {
     alert('Voice playback failed: ' + err.message);
     resetSpeakBtn(id);
