@@ -162,6 +162,8 @@ async function askBoard() {
           <div class="card-role">${escText(advisor.title)}</div>
         </div>
         <span class="position-badge" id="pos-${advisor.id}" style="display:none"></span>
+        <button class="tts-btn" id="tts-${advisor.id}" style="display:none"
+                onclick="toggleSpeak('${advisor.id}')" title="Listen to ${escAttr(advisor.name)}">▶</button>
       </div>
       <div class="card-body" id="body-${advisor.id}">
         <span class="thinking" style="--color:${advisor.color}">Thinking</span>
@@ -286,6 +288,15 @@ async function streamResponse(advisor, question) {
         badge.className = `position-badge pos-${pos.vote.toLowerCase()}`;
         badge.title = pos.reason;
         badge.style.display = 'inline-flex';
+      }
+    }
+
+    // Voice: show the listen button once the response is complete
+    if (advisor.voiceId) {
+      const tts = document.getElementById(`tts-${advisor.id}`);
+      if (tts) {
+        tts.style.display = 'inline-flex';
+        if (!pos) tts.style.marginLeft = 'auto'; // right-align when no vote badge
       }
     }
   } catch (err) {
@@ -553,6 +564,65 @@ function closePicksModal() {
 
 function picksOverlayClick(e) {
   if (e.target === document.getElementById('picks-modal')) closePicksModal();
+}
+
+// ── Voice playback (ElevenLabs) ──────────────────────────────────────────────
+let currentAudio = null;
+let currentAudioId = null;
+
+function resetSpeakBtn(id) {
+  const btn = document.getElementById(`tts-${id}`);
+  if (btn) { btn.textContent = '▶'; btn.classList.remove('playing', 'loading'); }
+}
+
+function stopSpeaking() {
+  if (currentAudio) {
+    currentAudio.pause();
+    if (currentAudio.src) URL.revokeObjectURL(currentAudio.src);
+  }
+  if (currentAudioId) resetSpeakBtn(currentAudioId);
+  currentAudio = null;
+  currentAudioId = null;
+}
+
+async function toggleSpeak(id) {
+  if (currentAudioId === id) { stopSpeaking(); return; }
+  stopSpeaking();
+
+  const text = stripPositionLine(responseTexts[id] || '');
+  if (!text) return;
+
+  const btn = document.getElementById(`tts-${id}`);
+  btn.textContent = '…';
+  btn.classList.add('loading');
+  currentAudioId = id;
+
+  try {
+    const res = await fetch('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ advisorId: id, text }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      alert(err.error || 'Voice playback failed');
+      resetSpeakBtn(id);
+      currentAudioId = null;
+      return;
+    }
+    const blob = await res.blob();
+    if (currentAudioId !== id) return; // user moved on while loading
+    currentAudio = new Audio(URL.createObjectURL(blob));
+    currentAudio.onended = stopSpeaking;
+    await currentAudio.play();
+    btn.textContent = '■';
+    btn.classList.remove('loading');
+    btn.classList.add('playing');
+  } catch (err) {
+    alert('Voice playback failed: ' + err.message);
+    resetSpeakBtn(id);
+    currentAudioId = null;
+  }
 }
 
 // ── New Question ─────────────────────────────────────────────────────────────

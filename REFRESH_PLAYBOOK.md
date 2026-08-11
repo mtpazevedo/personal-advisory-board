@@ -13,7 +13,7 @@ How to refresh the advisory board's knowledge so every member reflects their mos
    --- RECENT VIEWS & ACTIVITY (updated YYYY-MM) ---
    ```
 
-   Replace that section (everything from the marker to the end of the persona) with the new findings. Never touch the base persona above the marker unless something structural changed (job change, death, new book that redefines them). Keep the section under ~300 words, second person ("Where your head is..."), with real dated quotes.
+   Replace that section (everything from the marker to the end of the persona) with the new findings. Never touch the base persona above the marker unless something structural changed (job change, death, new book that redefines them). In particular, NEVER modify the `--- HOW YOU THINK (YOUR SHAPE ON THE PAGE) ---` section: it defines each advisor's unique cognitive style and answer shape, and it is deliberately different for every member. Keep the RECENT section under ~300 words, second person ("Where your head is..."), with real dated quotes.
 3. **Check for structural changes** and update the base persona + `title` field when someone changes jobs (e.g. Gurley left Benchmark for the P3 Institute in 2026).
 4. **Update the SEP faculty list** in BOTH `server.js` and `api/synthesize.js` (search for "SEP 20") if the roster changed.
 5. **Refresh `bio` and `picks` fields** if there's a new book, a new signature quote, or a stale fact in the mini-bio.
