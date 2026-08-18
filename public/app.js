@@ -59,6 +59,7 @@ async function init(fromGate) {
   renderChips();
   renderBenchToggle();
   refreshProfileBanner();
+  renderEpigraph();
 }
 
 // ── localStorage helpers ─────────────────────────────────────────────────────
@@ -169,6 +170,36 @@ function setBenchMode(mode) {
   benchMode = mode;
   localStorage.setItem(LS_BENCH, mode);
   renderBenchToggle();
+}
+
+// ── Epigraph: a line from the current business shelf ─────────────────────────
+const EPIGRAPHS = [
+  { q: 'Good is the enemy of great.', a: 'Jim Collins', b: 'Good to Great' },
+  { q: 'You do not rise to the level of your goals. You fall to the level of your systems.', a: 'James Clear', b: 'Atomic Habits' },
+  { q: 'A hallmark of an open mind is not letting your ideas become your identity.', a: 'Adam Grant', b: 'Think Again' },
+  { q: 'Pain plus reflection equals progress.', a: 'Ray Dalio', b: 'Principles' },
+  { q: 'Great markets make great companies.', a: 'Bill Gurley', b: null },
+  { q: 'In a world deluged by irrelevant information, clarity is power.', a: 'Yuval Noah Harari', b: '21 Lessons for the 21st Century' },
+  { q: "It's easier to hold to your principles 100 percent of the time than it is to hold to them 98 percent of the time.", a: 'Clayton Christensen', b: 'How Will You Measure Your Life?' },
+  { q: 'Nothing in life is as important as you think it is, while you are thinking about it.', a: 'Daniel Kahneman', b: 'Thinking, Fast and Slow' },
+  { q: 'How you climb a mountain is more important than reaching the top.', a: 'Yvon Chouinard', b: 'Let My People Go Surfing' },
+  { q: 'The first rule of compounding: never interrupt it unnecessarily.', a: 'Charlie Munger', b: null },
+  { q: 'What got you here won’t get you there.', a: 'Marshall Goldsmith', b: 'What Got You Here Won’t Get You There' },
+  { q: 'Hard choices, easy life. Easy choices, hard life.', a: 'Jerzy Gregorek', b: null },
+];
+let lastEpigraph = -1;
+
+function renderEpigraph() {
+  const el = document.getElementById('epigraph');
+  if (!el) return;
+  let i;
+  do { i = Math.floor(Math.random() * EPIGRAPHS.length); } while (i === lastEpigraph && EPIGRAPHS.length > 1);
+  lastEpigraph = i;
+  const e = EPIGRAPHS[i];
+  el.innerHTML = `
+    <div class="epigraph-quote">“${escText(e.q)}”</div>
+    <div class="epigraph-attr">${escText(e.a)}${e.b ? ` · <em>${escText(e.b)}</em>` : ''}</div>
+  `;
 }
 
 // ── Keyboard shortcut ────────────────────────────────────────────────────────
@@ -990,6 +1021,7 @@ function newQuestion() {
   document.getElementById('quorum-note').style.display = 'none';
   document.getElementById('question').value = '';
   document.getElementById('question').focus();
+  renderEpigraph();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
