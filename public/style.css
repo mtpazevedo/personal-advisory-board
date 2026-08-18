@@ -362,8 +362,8 @@ main {
 }
 
 .chip-avatar {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--color);
   color: #fff;
@@ -382,7 +382,7 @@ main {
 
 .chip-name {
   font-family: var(--font-sans);
-  font-size: 0.84rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.2;
@@ -492,18 +492,15 @@ main {
 .responses-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
-}
-
-@media (min-width: 900px) {
-  .responses-grid { grid-template-columns: 1fr 1fr; }
+  gap: 28px;
+  max-width: 880px;
 }
 
 .response-card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-left: 5px solid var(--color);
-  padding: 24px 26px 20px;
+  border-left: 6px solid var(--color);
+  padding: 30px 34px 24px;
   display: flex;
   flex-direction: column;
 }
@@ -511,49 +508,64 @@ main {
 .card-header {
   display: flex;
   align-items: center;
-  gap: 13px;
-  padding-bottom: 14px;
+  gap: 22px;
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .card-avatar {
-  width: 44px;
-  height: 44px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
   flex-shrink: 0;
+  border: 3px solid var(--color);
 }
 
 .card-avatar-photo { background-size: cover; background-position: center top; }
 
 .card-name {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.55rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
 }
 
 .card-role {
   font-size: 0.72rem;
   color: var(--ink-faint);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  margin-top: 2px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 5px;
 }
 
 .card-body {
   font-family: var(--font-serif);
-  font-size: 0.98rem;
-  line-height: 1.75;
+  font-size: 1.02rem;
+  line-height: 1.8;
   color: var(--ink);
   flex: 1;
+  margin-left: 118px; /* aligns the text under the name, magazine-interview style */
+}
+
+.response-card .followups,
+.response-card .followup-box { margin-left: 118px; }
+
+@media (max-width: 700px) {
+  .response-card { padding: 22px 20px 18px; }
+  .card-avatar { width: 68px; height: 68px; font-size: 1.1rem; }
+  .card-name { font-size: 1.25rem; }
+  .card-body,
+  .response-card .followups,
+  .response-card .followup-box { margin-left: 0; }
 }
 
 .card-body p { margin-bottom: 0.9em; }
@@ -703,7 +715,7 @@ main {
 .followup-box button:hover { background: var(--paper); color: var(--ink); }
 
 /* ── Synthesis / verdicts ── */
-.synthesis-section { margin-top: 40px; }
+.synthesis-section { margin-top: 40px; max-width: 880px; }
 
 .synthesis-card {
   background: var(--surface);
@@ -924,7 +936,8 @@ main {
   max-width: 52ch;
 }
 
-.history-list { display: flex; flex-direction: column; gap: 14px; }
+.history-list { display: flex; flex-direction: column; gap: 14px; max-width: 880px; }
+.history-detail { max-width: 880px; }
 
 .history-card {
   background: var(--surface);
@@ -1072,7 +1085,8 @@ main {
 .outcome-box textarea:focus { border-color: var(--ink); }
 
 /* ── Reading Room ── */
-.reading-list { display: flex; flex-direction: column; gap: 22px; }
+.reading-list { display: flex; flex-direction: column; gap: 22px; max-width: 880px; }
+.reading-picks { max-width: 880px; }
 
 .reading-advisor, .picks-advisor {
   background: var(--surface);
@@ -1084,11 +1098,20 @@ main {
 .picks-advisor-header {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 14px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--line);
   margin-bottom: 14px;
 }
+
+.picks-advisor-header .card-avatar {
+  width: 60px;
+  height: 60px;
+  font-size: 1rem;
+  border-width: 2px;
+}
+
+.picks-advisor-header .card-name { font-size: 1.15rem; }
 
 .reading-item, .pick-item {
   display: flex;
