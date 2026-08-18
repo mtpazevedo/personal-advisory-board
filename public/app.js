@@ -126,9 +126,10 @@ function renderChips() {
   container.innerHTML = sortByName(advisors.filter(a => a.active))
     .map(a => {
       const photo = effectivePhoto(a);
+      const bioClick = `onclick="event.stopPropagation(); openBioModal('${a.id}')" title="About ${escAttr(a.name)}"`;
       const avatarHTML = photo
-        ? `<span class="chip-avatar chip-avatar-photo" style="background-image:url('${photo}')"></span>`
-        : `<span class="chip-avatar">${escAttr(a.avatar)}</span>`;
+        ? `<span class="chip-avatar chip-avatar-photo" style="background-image:url('${photo}')" ${bioClick}></span>`
+        : `<span class="chip-avatar" ${bioClick}>${escAttr(a.avatar)}</span>`;
       return `
         <div class="advisor-chip ${selectedIds.has(a.id) ? 'selected' : ''}"
              style="--color:${a.color}"
@@ -320,9 +321,10 @@ function buildResponseCard(advisor, suffix) {
   card.className = 'response-card';
   card.style.setProperty('--color', advisor.color);
   const photo = effectivePhoto(advisor);
+  const bioClick = `onclick="openBioModal('${advisor.id}')" title="About ${escAttr(advisor.name)}"`;
   const avatarHTML = photo
-    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
-    : `<span class="card-avatar" style="background:${advisor.color}">${escText(advisor.avatar)}</span>`;
+    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')" ${bioClick}></span>`
+    : `<span class="card-avatar" style="background:${advisor.color}" ${bioClick}>${escText(advisor.avatar)}</span>`;
   card.innerHTML = `
     <div class="card-header">
       ${avatarHTML}
@@ -1192,9 +1194,10 @@ function renderHistoryList() {
 
 function historyResponseCard(ad, advId, text) {
   const photo = effectivePhoto({ id: advId, photo: ad.photo });
+  const bioClick = `onclick="openBioModal('${escAttr(advId)}')" title="About ${escAttr(ad.name)}"`;
   const avatarHTML = photo
-    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
-    : `<span class="card-avatar" style="background:${ad.color}">${escText(ad.avatar || ad.name.slice(0, 2).toUpperCase())}</span>`;
+    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')" ${bioClick}></span>`
+    : `<span class="card-avatar" style="background:${ad.color}" ${bioClick}>${escText(ad.avatar || ad.name.slice(0, 2).toUpperCase())}</span>`;
   const pos = parsePosition(text);
   return `
     <div class="response-card" style="--color:${ad.color}">
