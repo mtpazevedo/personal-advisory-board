@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { requireAuth } = require('../lib/auth');
 
 const ADVISORS_FILE = path.join(process.cwd(), 'advisors.json');
 
@@ -7,6 +8,7 @@ async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (!requireAuth(req, res)) return;
   const key = process.env.ELEVENLABS_API_KEY;
   if (!key) {
     return res.status(503).json({ error: 'Voices not enabled: set ELEVENLABS_API_KEY in the Vercel environment.' });

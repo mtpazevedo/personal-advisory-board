@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { requireAuth } = require('../lib/auth');
 
 const ADVISORS_FILE = path.join(process.cwd(), 'advisors.json');
 
 module.exports = function handler(req, res) {
+  if (!requireAuth(req, res)) return;
   if (req.method === 'GET') {
     const data = JSON.parse(fs.readFileSync(ADVISORS_FILE, 'utf8'));
     return res.json(data);

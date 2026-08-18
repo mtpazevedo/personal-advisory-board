@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { DEFAULT_MODEL, buildAskSystemPrompt } = require('../lib/prompts');
+const { DEFAULT_MODEL, WEB_SEARCH_TOOL, buildAskSystemPrompt, buildAskMessages } = require('../lib/prompts');
+const { requireAuth } = require('../lib/auth');
+const { streamAnthropicToRes } = require('../lib/stream-proxy');
 
 const ADVISORS_FILE = path.join(process.cwd(), 'advisors.json');
 
@@ -8,15 +10,16 @@ async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (!requireAuth(req, res)) return;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
-  const { question, advisorId, userProfile, history } = req.body;
-  if (!question || !advisorId) {
-    return res.status(400).json({ error: 'question and advisorId are required' });
+  const { question, advisorId, userProfile, history, thread, rebuttal } = req.body;
+  if ((!question && !rebuttal) || !advisorId) {
+    return res.status(400).json({ error: 'advisorId plus question or rebuttal are required' });
   }
 
   const advisors = JSON.parse(fs.readFileSync(ADVISORS_FILE, 'utf8'));
@@ -25,59 +28,18 @@ async function handler(req, res) {
     return res.status(404).json({ error: 'Advisor not found' });
   }
 
-  const systemPrompt = buildAskSystemPrompt(advisor, advisors, userProfile, history);
-
   try {
-    const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
+    await streamAnthropicToRes({
+      apiKey,
+      res,
+      body: {
         model: advisor.model || DEFAULT_MODEL,
-        max_tokens: 2500,
-        stream: true,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: question }],
-        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
-      }),
+        max_tokens: 4000,
+        system: buildAskSystemPrompt(advisor, advisors, userProfile, history),
+        messages: buildAskMessages({ question, thread, rebuttal }),
+        tools: [WEB_SEARCH_TOOL],
+      },
     });
-
-    if (!apiRes.ok) {
-      const err = await apiRes.text();
-      return res.status(apiRes.status).json({ error: err });
-    }
-
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
-
-    const reader = apiRes.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6);
-        if (data === '[DONE]') continue;
-        try {
-          const event = JSON.parse(data);
-          if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') {
-            res.write(event.delta.text);
-          }
-        } catch {}
-      }
-    }
-    res.end();
   } catch (err) {
     console.error('Claude API error:', err);
     if (!res.headersSent) {

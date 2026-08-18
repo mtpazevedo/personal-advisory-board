@@ -16,9 +16,31 @@ A private web app where you can ask questions and receive responses from your cu
 - Ryuichi Sakamoto — Composer, Musician & Activist
 - Yvon Chouinard — Founder, Patagonia
 
-Advisors answer independently, in sealed rooms: no coordinating, no echoing, conflict welcome. Click any member's name for a mini-bio, and **Board Picks** in the header for their recommended books, songs, articles, and quotes.
+Advisors answer independently, in sealed rooms: no coordinating, no echoing, conflict welcome. Click any member's name for a mini-bio.
 
-Personas carry a dated `RECENT VIEWS & ACTIVITY` section refreshed monthly by a scheduled cloud agent (see `REFRESH_PLAYBOOK.md`). After it runs, `git pull` locally to get the update.
+**How a session works:**
+1. **Round One (sealed rooms).** Each selected member answers alone and casts a formal vote (YES / NO / CONDITIONAL). The Chair issues a weighted **Board Verdict**.
+2. **Round Two (open debate, optional).** Click "Open the debate": every member sees the ballot and the others' arguments, and may hold or flip. The Chair rules on the final ballot, naming who moved and why.
+3. **Follow-ups.** Push back on any single advisor in a thread under their card.
+4. **Quorum mode.** Toggle next to the ask button: the Chair convenes only the 5-6 most relevant members plus one deliberate counterpoint, instead of the full board.
+5. **The record.** History keeps every session on your device. Record what actually happened in the "What happened?" box, then run **Board Review** to have the Chair audit which calls aged well.
+6. **Reading Room.** What the board is reading, saying, and listening to, fed by `reading.json` and refreshed weekly by a cloud routine (see `REFRESH_PLAYBOOK.md`).
+
+Personas carry a dated `RECENT VIEWS & ACTIVITY` section refreshed monthly by a scheduled cloud agent (see `REFRESH_PLAYBOOK.md`). After either routine runs, `git pull` locally to get the update.
+
+---
+
+## Sharing with friends (deployed mode)
+
+The app deploys to Vercel. Set these environment variables in the Vercel project:
+
+```
+ANTHROPIC_API_KEY    required — every question spends your API credits
+BOARD_ACCESS_CODE    recommended — the shared code friends type to enter
+ELEVENLABS_API_KEY   optional — enables advisor voices
+```
+
+With `BOARD_ACCESS_CODE` set, the site shows an access gate; give friends the URL plus the code. Each visitor's profile, history, and outcomes live in their own browser (localStorage), so friends get their own private board sessions on your deployment. Leave `BOARD_ACCESS_CODE` unset locally and the gate stays off.
 
 ---
 
@@ -75,8 +97,8 @@ All changes are saved to `advisors.json` — a plain text file you can also edit
 
 Open `.env` and change the `MODEL` line:
 ```
-MODEL=claude-opus-4-6     ← highest quality (default)
-MODEL=claude-sonnet-4-6   ← faster, slightly less depth
+MODEL=claude-opus-5     ← highest quality (default)
+MODEL=claude-sonnet-5   ← faster, slightly less depth
 ```
 
 ---

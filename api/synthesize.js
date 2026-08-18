@@ -1,16 +1,19 @@
 const { DEFAULT_MODEL, buildSynthesisSystemPrompt } = require('../lib/prompts');
+const { requireAuth } = require('../lib/auth');
+const { streamAnthropicToRes } = require('../lib/stream-proxy');
 
 async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (!requireAuth(req, res)) return;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
-  const { question, responses, userProfile } = req.body;
+  const { question, responses, userProfile, round, round1Tally } = req.body;
   if (!question || !responses || !responses.length) {
     return res.status(400).json({ error: 'question and responses are required' });
   }
@@ -22,61 +25,26 @@ async function handler(req, res) {
     )
     .join('\n\n---\n\n');
 
+  const roundPreamble = round === 2
+    ? `Round 1 ballot (before the debate): ${round1Tally || 'no formal votes'}\n\nRound 2 responses (after open debate):\n\n`
+    : 'Individual responses:\n\n';
+
   try {
-    const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
+    await streamAnthropicToRes({
+      apiKey,
+      res,
+      body: {
         model: DEFAULT_MODEL,
         max_tokens: 3000,
-        stream: true,
-        system: buildSynthesisSystemPrompt(userProfile),
+        system: buildSynthesisSystemPrompt(userProfile, { round: round === 2 ? 2 : 1 }),
         messages: [
           {
             role: 'user',
-            content: `Question posed to the board:\n"${question}"\n\nIndividual responses:\n\n${advisorInputs}`,
+            content: `Question posed to the board:\n"${question}"\n\n${roundPreamble}${advisorInputs}`,
           },
         ],
-      }),
+      },
     });
-
-    if (!apiRes.ok) {
-      const err = await apiRes.text();
-      return res.status(apiRes.status).json({ error: err });
-    }
-
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
-
-    const reader = apiRes.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6);
-        if (data === '[DONE]') continue;
-        try {
-          const event = JSON.parse(data);
-          if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') {
-            res.write(event.delta.text);
-          }
-        } catch {}
-      }
-    }
-    res.end();
   } catch (err) {
     console.error('Synthesis error:', err);
     if (!res.headersSent) {

@@ -2,27 +2,63 @@
 const LS_PROFILE = 'advisoryBoard.userProfile';
 const LS_HISTORY = 'advisoryBoard.history';
 const LS_PHOTOS  = 'advisoryBoard.photoOverrides';
+const LS_CODE    = 'advisoryBoard.accessCode';
+const LS_BENCH   = 'advisoryBoard.benchMode';
 
 // ── State ────────────────────────────────────────────────────────────────────
 let advisors = [];
 let selectedIds = new Set();
 let editAdvisors = [];
-let responseTexts = {};
+let responseTexts = {};   // round 1 texts by advisor id
+let round2Texts = {};     // round 2 texts by advisor id
+let threads = {};         // advisor id -> [{role, content}, ...] for follow-ups
+let currentQuestion = '';
+let currentBench = [];    // advisors actually convened this session
+let currentSessionId = null;
+let debateRan = false;
 let userProfile = loadProfile();
 let history = loadHistory();
 let photoOverrides = loadPhotoOverrides();
+let accessCode = localStorage.getItem(LS_CODE) || '';
+let benchMode = localStorage.getItem(LS_BENCH) || 'full';
 
-// ── Init ─────────────────────────────────────────────────────────────────────
-async function init() {
-  advisors = await fetchAdvisors();
-  selectedIds = new Set(advisors.filter(a => a.active).map(a => a.id));
-  renderChips();
-  refreshProfileBanner();
+// ── Authenticated fetch ──────────────────────────────────────────────────────
+function api(url, opts = {}) {
+  const headers = { ...(opts.headers || {}) };
+  if (accessCode) headers['x-board-code'] = accessCode;
+  return fetch(url, { ...opts, headers });
 }
 
-async function fetchAdvisors() {
-  const res = await fetch('/api/advisors');
-  return res.json();
+function showGate(withError) {
+  document.getElementById('gate').style.display = 'flex';
+  document.getElementById('gate-error').style.display = withError ? 'block' : 'none';
+  setTimeout(() => document.getElementById('gate-code').focus(), 50);
+}
+
+function hideGate() {
+  document.getElementById('gate').style.display = 'none';
+}
+
+async function submitGate(e) {
+  e.preventDefault();
+  accessCode = document.getElementById('gate-code').value.trim();
+  localStorage.setItem(LS_CODE, accessCode);
+  await init(true);
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+async function init(fromGate) {
+  const res = await api('/api/advisors');
+  if (res.status === 401) {
+    showGate(!!fromGate);
+    return;
+  }
+  hideGate();
+  advisors = await res.json();
+  selectedIds = new Set(advisors.filter(a => a.active).map(a => a.id));
+  renderChips();
+  renderBenchToggle();
+  refreshProfileBanner();
 }
 
 // ── localStorage helpers ─────────────────────────────────────────────────────
@@ -51,6 +87,15 @@ function loadPhotoOverrides() {
 
 function savePhotoOverridesToLS(p) {
   localStorage.setItem(LS_PHOTOS, JSON.stringify(p));
+}
+
+// Update the current session in history (after follow-ups, debate, outcomes)
+function updateCurrentSession(mutate) {
+  if (!currentSessionId) return;
+  const s = history.find(x => x.id === currentSessionId);
+  if (!s) return;
+  mutate(s);
+  saveHistoryToLS(history);
 }
 
 // Resolve effective photo for an advisor (override beats stored)
@@ -114,6 +159,18 @@ function deselectAll() {
   renderChips();
 }
 
+// ── Bench mode (full board vs quorum) ────────────────────────────────────────
+function renderBenchToggle() {
+  document.getElementById('bench-full').classList.toggle('active', benchMode === 'full');
+  document.getElementById('bench-quorum').classList.toggle('active', benchMode === 'quorum');
+}
+
+function setBenchMode(mode) {
+  benchMode = mode;
+  localStorage.setItem(LS_BENCH, mode);
+  renderBenchToggle();
+}
+
 // ── Keyboard shortcut ────────────────────────────────────────────────────────
 function handleKey(e) {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
@@ -138,46 +195,62 @@ async function askBoard() {
   btn.disabled = true;
   btn.textContent = 'Asking…';
 
-  const selected = sortByName(advisors.filter(a => selectedIds.has(a.id) && a.active));
+  let selected = sortByName(advisors.filter(a => selectedIds.has(a.id) && a.active));
+  const quorumNote = document.getElementById('quorum-note');
+  quorumNote.style.display = 'none';
+
+  // Quorum: the Chair convenes the bench for this question
+  if (benchMode === 'quorum' && selected.length > 6) {
+    btn.textContent = 'Convening…';
+    try {
+      const qres = await api('/api/quorum', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          roster: selected.map(a => ({ id: a.id, name: a.name, title: a.title, expertise: a.expertise || [] })),
+        }),
+      });
+      if (qres.ok) {
+        const q = await qres.json();
+        const picked = new Set(q.ids);
+        const bench = selected.filter(a => picked.has(a.id));
+        if (bench.length >= 2) {
+          selected = bench;
+          quorumNote.innerHTML = `<strong>The Chair convened:</strong> ${bench.map(a => escText(a.name)).join(', ')}. ${escText(q.note || '')}`;
+          quorumNote.style.display = 'block';
+        }
+      }
+      // On failure fall through with the full selection
+    } catch {}
+    btn.textContent = 'Asking…';
+  }
+
+  currentQuestion = question;
+  currentBench = selected;
+  responseTexts = {};
+  round2Texts = {};
+  threads = {};
+  debateRan = false;
 
   const section = document.getElementById('responses-section');
   section.style.display = 'block';
   document.getElementById('question-echo').textContent = `"${question}"`;
+  document.getElementById('debate-section').style.display = 'none';
+  document.getElementById('debate-responses').innerHTML = '';
+  document.getElementById('final-section').style.display = 'none';
+  document.getElementById('debate-cta').style.display = 'none';
+  document.getElementById('synthesis-section').style.display = 'none';
 
   const grid = document.getElementById('responses');
   grid.innerHTML = '';
   for (const advisor of selected) {
-    const card = document.createElement('div');
-    card.className = 'response-card';
-    card.style.setProperty('--color', advisor.color);
-    const photo = effectivePhoto(advisor);
-    const avatarHTML = photo
-      ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
-      : `<span class="card-avatar" style="background:${advisor.color}">${escText(advisor.avatar)}</span>`;
-    card.innerHTML = `
-      <div class="card-header">
-        ${avatarHTML}
-        <div>
-          <div class="card-name name-link" onclick="openBioModal('${advisor.id}')" title="About ${escAttr(advisor.name)}">${escText(advisor.name)}</div>
-          <div class="card-role">${escText(advisor.title)}</div>
-        </div>
-        <span class="position-badge" id="pos-${advisor.id}" style="display:none"></span>
-        <button class="tts-btn" id="tts-${advisor.id}" style="display:none"
-                onclick="toggleSpeak('${advisor.id}')" title="Listen to ${escAttr(advisor.name)}">▶</button>
-      </div>
-      <div class="card-body" id="body-${advisor.id}">
-        <span class="thinking" style="--color:${advisor.color}">Thinking</span>
-      </div>
-    `;
-    grid.appendChild(card);
+    grid.appendChild(buildResponseCard(advisor, ''));
   }
 
   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  responseTexts = {};
-  document.getElementById('synthesis-section').style.display = 'none';
-
-  await Promise.all(selected.map(a => streamResponse(a, question)));
+  await Promise.all(selected.map(a => streamRound1(a, question)));
 
   let synthesisText = '';
   if (selected.length > 1) {
@@ -185,20 +258,63 @@ async function askBoard() {
   }
 
   // Save session to history
+  currentSessionId = 'sess_' + Date.now();
   const session = {
-    id: 'sess_' + Date.now(),
+    id: currentSessionId,
     ts: Date.now(),
     question,
     advisors: selected.map(a => ({ id: a.id, name: a.name, title: a.title, color: a.color })),
     responses: { ...responseTexts },
     synthesis: synthesisText || '',
+    threads: {},
+    round2: null,
+    outcome: null,
   };
   history.unshift(session);
   if (history.length > 100) history = history.slice(0, 100);
   saveHistoryToLS(history);
 
+  // Offer Round 2 when more than one member answered
+  if (selected.length > 1) {
+    document.getElementById('debate-cta').style.display = 'flex';
+  }
+
   btn.disabled = false;
-  btn.innerHTML = 'Ask the Board <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+  btn.textContent = 'Ask the Board';
+}
+
+// Build a response card. `suffix` distinguishes round-2 cards ('' or '2').
+function buildResponseCard(advisor, suffix) {
+  const card = document.createElement('div');
+  card.className = 'response-card';
+  card.style.setProperty('--color', advisor.color);
+  const photo = effectivePhoto(advisor);
+  const avatarHTML = photo
+    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
+    : `<span class="card-avatar" style="background:${advisor.color}">${escText(advisor.avatar)}</span>`;
+  card.innerHTML = `
+    <div class="card-header">
+      ${avatarHTML}
+      <div>
+        <div class="card-name name-link" onclick="openBioModal('${advisor.id}')" title="About ${escAttr(advisor.name)}">${escText(advisor.name)}</div>
+        <div class="card-role">${escText(advisor.title)}</div>
+      </div>
+      <span class="position-badge" id="pos${suffix}-${advisor.id}" style="display:none"></span>
+      <button class="tts-btn" id="tts${suffix}-${advisor.id}" style="display:none"
+              onclick="toggleSpeak('${advisor.id}', '${suffix}')" title="Listen to ${escAttr(advisor.name)}">▶</button>
+    </div>
+    <div class="card-body" id="body${suffix}-${advisor.id}">
+      <span class="thinking" style="--color:${advisor.color}">Thinking</span>
+    </div>
+    <div class="followups" id="fu${suffix}-${advisor.id}"></div>
+    <div class="followup-box" id="fubox${suffix}-${advisor.id}" style="display:none">
+      <input type="text" id="fuin${suffix}-${advisor.id}"
+             placeholder="Push back on ${escAttr(advisor.name.split(' ')[0])}…"
+             onkeydown="if(event.key==='Enter'){sendFollowUp('${advisor.id}','${suffix}')}" />
+      <button onclick="sendFollowUp('${advisor.id}','${suffix}')" title="Send follow-up">→</button>
+    </div>
+  `;
+  return card;
 }
 
 // ── Formal vote (POSITION line) parsing ──────────────────────────────────────
@@ -220,9 +336,16 @@ function positionBadgeHTML(pos) {
   return `<span class="position-badge pos-${cls}" title="${escAttr(pos.reason)}">${pos.vote}</span>`;
 }
 
-function renderBallotHTML(entries) {
+function ballotEntries(texts, advisorsList) {
+  return advisorsList.map(a => ({
+    name: a.name,
+    color: a.color,
+    pos: parsePosition(texts[a.id]),
+  }));
+}
+
+function tallyString(entries) {
   const voted = entries.filter(e => e.pos);
-  if (!voted.length) return '';
   const counts = { YES: 0, NO: 0, CONDITIONAL: 0 };
   voted.forEach(e => counts[e.pos.vote]++);
   const abstained = entries.length - voted.length;
@@ -231,6 +354,12 @@ function renderBallotHTML(entries) {
   if (counts.NO) parts.push(`${counts.NO} NO`);
   if (counts.CONDITIONAL) parts.push(`${counts.CONDITIONAL} CONDITIONAL`);
   if (abstained) parts.push(`${abstained} no vote`);
+  return parts.length ? parts.join(', ') : 'no formal votes';
+}
+
+function renderBallotHTML(entries) {
+  const voted = entries.filter(e => e.pos);
+  if (!voted.length) return '';
   const chips = voted.map(e => `
     <span class="ballot-chip pos-${e.pos.vote.toLowerCase()}" style="--color:${e.color}" title="${escAttr(e.pos.reason)}">
       ${escText(e.name.split(' ').slice(0, 2).join(' '))} · ${e.pos.vote}
@@ -238,19 +367,50 @@ function renderBallotHTML(entries) {
   `).join('');
   return `
     <div class="ballot">
-      <div class="ballot-title">Board ballot <span class="ballot-summary">${parts.join(' · ')}</span></div>
+      <div class="ballot-title">The ballot <span class="ballot-summary">${tallyString(entries).replace(/, /g, ' · ')}</span></div>
       <div class="ballot-chips">${chips}</div>
     </div>
   `;
 }
 
-async function streamResponse(advisor, question) {
+// ── Streaming helpers ────────────────────────────────────────────────────────
+async function streamInto(bodyEl, res) {
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let fullText = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    fullText += decoder.decode(value, { stream: true });
+    bodyEl.innerHTML = renderMarkdown(fullText);
+  }
+  return fullText;
+}
+
+function finishAdvisorCard(advisor, suffix, fullText) {
+  const bodyEl = document.getElementById(`body${suffix}-${advisor.id}`);
+  const pos = parsePosition(fullText);
+  if (pos) {
+    bodyEl.innerHTML = renderMarkdown(stripPositionLine(fullText));
+    const badge = document.getElementById(`pos${suffix}-${advisor.id}`);
+    if (badge) {
+      badge.textContent = pos.vote;
+      badge.className = `position-badge pos-${pos.vote.toLowerCase()}`;
+      badge.title = pos.reason;
+      badge.style.display = 'inline-flex';
+    }
+  }
+  if (advisor.voiceId) {
+    const tts = document.getElementById(`tts${suffix}-${advisor.id}`);
+    if (tts) tts.style.display = 'inline-flex';
+  }
+}
+
+async function streamRound1(advisor, question) {
   const bodyEl = document.getElementById(`body-${advisor.id}`);
   bodyEl.innerHTML = '';
-  let fullText = '';
-
   try {
-    const res = await fetch('/api/ask', {
+    const res = await api('/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -263,44 +423,176 @@ async function streamResponse(advisor, question) {
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: res.statusText }));
-      bodyEl.innerHTML = `<span style="color:#c0392b">Error: ${err.error}</span>`;
+      bodyEl.innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
       return;
     }
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      fullText += decoder.decode(value, { stream: true });
-      bodyEl.innerHTML = renderMarkdown(fullText);
-    }
+    const fullText = await streamInto(bodyEl, res);
     responseTexts[advisor.id] = fullText;
+    threads[advisor.id] = [
+      { role: 'user', content: question },
+      { role: 'assistant', content: fullText },
+    ];
+    finishAdvisorCard(advisor, '', fullText);
+    document.getElementById(`fubox-${advisor.id}`).style.display = 'flex';
+  } catch (err) {
+    bodyEl.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
+  }
+}
 
-    // Formal vote: strip the POSITION line from the body, show it as a badge
-    const pos = parsePosition(fullText);
-    if (pos) {
-      bodyEl.innerHTML = renderMarkdown(stripPositionLine(fullText));
-      const badge = document.getElementById(`pos-${advisor.id}`);
-      if (badge) {
-        badge.textContent = pos.vote;
-        badge.className = `position-badge pos-${pos.vote.toLowerCase()}`;
-        badge.title = pos.reason;
-        badge.style.display = 'inline-flex';
-      }
+// ── Follow-up threads ────────────────────────────────────────────────────────
+async function sendFollowUp(advisorId, suffix) {
+  const input = document.getElementById(`fuin${suffix}-${advisorId}`);
+  const text = input.value.trim();
+  if (!text) return;
+  const advisor = advisors.find(a => a.id === advisorId) || currentBench.find(a => a.id === advisorId);
+  if (!advisor || !threads[advisorId]) return;
+  input.value = '';
+  input.disabled = true;
+
+  const fuWrap = document.getElementById(`fu${suffix}-${advisorId}`);
+  const qEl = document.createElement('div');
+  qEl.className = 'followup-q';
+  qEl.textContent = text;
+  fuWrap.appendChild(qEl);
+  const aEl = document.createElement('div');
+  aEl.className = 'followup-a';
+  aEl.innerHTML = `<span class="thinking" style="--color:${advisor.color}">Thinking</span>`;
+  fuWrap.appendChild(aEl);
+  aEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  try {
+    const res = await api('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: text,
+        advisorId,
+        userProfile,
+        history: [],
+        thread: threads[advisorId],
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      aEl.innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
+      input.disabled = false;
+      return;
     }
+    aEl.innerHTML = '';
+    const reply = await streamInto(aEl, res);
+    threads[advisorId].push({ role: 'user', content: text }, { role: 'assistant', content: reply });
+    updateCurrentSession(s => { s.threads = s.threads || {}; s.threads[advisorId] = threads[advisorId].slice(2); });
+  } catch (err) {
+    aEl.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
+  }
+  input.disabled = false;
+  input.focus();
+}
 
-    // Voice: show the listen button once the response is complete
-    if (advisor.voiceId) {
-      const tts = document.getElementById(`tts-${advisor.id}`);
-      if (tts) {
-        tts.style.display = 'inline-flex';
-        if (!pos) tts.style.marginLeft = 'auto'; // right-align when no vote badge
-      }
+// ── Round 2: open debate ─────────────────────────────────────────────────────
+async function openDebate() {
+  if (debateRan) return;
+  debateRan = true;
+  document.getElementById('debate-cta').style.display = 'none';
+
+  const bench = currentBench.filter(a => responseTexts[a.id]);
+  const entries = ballotEntries(responseTexts, bench);
+  const tally = tallyString(entries);
+
+  const section = document.getElementById('debate-section');
+  section.style.display = 'block';
+  const grid = document.getElementById('debate-responses');
+  grid.innerHTML = '';
+  for (const advisor of bench) {
+    grid.appendChild(buildResponseCard(advisor, '2'));
+  }
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  await Promise.all(bench.map(advisor => streamRound2(advisor, bench, tally)));
+
+  // Final ballot + final verdict
+  const entries2 = ballotEntries(round2Texts, bench);
+  document.getElementById('ballot2').innerHTML = renderBallotHTML(entries2);
+  const finalSection = document.getElementById('final-section');
+  finalSection.style.display = 'block';
+  const finalBody = document.getElementById('final-body');
+  finalBody.innerHTML = '<span class="thinking" style="--color:#111">Ruling on the final ballot</span>';
+  finalSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  let finalText = '';
+  try {
+    const res = await api('/api/synthesize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: currentQuestion,
+        userProfile,
+        round: 2,
+        round1Tally: tally,
+        responses: bench.map(a => ({
+          name: a.name,
+          title: a.title,
+          expertise: a.expertise || [],
+          text: round2Texts[a.id] || '(did not respond)',
+        })),
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      finalBody.innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
+    } else {
+      finalBody.innerHTML = '';
+      finalText = await streamInto(finalBody, res);
     }
   } catch (err) {
-    bodyEl.innerHTML = `<span style="color:#c0392b">Error: ${err.message}</span>`;
+    finalBody.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
+  }
+
+  updateCurrentSession(s => {
+    s.round2 = { responses: { ...round2Texts }, synthesis: finalText };
+  });
+}
+
+async function streamRound2(advisor, bench, tally) {
+  const bodyEl = document.getElementById(`body2-${advisor.id}`);
+  bodyEl.innerHTML = `<span class="thinking" style="--color:${advisor.color}">Reading the ballot</span>`;
+
+  const others = bench
+    .filter(o => o.id !== advisor.id)
+    .map(o => {
+      const pos = parsePosition(responseTexts[o.id]);
+      return {
+        name: o.name,
+        vote: pos ? pos.vote : null,
+        reason: pos ? pos.reason : '',
+        excerpt: stripPositionLine(responseTexts[o.id]).slice(0, 600),
+      };
+    });
+
+  try {
+    const res = await api('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        advisorId: advisor.id,
+        userProfile,
+        history: [],
+        thread: threads[advisor.id] ? threads[advisor.id].slice(0, 2) : [],
+        rebuttal: { tally, others },
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      bodyEl.innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
+      return;
+    }
+    bodyEl.innerHTML = '';
+    const fullText = await streamInto(bodyEl, res);
+    round2Texts[advisor.id] = fullText;
+    finishAdvisorCard(advisor, '2', fullText);
+  } catch (err) {
+    bodyEl.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
   }
 }
 
@@ -354,12 +646,10 @@ async function synthesizeBoard(question, selected) {
   const synthesisSection = document.getElementById('synthesis-section');
   const synthesisBody = document.getElementById('synthesis-body');
   synthesisSection.style.display = 'block';
-  synthesisBody.innerHTML = '<span class="thinking" style="--color:#1A1A1A">Tallying the board verdict</span>';
+  synthesisBody.innerHTML = '<span class="thinking" style="--color:#111">Tallying the board verdict</span>';
 
   // Render the formal ballot from the independently cast POSITION lines
-  document.getElementById('ballot').innerHTML = renderBallotHTML(
-    selected.map(a => ({ name: a.name, color: a.color, pos: parsePosition(responseTexts[a.id]) }))
-  );
+  document.getElementById('ballot').innerHTML = renderBallotHTML(ballotEntries(responseTexts, selected));
 
   setTimeout(() => synthesisSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 
@@ -372,7 +662,7 @@ async function synthesizeBoard(question, selected) {
 
   let fullText = '';
   try {
-    const res = await fetch('/api/synthesize', {
+    const res = await api('/api/synthesize', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, responses, userProfile }),
@@ -380,19 +670,11 @@ async function synthesizeBoard(question, selected) {
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: res.statusText }));
-      synthesisBody.innerHTML = `<span style="color:#c0392b">Error: ${err.error}</span>`;
+      synthesisBody.innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
       return '';
     }
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      fullText += decoder.decode(value, { stream: true });
-      synthesisBody.innerHTML = renderMarkdown(fullText);
-    }
+    fullText = await streamInto(synthesisBody, res);
 
     // After streaming completes: parse weights, render the vote panel,
     // and re-render the prose with the Advisor Relevance block stripped out.
@@ -403,7 +685,7 @@ async function synthesizeBoard(question, selected) {
       synthesisBody.innerHTML = votePanel + renderMarkdown(stripped);
     }
   } catch (err) {
-    synthesisBody.innerHTML = `<span style="color:#c0392b">Error: ${err.message}</span>`;
+    synthesisBody.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
   }
   return fullText;
 }
@@ -478,7 +760,7 @@ function normalizeName(s) {
   return String(s || '').toLowerCase().replace(/[^\w\s]/g, '').trim();
 }
 
-// ── Member Bio & Board Picks ─────────────────────────────────────────────────
+// ── Member Bio & Picks ───────────────────────────────────────────────────────
 function pickTag(type) {
   return `<span class="pick-tag pick-tag-${escAttr(String(type || 'pick').toLowerCase())}">${escText(type || 'pick')}</span>`;
 }
@@ -528,50 +810,119 @@ function bioOverlayClick(e) {
   if (e.target === document.getElementById('bio-modal')) closeBioModal();
 }
 
-function openPicksModal() {
+// ── Reading Room ─────────────────────────────────────────────────────────────
+const READING_TYPES = ['book', 'article', 'essay', 'podcast', 'video', 'interview', 'music', 'exhibition', 'quote'];
+
+function switchMain(id) {
+  for (const m of ['main-ask', 'main-history', 'main-reading']) {
+    document.getElementById(m).style.display = m === id ? (id === 'main-ask' ? 'flex' : 'block') : 'none';
+  }
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function goHome() {
+  switchMain('main-ask');
+}
+
+async function openReadingView() {
+  switchMain('main-reading');
+  renderStandingPicks();
+  const list = document.getElementById('reading-list');
+  list.innerHTML = '<div class="history-empty">Loading the shelf…</div>';
+  try {
+    const res = await api('/api/reading');
+    const feed = res.ok ? await res.json() : { items: [] };
+    renderReadingFeed(feed);
+  } catch {
+    list.innerHTML = '<div class="history-empty">Could not load the reading feed.</div>';
+  }
+}
+
+function closeReadingView() {
+  switchMain('main-ask');
+}
+
+function renderReadingFeed(feed) {
+  const list = document.getElementById('reading-list');
+  const updated = document.getElementById('reading-updated');
+  if (feed.updatedAt) {
+    updated.textContent = `What the board is reading, saying, and listening to. Last refreshed ${feed.updatedAt}.`;
+  }
+  const items = Array.isArray(feed.items) ? feed.items : [];
+  if (!items.length) {
+    list.innerHTML = '<div class="history-empty">The shelf is empty. The weekly refresh will stock it.</div>';
+    return;
+  }
+  const byAdvisor = {};
+  for (const item of items) {
+    (byAdvisor[item.advisorId] = byAdvisor[item.advisorId] || []).push(item);
+  }
+  const ordered = sortByName(advisors.filter(a => byAdvisor[a.id]));
+  list.innerHTML = ordered.map(a => {
+    const photo = effectivePhoto(a);
+    const avatarHTML = photo
+      ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
+      : `<span class="card-avatar" style="background:${a.color}">${escText(a.avatar)}</span>`;
+    const rows = byAdvisor[a.id].map(item => `
+      <div class="reading-item">
+        ${pickTag(item.type)}
+        <div class="reading-item-content">
+          <div class="reading-item-title">${item.url
+            ? `<a href="${escAttr(item.url)}" target="_blank" rel="noopener">${escText(item.title)}</a>`
+            : escText(item.title)}</div>
+          ${item.note ? `<div class="reading-item-note">${escText(item.note)}</div>` : ''}
+          ${item.date ? `<div class="reading-item-date">${escText(item.date)}</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+    return `
+      <div class="reading-advisor" style="--color:${a.color}">
+        <div class="picks-advisor-header name-link" onclick="openBioModal('${a.id}')" title="About ${escAttr(a.name)}">
+          ${avatarHTML}
+          <div>
+            <div class="card-name">${escText(a.name)}</div>
+            <div class="card-role">${escText(a.title)}</div>
+          </div>
+        </div>
+        ${rows}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderStandingPicks() {
   const body = document.getElementById('picks-body');
   const withPicks = sortByName(advisors.filter(a => a.active && a.picks && a.picks.length));
   if (!withPicks.length) {
     body.innerHTML = '<p class="bio-text">No picks yet.</p>';
-  } else {
-    body.innerHTML = withPicks.map(a => {
-      const photo = effectivePhoto(a);
-      const avatarHTML = photo
-        ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
-        : `<span class="card-avatar" style="background:${a.color}">${escText(a.avatar)}</span>`;
-      return `
-        <div class="picks-advisor" style="--color:${a.color}">
-          <div class="picks-advisor-header name-link" onclick="closePicksModal(); openBioModal('${a.id}')" title="About ${escAttr(a.name)}">
-            ${avatarHTML}
-            <div>
-              <div class="card-name">${escText(a.name)}</div>
-              <div class="card-role">${escText(a.title)}</div>
-            </div>
-          </div>
-          ${renderPicksList(a.picks)}
-        </div>
-      `;
-    }).join('');
+    return;
   }
-  document.getElementById('picks-modal').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closePicksModal() {
-  document.getElementById('picks-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-function picksOverlayClick(e) {
-  if (e.target === document.getElementById('picks-modal')) closePicksModal();
+  body.innerHTML = withPicks.map(a => {
+    const photo = effectivePhoto(a);
+    const avatarHTML = photo
+      ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
+      : `<span class="card-avatar" style="background:${a.color}">${escText(a.avatar)}</span>`;
+    return `
+      <div class="picks-advisor" style="--color:${a.color}">
+        <div class="picks-advisor-header name-link" onclick="openBioModal('${a.id}')" title="About ${escAttr(a.name)}">
+          ${avatarHTML}
+          <div>
+            <div class="card-name">${escText(a.name)}</div>
+            <div class="card-role">${escText(a.title)}</div>
+          </div>
+        </div>
+        ${renderPicksList(a.picks)}
+      </div>
+    `;
+  }).join('');
 }
 
 // ── Voice playback (ElevenLabs) ──────────────────────────────────────────────
 let currentAudio = null;
-let currentAudioId = null;
+let currentAudioKey = null;
 
-function resetSpeakBtn(id) {
-  const btn = document.getElementById(`tts-${id}`);
+function resetSpeakBtn(key) {
+  const btn = document.getElementById(`tts${key}`);
   if (btn) { btn.textContent = '▶'; btn.classList.remove('playing', 'loading'); }
 }
 
@@ -580,27 +931,29 @@ function stopSpeaking() {
     currentAudio.pause();
     if (currentAudio.src) URL.revokeObjectURL(currentAudio.src);
   }
-  if (currentAudioId) resetSpeakBtn(currentAudioId);
+  if (currentAudioKey) resetSpeakBtn(currentAudioKey);
   currentAudio = null;
-  currentAudioId = null;
+  currentAudioKey = null;
   const stopBtn = document.getElementById('stop-voice');
   if (stopBtn) stopBtn.style.display = 'none';
 }
 
-async function toggleSpeak(id) {
-  if (currentAudioId === id) { stopSpeaking(); return; }
+async function toggleSpeak(id, suffix) {
+  const key = `${suffix}-${id}`;
+  if (currentAudioKey === key) { stopSpeaking(); return; }
   stopSpeaking();
 
-  const text = stripPositionLine(responseTexts[id] || '');
+  const source = suffix === '2' ? round2Texts : responseTexts;
+  const text = stripPositionLine(source[id] || '');
   if (!text) return;
 
-  const btn = document.getElementById(`tts-${id}`);
+  const btn = document.getElementById(`tts${key}`);
   btn.textContent = '…';
   btn.classList.add('loading');
-  currentAudioId = id;
+  currentAudioKey = key;
 
   try {
-    const res = await fetch('/api/tts', {
+    const res = await api('/api/tts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ advisorId: id, text }),
@@ -608,12 +961,12 @@ async function toggleSpeak(id) {
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: res.statusText }));
       alert(err.error || 'Voice playback failed');
-      resetSpeakBtn(id);
-      currentAudioId = null;
+      resetSpeakBtn(key);
+      currentAudioKey = null;
       return;
     }
     const blob = await res.blob();
-    if (currentAudioId !== id) return; // user moved on while loading
+    if (currentAudioKey !== key) return; // user moved on while loading
     currentAudio = new Audio(URL.createObjectURL(blob));
     currentAudio.onended = stopSpeaking;
     await currentAudio.play();
@@ -624,8 +977,8 @@ async function toggleSpeak(id) {
     if (stopBtn) stopBtn.style.display = 'inline-flex';
   } catch (err) {
     alert('Voice playback failed: ' + err.message);
-    resetSpeakBtn(id);
-    currentAudioId = null;
+    resetSpeakBtn(key);
+    currentAudioKey = null;
   }
 }
 
@@ -633,6 +986,8 @@ async function toggleSpeak(id) {
 function newQuestion() {
   document.getElementById('responses-section').style.display = 'none';
   document.getElementById('synthesis-section').style.display = 'none';
+  document.getElementById('debate-section').style.display = 'none';
+  document.getElementById('quorum-note').style.display = 'none';
   document.getElementById('question').value = '';
   document.getElementById('question').focus();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -676,18 +1031,102 @@ function saveProfile() {
   refreshProfileBanner();
 }
 
+// ── Outcomes ─────────────────────────────────────────────────────────────────
+const OUTCOME_LABELS = [
+  'Pending',
+  'Followed the board, went well',
+  'Followed the board, went badly',
+  'Went my own way, glad I did',
+  'Went my own way, board was right',
+  'Mixed / too early to tell',
+];
+
+function outcomeChip(outcome) {
+  if (!outcome || !outcome.label || outcome.label === 'Pending') return '';
+  const good = /went well|glad/.test(outcome.label);
+  const bad = /went badly|board was right/.test(outcome.label);
+  const cls = good ? 'outcome-good' : bad ? 'outcome-bad' : 'outcome-mixed';
+  return `<span class="outcome-chip ${cls}" title="${escAttr(outcome.note || '')}">${escText(outcome.label)}</span>`;
+}
+
+function saveOutcome(i) {
+  const s = history[i];
+  if (!s) return;
+  const label = document.getElementById(`outcome-status-${i}`).value;
+  const note = document.getElementById(`outcome-note-${i}`).value.trim();
+  s.outcome = label === 'Pending' && !note ? null : { label, note, ts: Date.now() };
+  saveHistoryToLS(history);
+  const saved = document.getElementById(`outcome-saved-${i}`);
+  if (saved) {
+    saved.style.display = 'inline';
+    setTimeout(() => { saved.style.display = 'none'; }, 1500);
+  }
+}
+
+// ── Board Review ─────────────────────────────────────────────────────────────
+async function runBoardReview() {
+  const candidates = history
+    .filter(s => s.synthesis || Object.keys(s.responses || {}).length)
+    .slice(0, 10);
+  if (!candidates.length) {
+    alert('Nothing to review yet. Ask the board some questions first.');
+    return;
+  }
+  const btn = document.getElementById('review-btn');
+  btn.disabled = true;
+  btn.textContent = 'Reviewing…';
+
+  const card = document.getElementById('review-card');
+  card.style.display = 'block';
+  const body = document.getElementById('review-body');
+  body.innerHTML = '<span class="thinking" style="--color:#111">Pulling the old files</span>';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const sessions = candidates.map(s => {
+    const entries = Object.entries(s.responses || {}).map(([advId, text]) => {
+      const ad = (s.advisors || []).find(a => a.id === advId) || { name: advId, color: '#999' };
+      return { name: ad.name, color: ad.color, pos: parsePosition(text) };
+    });
+    const verdictSource = (s.round2 && s.round2.synthesis) || s.synthesis || '';
+    return {
+      question: s.question,
+      date: new Date(s.ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      ballot: tallyString(entries),
+      verdict: stripAdvisorRelevanceBlock(verdictSource).slice(0, 900),
+      outcome: s.outcome || null,
+    };
+  });
+
+  try {
+    const res = await api('/api/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessions, userProfile }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      body.innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
+    } else {
+      body.innerHTML = '';
+      await streamInto(body, res);
+    }
+  } catch (err) {
+    body.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
+  }
+  btn.disabled = false;
+  btn.textContent = 'Board Review';
+}
+
 // ── History View ─────────────────────────────────────────────────────────────
 function openHistoryView() {
-  document.getElementById('main-ask').style.display = 'none';
-  document.getElementById('main-history').style.display = 'block';
+  switchMain('main-history');
   document.getElementById('history-detail').style.display = 'none';
+  document.getElementById('history-list').style.display = 'block';
   renderHistoryList();
-  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function closeHistoryView() {
-  document.getElementById('main-history').style.display = 'none';
-  document.getElementById('main-ask').style.display = 'flex';
+  switchMain('main-ask');
 }
 
 function renderHistoryList() {
@@ -706,14 +1145,54 @@ function renderHistoryList() {
     return `
       <div class="history-card" onclick="openHistoryDetail(${i})">
         <div class="history-card-top">
-          <div class="history-card-meta">${ds} · ${ts}</div>
-          <button class="btn-remove history-delete" onclick="event.stopPropagation(); deleteHistorySession(${i})">Delete</button>
+          <div class="history-card-meta">${ds} · ${ts}${s.round2 ? ' · went to debate' : ''}</div>
+          <div>
+            ${outcomeChip(s.outcome)}
+            <button class="btn-remove history-delete" onclick="event.stopPropagation(); deleteHistorySession(${i})">Delete</button>
+          </div>
         </div>
         <div class="history-card-question">${escText(s.question)}</div>
         <div class="history-card-pills">${advisorPills}</div>
       </div>
     `;
   }).join('');
+}
+
+function historyResponseCard(ad, advId, text) {
+  const photo = effectivePhoto({ id: advId, photo: ad.photo });
+  const avatarHTML = photo
+    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
+    : `<span class="card-avatar" style="background:${ad.color}">${escText(ad.avatar || ad.name.slice(0, 2).toUpperCase())}</span>`;
+  const pos = parsePosition(text);
+  return `
+    <div class="response-card" style="--color:${ad.color}">
+      <div class="card-header">
+        ${avatarHTML}
+        <div>
+          <div class="card-name name-link" onclick="openBioModal('${escAttr(advId)}')" title="About ${escAttr(ad.name)}">${escText(ad.name)}</div>
+          <div class="card-role">${escText(ad.title || '')}</div>
+        </div>
+        ${positionBadgeHTML(pos)}
+      </div>
+      <div class="card-body">${renderMarkdown(pos ? stripPositionLine(text) : (text || ''))}</div>
+    </div>
+  `;
+}
+
+function historyVerdictCard(title, subtitle, ballotHTML, bodyHTML) {
+  return `
+    <div class="synthesis-section" style="display:block">
+      <div class="synthesis-card">
+        <div class="synthesis-header">
+          <div>
+            <div class="synthesis-title">${title}</div>
+            <div class="synthesis-subtitle">${subtitle}</div>
+          </div>
+        </div>
+        ${ballotHTML}
+        <div class="synthesis-body">${bodyHTML}</div>
+      </div>
+    </div>`;
 }
 
 function openHistoryDetail(i) {
@@ -727,25 +1206,17 @@ function openHistoryDetail(i) {
   const advisorById = id => advisors.find(a => a.id === id) || (s.advisors || []).find(a => a.id === id) || { name: id, title: '', color: '#999' };
 
   const responsesHTML = Object.entries(s.responses || {}).map(([advId, text]) => {
-    const ad = advisorById(advId);
-    const photo = effectivePhoto({ id: advId, photo: ad.photo });
-    const avatarHTML = photo
-      ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')"></span>`
-      : `<span class="card-avatar" style="background:${ad.color}">${escText(ad.avatar || ad.name.slice(0,2).toUpperCase())}</span>`;
-    const pos = parsePosition(text);
-    return `
-      <div class="response-card" style="--color:${ad.color}">
-        <div class="card-header">
-          ${avatarHTML}
-          <div>
-            <div class="card-name name-link" onclick="openBioModal('${escAttr(advId)}')" title="About ${escAttr(ad.name)}">${escText(ad.name)}</div>
-            <div class="card-role">${escText(ad.title || '')}</div>
-          </div>
-          ${positionBadgeHTML(pos)}
-        </div>
-        <div class="card-body">${renderMarkdown(pos ? stripPositionLine(text) : (text || ''))}</div>
-      </div>
-    `;
+    let cardHTML = historyResponseCard(advisorById(advId), advId, text);
+    // Follow-up thread, if the owner pushed back on this advisor
+    const th = (s.threads || {})[advId];
+    if (Array.isArray(th) && th.length) {
+      const fuHTML = th.map(t => t.role === 'user'
+        ? `<div class="followup-q">${escText(t.content)}</div>`
+        : `<div class="followup-a">${renderMarkdown(t.content)}</div>`
+      ).join('');
+      cardHTML = cardHTML.replace('</div>\n    </div>\n  ', `</div><div class="followups">${fuHTML}</div></div>`);
+    }
+    return cardHTML;
   }).join('');
 
   const ballotHTML = renderBallotHTML(Object.entries(s.responses || {}).map(([advId, text]) => {
@@ -763,23 +1234,44 @@ function openHistoryDetail(i) {
     } else {
       bodyHTML = renderMarkdown(s.synthesis);
     }
-    synthesisHTML = `
-      <div class="synthesis-section" style="display:block">
-        <div class="synthesis-card">
-          <div class="synthesis-header">
-            <div class="synthesis-icon-wrap">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M3 12h18"/><circle cx="12" cy="12" r="10"/></svg>
-            </div>
-            <div>
-              <div class="synthesis-title">Board Verdict</div>
-              <div class="synthesis-subtitle">From this session</div>
-            </div>
-          </div>
-          ${ballotHTML}
-          <div class="synthesis-body">${bodyHTML}</div>
-        </div>
-      </div>`;
+    synthesisHTML = historyVerdictCard('Board Verdict', 'From this session', ballotHTML, bodyHTML);
   }
+
+  // Round 2, if the session went to debate
+  let round2HTML = '';
+  if (s.round2 && s.round2.responses) {
+    const r2cards = Object.entries(s.round2.responses).map(([advId, text]) =>
+      historyResponseCard(advisorById(advId), advId, text)
+    ).join('');
+    const r2ballot = renderBallotHTML(Object.entries(s.round2.responses).map(([advId, text]) => {
+      const ad = advisorById(advId);
+      return { name: ad.name, color: ad.color, pos: parsePosition(text) };
+    }));
+    round2HTML = `
+      <div class="responses-header" style="margin-top:40px">
+        <div class="section-label">Round Two <span class="label-hint">open debate</span></div>
+      </div>
+      <div class="responses-grid">${r2cards}</div>
+      ${s.round2.synthesis ? historyVerdictCard('Final Verdict', 'After open debate', r2ballot, renderMarkdown(s.round2.synthesis)) : ''}
+    `;
+  }
+
+  // Outcome editor
+  const outcomeOptions = OUTCOME_LABELS.map(l =>
+    `<option value="${escAttr(l)}" ${s.outcome && s.outcome.label === l ? 'selected' : ''}>${escText(l)}</option>`
+  ).join('');
+  const outcomeHTML = `
+    <div class="outcome-box">
+      <div class="outcome-title">What happened?</div>
+      <p class="outcome-hint">Record the outcome. The Board Review uses this to audit its own calls.</p>
+      <div class="outcome-controls">
+        <select id="outcome-status-${i}">${outcomeOptions}</select>
+        <button class="btn-primary outcome-save" onclick="saveOutcome(${i})">Save outcome</button>
+        <span class="outcome-saved" id="outcome-saved-${i}" style="display:none">Saved</span>
+      </div>
+      <textarea id="outcome-note-${i}" rows="2" placeholder="What actually happened, in a sentence or two…">${escText(s.outcome ? s.outcome.note || '' : '')}</textarea>
+    </div>
+  `;
 
   detail.innerHTML = `
     <div class="history-detail-header">
@@ -787,8 +1279,10 @@ function openHistoryDetail(i) {
       <div class="history-detail-meta">${ds} · ${ts}</div>
     </div>
     <div class="question-echo">"${escText(s.question)}"</div>
+    ${outcomeHTML}
     <div class="responses-grid">${responsesHTML}</div>
     ${synthesisHTML}
+    ${round2HTML}
   `;
   document.getElementById('history-list').style.display = 'none';
   detail.style.display = 'block';
@@ -1084,7 +1578,7 @@ async function saveAdvisors() {
   savePhotoOverridesToLS(photoOverrides);
 
   try {
-    const res = await fetch('/api/advisors', {
+    const res = await api('/api/advisors', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editAdvisors),
@@ -1114,7 +1608,7 @@ async function saveAdvisors() {
 
 // ── Utility ──────────────────────────────────────────────────────────────────
 function highlight(el) {
-  el.style.outline = '2px solid #e74c3c';
+  el.style.outline = '2px solid #C43D2F';
   setTimeout(() => el.style.outline = '', 1200);
 }
 
