@@ -1030,6 +1030,7 @@ function newQuestion() {
 // ── Profile Modal ────────────────────────────────────────────────────────────
 const PROFILE_FIELDS = [
   'name', 'pronouns', 'lifeStage', 'location', 'profession', 'industry',
+  'linkedin', 'x', 'instagram', 'website',
   'values', 'strengths', 'weaknesses',
   'habits', 'topConcerns', 'goals', 'challenges',
   'pastMistakes', 'boardPurpose', 'boardNotes', 'personalContext',
