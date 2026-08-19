@@ -32,6 +32,7 @@ async function handler(req, res) {
         body: JSON.stringify({
           text: String(text).slice(0, 5000),
           model_id: 'eleven_multilingual_v2',
+          ...(advisor && advisor.voiceSettings ? { voice_settings: advisor.voiceSettings } : {}),
         }),
       }
     );
