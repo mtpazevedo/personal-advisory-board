@@ -913,7 +913,7 @@ function bioOverlayClick(e) {
 const READING_TYPES = ['book', 'article', 'essay', 'podcast', 'video', 'interview', 'music', 'exhibition', 'quote'];
 
 function switchMain(id) {
-  for (const m of ['main-ask', 'main-history', 'main-reading']) {
+  for (const m of ['main-ask', 'main-history', 'main-reading', 'main-chat']) {
     document.getElementById(m).style.display = m === id ? (id === 'main-ask' ? 'flex' : 'block') : 'none';
   }
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1014,6 +1014,198 @@ function renderStandingPicks() {
       </div>
     `;
   }).join('');
+}
+
+// ── 1-on-1 private sessions ──────────────────────────────────────────────────
+const LS_DMS = 'advisoryBoard.dms';
+let dms = (() => { try { return JSON.parse(localStorage.getItem(LS_DMS)) || {}; } catch { return {}; } })();
+let currentDm = null;
+let dmAutoSpeak = localStorage.getItem('advisoryBoard.dmAutoSpeak') === '1';
+let dmBusy = false;
+
+function saveDms() { localStorage.setItem(LS_DMS, JSON.stringify(dms)); }
+
+function openChatView() {
+  switchMain('main-chat');
+  document.getElementById('dm-session').style.display = 'none';
+  const picker = document.getElementById('dm-picker');
+  picker.style.display = 'grid';
+  picker.innerHTML = sortByName(advisors.filter(a => a.active)).map(a => {
+    const photo = effectivePhoto(a);
+    const avatarHTML = photo
+      ? `<span class="chip-avatar chip-avatar-photo" style="background-image:url('${photo}')"></span>`
+      : `<span class="chip-avatar">${escAttr(a.avatar)}</span>`;
+    const count = (dms[a.id] || []).length;
+    return `
+      <div class="advisor-chip selected" style="--color:${a.color}" onclick="openDm('${a.id}')" title="Private session with ${escAttr(a.name)}">
+        ${avatarHTML}
+        <div style="min-width:0">
+          <div class="chip-name">${escText(a.name.split(' ').slice(0, 2).join(' '))}</div>
+          ${count ? `<div class="chip-guest-tag">${Math.ceil(count / 2)} exchanges</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openDm(id) {
+  const a = findMember(id);
+  if (!a) return;
+  currentDm = id;
+  document.getElementById('dm-picker').style.display = 'none';
+  const session = document.getElementById('dm-session');
+  session.style.display = 'block';
+  const photo = effectivePhoto(a);
+  const avatarHTML = photo
+    ? `<span class="card-avatar card-avatar-photo" style="background-image:url('${photo}')" onclick="openBioModal('${a.id}')"></span>`
+    : `<span class="card-avatar" style="background:${a.color}" onclick="openBioModal('${a.id}')">${escText(a.avatar)}</span>`;
+  document.getElementById('dm-head').innerHTML = `
+    ${avatarHTML}
+    <div style="flex-grow:1; min-width:0">
+      <div class="card-name">${escText(a.name)}</div>
+      <div class="card-role">${escText(a.title)}</div>
+    </div>
+    <button class="btn-link" onclick="toggleDmAutoSpeak(this)">${dmAutoSpeak ? 'Voice: on' : 'Voice: off'}</button>
+    <button class="btn-link" onclick="clearDm()">New conversation</button>
+    <button class="btn-link" onclick="openChatView()">← All members</button>
+  `;
+  renderDmMessages();
+  document.getElementById('dm-text').focus();
+}
+
+function toggleDmAutoSpeak(btn) {
+  dmAutoSpeak = !dmAutoSpeak;
+  localStorage.setItem('advisoryBoard.dmAutoSpeak', dmAutoSpeak ? '1' : '0');
+  btn.textContent = dmAutoSpeak ? 'Voice: on' : 'Voice: off';
+}
+
+function clearDm() {
+  if (!currentDm) return;
+  if ((dms[currentDm] || []).length && !confirm('Start a fresh conversation? The current one is discarded.')) return;
+  dms[currentDm] = [];
+  saveDms();
+  renderDmMessages();
+}
+
+function renderDmMessages() {
+  const wrap = document.getElementById('dm-messages');
+  const a = findMember(currentDm);
+  const msgs = dms[currentDm] || [];
+  if (!msgs.length) {
+    wrap.innerHTML = `<div class="history-empty">The room is yours. Say what you came to say.</div>`;
+    return;
+  }
+  wrap.innerHTML = msgs.map((m, i) => m.role === 'user'
+    ? `<div class="dm-msg dm-user">${escText(m.content)}</div>`
+    : `<div class="dm-msg dm-advisor" style="--color:${a.color}">
+         <div class="dm-advisor-text">${renderMarkdown(m.content)}</div>
+         ${a.voiceId ? `<button class="tts-btn dm-speak" onclick="speakDmMessage(${i})" title="Listen">▶</button>` : ''}
+       </div>`
+  ).join('');
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+async function speakDmMessage(i) {
+  const msgs = dms[currentDm] || [];
+  const m = msgs[i];
+  if (!m || m.role !== 'assistant') return;
+  stopSpeaking();
+  try {
+    const res = await api('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ advisorId: currentDm, text: m.content }),
+    });
+    if (!res.ok) return;
+    const blob = await res.blob();
+    currentAudio = new Audio(URL.createObjectURL(blob));
+    currentAudio.onended = stopSpeaking;
+    await currentAudio.play();
+    const stopBtn = document.getElementById('stop-voice');
+    if (stopBtn) stopBtn.style.display = 'inline-flex';
+  } catch {}
+}
+
+async function sendDm() {
+  if (dmBusy || !currentDm) return;
+  const input = document.getElementById('dm-text');
+  const text = input.value.trim();
+  if (!text) return;
+  const a = findMember(currentDm);
+  const thread = (dms[currentDm] || []).map(m => ({ role: m.role, content: m.content }));
+  dms[currentDm] = dms[currentDm] || [];
+  dms[currentDm].push({ role: 'user', content: text, ts: Date.now() });
+  saveDms();
+  input.value = '';
+  renderDmMessages();
+
+  const wrap = document.getElementById('dm-messages');
+  const liveEl = document.createElement('div');
+  liveEl.className = 'dm-msg dm-advisor';
+  liveEl.style.setProperty('--color', a.color);
+  liveEl.innerHTML = `<div class="dm-advisor-text"><span class="thinking" style="--color:${a.color}">Thinking</span></div>`;
+  wrap.appendChild(liveEl);
+  wrap.scrollTop = wrap.scrollHeight;
+
+  dmBusy = true;
+  try {
+    const res = await api('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: text, advisorId: currentDm, userProfile, thread, mode: 'chat' }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      liveEl.querySelector('.dm-advisor-text').innerHTML = `<span class="error-text">Error: ${escText(err.error)}</span>`;
+      dmBusy = false;
+      return;
+    }
+    const target = liveEl.querySelector('.dm-advisor-text');
+    target.innerHTML = '';
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let full = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      full += decoder.decode(value, { stream: true });
+      target.innerHTML = renderMarkdown(full);
+      wrap.scrollTop = wrap.scrollHeight;
+    }
+    dms[currentDm].push({ role: 'assistant', content: full, ts: Date.now() });
+    saveDms();
+    renderDmMessages();
+    if (dmAutoSpeak && a.voiceId) speakDmMessage(dms[currentDm].length - 1);
+  } catch (err) {
+    liveEl.querySelector('.dm-advisor-text').innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
+  }
+  dmBusy = false;
+  input.focus();
+}
+
+// Dictation via the browser's speech recognition (no API key needed)
+let dictation = null;
+function toggleDictation() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn = document.getElementById('dm-mic');
+  if (!SR) { alert('Voice input needs Chrome or Safari.'); return; }
+  if (dictation) { dictation.stop(); return; }
+  const input = document.getElementById('dm-text');
+  dictation = new SR();
+  dictation.lang = (navigator.language || 'en-US').startsWith('pt') ? 'pt-BR' : 'en-US';
+  dictation.interimResults = true;
+  dictation.continuous = false;
+  const base = input.value ? input.value + ' ' : '';
+  dictation.onresult = e => {
+    input.value = base + Array.from(e.results).map(r => r[0].transcript).join('');
+  };
+  dictation.onend = () => {
+    dictation = null;
+    micBtn.classList.remove('recording');
+    if (input.value.trim()) sendDm();
+  };
+  dictation.onerror = () => { dictation = null; micBtn.classList.remove('recording'); };
+  micBtn.classList.add('recording');
+  dictation.start();
 }
 
 // ── Voice playback (ElevenLabs) ──────────────────────────────────────────────

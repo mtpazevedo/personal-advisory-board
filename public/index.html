@@ -37,6 +37,7 @@
       </div>
       <div class="header-actions">
         <button class="btn-edit" onclick="openProfileModal()" title="Tell the board about yourself">About You</button>
+        <button class="btn-edit" onclick="openChatView()" title="A private session with one member">1-on-1</button>
         <button class="btn-edit" onclick="openReadingView()" title="What the board is reading now">Reading Room</button>
         <button class="btn-edit" onclick="openHistoryView()" title="Past sessions">History</button>
         <button class="btn-edit" onclick="openEditModal()" title="Edit board members">Edit Board</button>
@@ -184,6 +185,31 @@
     <div id="history-detail" class="history-detail" style="display:none"></div>
     <div class="history-footer">
       <button class="btn-link history-clear" onclick="clearHistoryAll()">Clear all history</button>
+    </div>
+  </main>
+
+  <!-- ── 1-on-1 View ── -->
+  <main id="main-chat" style="display:none">
+    <div class="masthead">
+      <h2 class="masthead-title">One on one.</h2>
+      <div class="masthead-rule"></div>
+    </div>
+    <div class="history-header">
+      <div><p class="history-subtitle" id="dm-sub">A private session. Pick a member; the conversation stays between you, on this device.</p></div>
+      <button class="btn-link" onclick="goHome()">← Back to ask</button>
+    </div>
+    <div id="dm-picker" class="advisor-chips"></div>
+    <div id="dm-session" style="display:none">
+      <div class="dm-head" id="dm-head"></div>
+      <div id="dm-messages" class="dm-messages"></div>
+      <div class="dm-input">
+        <button id="dm-mic" class="dm-icon-btn" onclick="toggleDictation()" title="Speak your message">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </button>
+        <textarea id="dm-text" rows="1" placeholder="Say it…"
+                  onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendDm()}"></textarea>
+        <button class="dm-send" onclick="sendDm()" title="Send">→</button>
+      </div>
     </div>
   </main>
 

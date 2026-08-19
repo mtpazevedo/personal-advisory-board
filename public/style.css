@@ -1236,6 +1236,112 @@ main {
 .reading-picks { margin-top: 56px; }
 .picks-list { display: flex; flex-direction: column; }
 
+/* ── 1-on-1 private sessions ── */
+#dm-session { max-width: 780px; }
+
+.dm-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.dm-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 200px;
+  margin-bottom: 20px;
+}
+
+.dm-msg { max-width: 85%; }
+
+.dm-user {
+  align-self: flex-end;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 16px;
+}
+
+.dm-advisor {
+  align-self: flex-start;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--color, var(--ink));
+  padding: 14px 18px;
+}
+
+.dm-advisor-text {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+.dm-advisor-text p { margin-bottom: 0.7em; }
+.dm-advisor-text p:last-child { margin-bottom: 0; }
+
+.dm-speak { flex-shrink: 0; width: 26px; height: 26px; font-size: 0.58rem; }
+
+.dm-input {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.dm-input textarea {
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 11px 14px;
+  border: 1px solid #D8D5C8;
+  background: var(--surface);
+  color: var(--ink);
+  resize: none;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.dm-input textarea:focus { border-color: var(--ink); }
+
+.dm-icon-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+.dm-icon-btn:hover { background: var(--ink); color: var(--paper); }
+.dm-icon-btn.recording { background: var(--no); border-color: var(--no); color: #fff; }
+
+.dm-send {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+.dm-send:hover { background: var(--paper); color: var(--ink); }
+
 /* ── Modals ── */
 .modal-overlay {
   position: fixed;

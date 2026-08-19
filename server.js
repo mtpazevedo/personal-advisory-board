@@ -9,6 +9,7 @@ const {
   ADVISOR_OUTPUT_CONFIG,
   buildAskSystemPrompt,
   buildAskMessages,
+  buildChatSystemPrompt,
   buildGuestPersonaSystemPrompt,
   buildQuorumSystemPrompt,
   buildReviewSystemPrompt,
@@ -91,7 +92,7 @@ app.get('/api/reading', (req, res) => {
 // ── Ask (streaming) — first ask, follow-ups, and Round 2 rebuttals ──────────
 
 app.post('/api/ask', async (req, res) => {
-  const { question, advisorId, userProfile, history, thread, rebuttal, guest } = req.body;
+  const { question, advisorId, userProfile, history, thread, rebuttal, guest, mode } = req.body;
   if ((!question && !rebuttal) || !advisorId) {
     return res.status(400).json({ error: 'advisorId plus question or rebuttal are required' });
   }
@@ -105,14 +106,16 @@ app.post('/api/ask', async (req, res) => {
     return res.status(404).json({ error: 'Advisor not found' });
   }
 
-  const systemPrompt = buildAskSystemPrompt(advisor, advisors, userProfile, history);
+  const systemPrompt = mode === 'chat'
+    ? buildChatSystemPrompt(advisor, userProfile)
+    : buildAskSystemPrompt(advisor, advisors, userProfile, history);
   const messages = buildAskMessages({ question, thread, rebuttal });
 
   startTextStream(res);
   try {
     const stream = client.messages.stream({
       model: advisor.model || DEFAULT_MODEL,
-      max_tokens: 4000,
+      max_tokens: mode === 'chat' ? 2000 : 4000,
       output_config: ADVISOR_OUTPUT_CONFIG,
       system: systemPrompt,
       messages,
