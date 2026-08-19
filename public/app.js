@@ -406,6 +406,23 @@ function renderBallotHTML(entries) {
   `;
 }
 
+// ── TL;DR extraction ─────────────────────────────────────────────────────────
+// Advisors and the Chair open answers with a "TL;DR: …" line (see lib/prompts.js).
+// Render it as a styled summary block wherever it appears in the text.
+const TLDR_LINE_RE = /^\s*(?:\*\*)?TL;?DR(?:\*\*)?\s*:\s*/i;
+
+function renderAnswerHTML(text) {
+  const lines = String(text || '').split('\n');
+  const i = lines.findIndex(l => TLDR_LINE_RE.test(l));
+  if (i === -1) return renderMarkdown(text);
+  const tldr = lines[i].replace(TLDR_LINE_RE, '').replace(/\*\*\s*$/, '').trim();
+  const before = lines.slice(0, i).join('\n').trim();
+  const after = lines.slice(i + 1).join('\n').trim();
+  return (before ? renderMarkdown(before) : '') +
+    `<div class="tldr"><div class="tldr-label">TL;DR</div><div class="tldr-text">${escText(tldr)}</div></div>` +
+    renderMarkdown(after);
+}
+
 // ── Streaming helpers ────────────────────────────────────────────────────────
 async function streamInto(bodyEl, res) {
   const reader = res.body.getReader();
@@ -423,8 +440,8 @@ async function streamInto(bodyEl, res) {
 function finishAdvisorCard(advisor, suffix, fullText) {
   const bodyEl = document.getElementById(`body${suffix}-${advisor.id}`);
   const pos = parsePosition(fullText);
+  bodyEl.innerHTML = renderAnswerHTML(pos ? stripPositionLine(fullText) : fullText);
   if (pos) {
-    bodyEl.innerHTML = renderMarkdown(stripPositionLine(fullText));
     const badge = document.getElementById(`pos${suffix}-${advisor.id}`);
     if (badge) {
       badge.textContent = pos.vote;
@@ -514,6 +531,7 @@ async function sendFollowUp(advisorId, suffix) {
     }
     aEl.innerHTML = '';
     const reply = await streamInto(aEl, res);
+    aEl.innerHTML = renderAnswerHTML(reply);
     threads[advisorId].push({ role: 'user', content: text }, { role: 'assistant', content: reply });
     updateCurrentSession(s => { s.threads = s.threads || {}; s.threads[advisorId] = threads[advisorId].slice(2); });
   } catch (err) {
@@ -577,6 +595,7 @@ async function openDebate() {
     } else {
       finalBody.innerHTML = '';
       finalText = await streamInto(finalBody, res);
+      finalBody.innerHTML = renderAnswerHTML(finalText);
     }
   } catch (err) {
     finalBody.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
@@ -715,7 +734,9 @@ async function synthesizeBoard(question, selected) {
     if (weights && weights.length) {
       const votePanel = renderVotePanel(weights, selected);
       const stripped = stripAdvisorRelevanceBlock(fullText);
-      synthesisBody.innerHTML = votePanel + renderMarkdown(stripped);
+      synthesisBody.innerHTML = votePanel + renderAnswerHTML(stripped);
+    } else {
+      synthesisBody.innerHTML = renderAnswerHTML(fullText);
     }
   } catch (err) {
     synthesisBody.innerHTML = `<span class="error-text">Error: ${escText(err.message)}</span>`;
@@ -1210,7 +1231,7 @@ function historyResponseCard(ad, advId, text) {
         </div>
         ${positionBadgeHTML(pos)}
       </div>
-      <div class="card-body">${renderMarkdown(pos ? stripPositionLine(text) : (text || ''))}</div>
+      <div class="card-body">${renderAnswerHTML(pos ? stripPositionLine(text) : (text || ''))}</div>
     </div>
   `;
 }
@@ -1266,9 +1287,9 @@ function openHistoryDetail(i) {
     let bodyHTML;
     if (weights && weights.length) {
       const votePanel = renderVotePanel(weights, s.advisors || []);
-      bodyHTML = votePanel + renderMarkdown(stripAdvisorRelevanceBlock(s.synthesis));
+      bodyHTML = votePanel + renderAnswerHTML(stripAdvisorRelevanceBlock(s.synthesis));
     } else {
-      bodyHTML = renderMarkdown(s.synthesis);
+      bodyHTML = renderAnswerHTML(s.synthesis);
     }
     synthesisHTML = historyVerdictCard('Board Verdict', 'From this session', ballotHTML, bodyHTML);
   }
@@ -1288,7 +1309,7 @@ function openHistoryDetail(i) {
         <div class="section-label">Round Two <span class="label-hint">open debate</span></div>
       </div>
       <div class="responses-grid">${r2cards}</div>
-      ${s.round2.synthesis ? historyVerdictCard('Final Verdict', 'After open debate', r2ballot, renderMarkdown(s.round2.synthesis)) : ''}
+      ${s.round2.synthesis ? historyVerdictCard('Final Verdict', 'After open debate', r2ballot, renderAnswerHTML(s.round2.synthesis)) : ''}
     `;
   }
 
