@@ -74,6 +74,12 @@
         <span class="dot-sep">·</span>
         <button class="btn-link" onclick="deselectAll()">Deselect all</button>
       </div>
+      <div class="guest-row">
+        <input id="guest-desc" type="text"
+               placeholder="Summon a guest for this question: describe the expert (a LatAm M&amp;A tax lawyer, a CMO who scaled a consumer brand…)"
+               onkeydown="if(event.key==='Enter'){conveneGuest()}" />
+        <button id="guest-btn" class="btn-secondary" onclick="conveneGuest()">Convene</button>
+      </div>
     </section>
 
     <!-- Question input -->

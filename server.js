@@ -6,8 +6,10 @@ const path = require('path');
 const {
   DEFAULT_MODEL,
   WEB_SEARCH_TOOL,
+  ADVISOR_OUTPUT_CONFIG,
   buildAskSystemPrompt,
   buildAskMessages,
+  buildGuestPersonaSystemPrompt,
   buildQuorumSystemPrompt,
   buildReviewSystemPrompt,
   buildSynthesisSystemPrompt,
@@ -89,13 +91,16 @@ app.get('/api/reading', (req, res) => {
 // ── Ask (streaming) — first ask, follow-ups, and Round 2 rebuttals ──────────
 
 app.post('/api/ask', async (req, res) => {
-  const { question, advisorId, userProfile, history, thread, rebuttal } = req.body;
+  const { question, advisorId, userProfile, history, thread, rebuttal, guest } = req.body;
   if ((!question && !rebuttal) || !advisorId) {
     return res.status(400).json({ error: 'advisorId plus question or rebuttal are required' });
   }
 
   const advisors = readAdvisors();
-  const advisor = advisors.find(a => a.id === advisorId);
+  // A guest advisor exists only for this session: the client carries its persona.
+  const advisor = (guest && guest.persona && guest.name)
+    ? { ...guest, id: advisorId }
+    : advisors.find(a => a.id === advisorId);
   if (!advisor) {
     return res.status(404).json({ error: 'Advisor not found' });
   }
@@ -108,6 +113,7 @@ app.post('/api/ask', async (req, res) => {
     const stream = client.messages.stream({
       model: advisor.model || DEFAULT_MODEL,
       max_tokens: 4000,
+      output_config: ADVISOR_OUTPUT_CONFIG,
       system: systemPrompt,
       messages,
       tools: [WEB_SEARCH_TOOL],
@@ -115,6 +121,42 @@ app.post('/api/ask', async (req, res) => {
     await pipeTextDeltas(stream, res);
   } catch (err) {
     streamError(res, err, 'Claude API error');
+  }
+});
+
+// ── Guest seat — generate a one-session guest advisor ───────────────────────
+
+app.post('/api/guest', async (req, res) => {
+  const { description } = req.body;
+  if (!description || !String(description).trim()) {
+    return res.status(400).json({ error: 'description is required' });
+  }
+  try {
+    const msg = await client.messages.create({
+      model: DEFAULT_MODEL,
+      max_tokens: 8000,
+      system: buildGuestPersonaSystemPrompt(),
+      messages: [{ role: 'user', content: `The board owner needs this guest for one question:\n"${String(description).trim()}"` }],
+      tools: [WEB_SEARCH_TOOL],
+    });
+    const text = msg.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const jsonText = text.replace(/^[\s\S]*?\{/, '{').replace(/\}[^}]*$/, '}');
+    const g = JSON.parse(jsonText);
+    if (!g.name || !g.persona) throw new Error('Guest generation returned an incomplete persona');
+    res.json({
+      id: 'guest_' + Date.now(),
+      name: g.name,
+      title: g.title || 'Guest advisor',
+      avatar: (g.avatar || g.name.slice(0, 2)).slice(0, 2).toUpperCase(),
+      color: '#5C594A',
+      expertise: Array.isArray(g.expertise) ? g.expertise : [],
+      persona: g.persona,
+      active: true,
+      isGuest: true,
+    });
+  } catch (err) {
+    console.error('Guest error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -161,17 +203,19 @@ app.post('/api/tts', async (req, res) => {
   if (!key) {
     return res.status(503).json({ error: 'Voices not enabled: add ELEVENLABS_API_KEY to .env and restart.' });
   }
-  const { advisorId, text } = req.body;
-  if (!advisorId || !text) {
-    return res.status(400).json({ error: 'advisorId and text are required' });
+  const { advisorId, text, voiceId } = req.body;
+  if ((!advisorId && !voiceId) || !text) {
+    return res.status(400).json({ error: 'advisorId (or voiceId) and text are required' });
   }
-  const advisor = readAdvisors().find(a => a.id === advisorId);
-  if (!advisor || !advisor.voiceId) {
+  // Explicit voiceId (voice audition in Edit Board) beats the advisor's saved one
+  const advisor = advisorId ? readAdvisors().find(a => a.id === advisorId) : null;
+  const useVoice = voiceId || (advisor && advisor.voiceId);
+  if (!useVoice) {
     return res.status(404).json({ error: 'Advisor has no voiceId configured' });
   }
   try {
     const r = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${advisor.voiceId}/stream?output_format=mp3_44100_128`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128`,
       {
         method: 'POST',
         headers: { 'xi-api-key': key, 'Content-Type': 'application/json' },

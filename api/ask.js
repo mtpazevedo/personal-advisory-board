@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { DEFAULT_MODEL, WEB_SEARCH_TOOL, buildAskSystemPrompt, buildAskMessages } = require('../lib/prompts');
+const { DEFAULT_MODEL, WEB_SEARCH_TOOL, ADVISOR_OUTPUT_CONFIG, buildAskSystemPrompt, buildAskMessages } = require('../lib/prompts');
 const { requireAuth } = require('../lib/auth');
 const { streamAnthropicToRes } = require('../lib/stream-proxy');
 
@@ -17,13 +17,16 @@ async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
-  const { question, advisorId, userProfile, history, thread, rebuttal } = req.body;
+  const { question, advisorId, userProfile, history, thread, rebuttal, guest } = req.body;
   if ((!question && !rebuttal) || !advisorId) {
     return res.status(400).json({ error: 'advisorId plus question or rebuttal are required' });
   }
 
   const advisors = JSON.parse(fs.readFileSync(ADVISORS_FILE, 'utf8'));
-  const advisor = advisors.find(a => a.id === advisorId);
+  // A guest advisor exists only for this session: the client carries its persona.
+  const advisor = (guest && guest.persona && guest.name)
+    ? { ...guest, id: advisorId }
+    : advisors.find(a => a.id === advisorId);
   if (!advisor) {
     return res.status(404).json({ error: 'Advisor not found' });
   }
@@ -35,6 +38,7 @@ async function handler(req, res) {
       body: {
         model: advisor.model || DEFAULT_MODEL,
         max_tokens: 4000,
+        output_config: ADVISOR_OUTPUT_CONFIG,
         system: buildAskSystemPrompt(advisor, advisors, userProfile, history),
         messages: buildAskMessages({ question, thread, rebuttal }),
         tools: [WEB_SEARCH_TOOL],

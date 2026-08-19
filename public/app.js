@@ -7,6 +7,7 @@ const LS_BENCH   = 'advisoryBoard.benchMode';
 
 // ── State ────────────────────────────────────────────────────────────────────
 let advisors = [];
+let guests = [];              // one-session guest advisors (never persisted)
 let selectedIds = new Set();
 let editAdvisors = [];
 let responseTexts = {};   // round 1 texts by advisor id
@@ -120,10 +121,19 @@ function refreshProfileBanner() {
   banner.style.display = isProfileMeaningful(userProfile) ? 'none' : 'flex';
 }
 
+// Active members plus any convened guests
+function activeRoster() {
+  return [...advisors.filter(a => a.active), ...guests];
+}
+
+function findMember(id) {
+  return advisors.find(a => a.id === id) || guests.find(g => g.id === id);
+}
+
 // ── Chip rendering ───────────────────────────────────────────────────────────
 function renderChips() {
   const container = document.getElementById('advisor-chips');
-  container.innerHTML = sortByName(advisors.filter(a => a.active))
+  container.innerHTML = [...sortByName(advisors.filter(a => a.active)), ...guests]
     .map(a => {
       const photo = effectivePhoto(a);
       const bioClick = `onclick="event.stopPropagation(); openBioModal('${a.id}')" title="About ${escAttr(a.name)}"`;
@@ -131,18 +141,50 @@ function renderChips() {
         ? `<span class="chip-avatar chip-avatar-photo" style="background-image:url('${photo}')" ${bioClick}></span>`
         : `<span class="chip-avatar" ${bioClick}>${escAttr(a.avatar)}</span>`;
       return `
-        <div class="advisor-chip ${selectedIds.has(a.id) ? 'selected' : ''}"
+        <div class="advisor-chip ${selectedIds.has(a.id) ? 'selected' : ''} ${a.isGuest ? 'guest' : ''}"
              style="--color:${a.color}"
              data-id="${a.id}"
              onclick="toggleChip('${a.id}')"
              title="${escAttr(a.name)} — ${escAttr(a.title)}">
           ${avatarHTML}
-          <div>
+          <div style="min-width:0">
             <div class="chip-name name-link" onclick="event.stopPropagation(); openBioModal('${a.id}')" title="About ${escAttr(a.name)}">${escText(a.name.split(' ').slice(0, 2).join(' '))}</div>
+            ${a.isGuest ? '<div class="chip-guest-tag">Guest</div>' : ''}
           </div>
         </div>
       `;
     }).join('');
+}
+
+// ── Guest seat ───────────────────────────────────────────────────────────────
+async function conveneGuest() {
+  const input = document.getElementById('guest-desc');
+  const btn = document.getElementById('guest-btn');
+  const description = input.value.trim();
+  if (!description) { highlight(input); return; }
+  btn.disabled = true;
+  btn.textContent = 'Summoning…';
+  try {
+    const res = await api('/api/guest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ description }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      alert('Could not summon the guest: ' + err.error);
+    } else {
+      const g = await res.json();
+      guests.push(g);
+      selectedIds.add(g.id);
+      renderChips();
+      input.value = '';
+    }
+  } catch (err) {
+    alert('Could not summon the guest: ' + err.message);
+  }
+  btn.disabled = false;
+  btn.textContent = 'Convene';
 }
 
 function toggleChip(id) {
@@ -227,7 +269,7 @@ async function askBoard() {
   btn.disabled = true;
   btn.textContent = 'Asking…';
 
-  let selected = sortByName(advisors.filter(a => selectedIds.has(a.id) && a.active));
+  let selected = sortByName(activeRoster().filter(a => selectedIds.has(a.id)));
   const quorumNote = document.getElementById('quorum-note');
   quorumNote.style.display = 'none';
 
@@ -467,7 +509,8 @@ async function streamRound1(advisor, question) {
         question,
         advisorId: advisor.id,
         userProfile,
-        history: history.slice(0, 5),
+        history: advisor.isGuest ? [] : history.slice(0, 5),
+        guest: advisor.isGuest ? advisor : undefined,
       }),
     });
 
@@ -495,7 +538,7 @@ async function sendFollowUp(advisorId, suffix) {
   const input = document.getElementById(`fuin${suffix}-${advisorId}`);
   const text = input.value.trim();
   if (!text) return;
-  const advisor = advisors.find(a => a.id === advisorId) || currentBench.find(a => a.id === advisorId);
+  const advisor = findMember(advisorId) || currentBench.find(a => a.id === advisorId);
   if (!advisor || !threads[advisorId]) return;
   input.value = '';
   input.disabled = true;
@@ -521,6 +564,7 @@ async function sendFollowUp(advisorId, suffix) {
         userProfile,
         history: [],
         thread: threads[advisorId],
+        guest: advisor.isGuest ? advisor : undefined,
       }),
     });
     if (!res.ok) {
@@ -632,6 +676,7 @@ async function streamRound2(advisor, bench, tally) {
         history: [],
         thread: threads[advisor.id] ? threads[advisor.id].slice(0, 2) : [],
         rebuttal: { tally, others },
+        guest: advisor.isGuest ? advisor : undefined,
       }),
     });
     if (!res.ok) {
@@ -833,7 +878,7 @@ function renderPicksList(picks) {
 }
 
 function openBioModal(id) {
-  const a = advisors.find(x => x.id === id);
+  const a = findMember(id);
   if (!a) return;
   const photo = effectivePhoto(a);
   const avatarHTML = photo
@@ -1042,6 +1087,12 @@ function newQuestion() {
   document.getElementById('synthesis-section').style.display = 'none';
   document.getElementById('debate-section').style.display = 'none';
   document.getElementById('quorum-note').style.display = 'none';
+  // Guests sit for one question only
+  if (guests.length) {
+    for (const g of guests) selectedIds.delete(g.id);
+    guests = [];
+    renderChips();
+  }
   document.getElementById('question').value = '';
   document.getElementById('question').focus();
   renderEpigraph();
@@ -1333,7 +1384,10 @@ function openHistoryDetail(i) {
   detail.innerHTML = `
     <div class="history-detail-header">
       <button class="btn-link" onclick="closeHistoryDetail()">← Back to history</button>
-      <div class="history-detail-meta">${ds} · ${ts}</div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="btn-link" onclick="openMinutes(${i})">Minutes (PDF)</button>
+        <div class="history-detail-meta">${ds} · ${ts}</div>
+      </div>
     </div>
     <div class="question-echo">"${escText(s.question)}"</div>
     ${outcomeHTML}
@@ -1344,6 +1398,77 @@ function openHistoryDetail(i) {
   document.getElementById('history-list').style.display = 'none';
   detail.style.display = 'block';
   detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Minutes (optional printable record of a session) ─────────────────────────
+function minutesResponseHTML(name, title, text) {
+  const pos = parsePosition(text);
+  return `
+    <div style="margin-top:28px; border-top:1px solid #E6E3D8; padding-top:18px; break-inside:avoid-page;">
+      <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px;">
+        <div>
+          <span style="font-size:19px; font-weight:500;">${escText(name)}</span>
+          <span style="font-family:'Instrument Sans',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#A5A292; margin-left:10px;">${escText(title || '')}</span>
+        </div>
+        ${pos ? `<span style="font-family:'Instrument Sans',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.1em;">${pos.vote}</span>` : ''}
+      </div>
+      <div style="font-size:14.5px; line-height:1.7; margin-top:10px;">${renderAnswerHTML(pos ? stripPositionLine(text) : (text || ''))}</div>
+    </div>`;
+}
+
+function openMinutes(i) {
+  const s = history[i];
+  if (!s) return;
+  const date = new Date(s.ts).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  const advisorById = id => (s.advisors || []).find(a => a.id === id) || findMember(id) || { name: id, title: '' };
+
+  const bench = (s.advisors || []).map(a => a.name).join(', ');
+  const entries = Object.entries(s.responses || {}).map(([advId, text]) => {
+    const ad = advisorById(advId);
+    return { name: ad.name, color: '#17170F', pos: parsePosition(text) };
+  });
+  const responsesHTML = Object.entries(s.responses || {}).map(([advId, text]) => {
+    const ad = advisorById(advId);
+    return minutesResponseHTML(ad.name, ad.title, text);
+  }).join('');
+
+  let round2HTML = '';
+  if (s.round2 && s.round2.responses) {
+    round2HTML = `<h2 style="font-size:22px; font-weight:500; margin:44px 0 0;">Round Two — open debate</h2>` +
+      Object.entries(s.round2.responses).map(([advId, text]) => {
+        const ad = advisorById(advId);
+        return minutesResponseHTML(ad.name, ad.title, text);
+      }).join('') +
+      (s.round2.synthesis ? `<h2 style="font-size:22px; font-weight:500; margin:44px 0 0;">Final Verdict</h2><div style="font-size:14.5px; line-height:1.7; margin-top:14px;">${renderAnswerHTML(s.round2.synthesis)}</div>` : '');
+  }
+
+  const verdictSource = s.synthesis ? stripAdvisorRelevanceBlock(s.synthesis) : '';
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Minutes — ${escText(date)}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Newsreader', Georgia, serif; color: #17170F; margin: 48px 56px; }
+      p { margin: 0 0 0.8em; }
+      .tldr { background: #F5F4EC; padding: 12px 14px; margin: 0 0 14px; }
+      .tldr-label { font-family: 'Instrument Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: #8B887A; margin-bottom: 5px; }
+      .tldr-text { font-size: 14px; line-height: 1.55; }
+      h3 { font-family: 'Instrument Sans', sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin: 1.2em 0 0.5em; }
+      @media print { body { margin: 12mm 14mm; } }
+    </style></head><body>
+    <div style="font-family:'Instrument Sans',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.22em; color:#A5A292;">MTA ADVISORY BOARD — MINUTES</div>
+    <div style="font-size:15px; color:#5C594A; margin-top:6px;">${escText(date)} · Members present: ${escText(bench)}</div>
+    <h1 style="font-size:30px; font-weight:500; font-style:italic; line-height:1.25; margin:22px 0 6px;">&ldquo;${escText(s.question)}&rdquo;</h1>
+    <div style="font-family:'Instrument Sans',sans-serif; font-size:12px; color:#5C594A; margin-bottom:8px;">The ballot: ${escText(tallyString(entries))}</div>
+    ${responsesHTML}
+    ${verdictSource ? `<h2 style="font-size:22px; font-weight:500; margin:44px 0 0;">Board Verdict</h2><div style="font-size:14.5px; line-height:1.7; margin-top:14px;">${renderAnswerHTML(verdictSource)}</div>` : ''}
+    ${round2HTML}
+    ${s.outcome && s.outcome.label !== 'Pending' ? `<div style="margin-top:40px; border-top:1px solid #17170F; padding-top:14px;"><span style="font-family:'Instrument Sans',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.16em;">OUTCOME</span><div style="font-size:14.5px; margin-top:8px;">${escText(s.outcome.label)}${s.outcome.note ? ' — ' + escText(s.outcome.note) : ''}</div></div>` : ''}
+    <script>window.onload = () => setTimeout(() => window.print(), 400);<\/script>
+    </body></html>`;
+
+  const w = window.open('', '_blank');
+  if (!w) { alert('Allow pop-ups to export the minutes.'); return; }
+  w.document.write(html);
+  w.document.close();
 }
 
 function closeHistoryDetail() {
@@ -1444,6 +1569,14 @@ function renderEditList() {
           </div>
         </div>
         <div class="form-group">
+          <label>Voice (ElevenLabs voice ID)</label>
+          <div class="color-row">
+            <input type="text" value="${escAttr(a.voiceId || '')}" placeholder="Paste a voice ID from elevenlabs.io/voice-library"
+                   oninput="updateField(${i},'voiceId',this.value.trim())" />
+            <button type="button" class="btn-secondary" onclick="testVoice(${i})">Test</button>
+          </div>
+        </div>
+        <div class="form-group">
           <label>Photo</label>
           <div class="photo-row">
             <div class="photo-preview ${photo ? 'has-photo' : ''}" id="photo-preview-${i}"
@@ -1485,6 +1618,31 @@ function escText(str) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+// Audition a voice ID before saving it
+async function testVoice(i) {
+  const v = (editAdvisors[i].voiceId || '').trim();
+  if (!v) { alert('Paste an ElevenLabs voice ID first.'); return; }
+  stopSpeaking();
+  try {
+    const res = await api('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voiceId: v, text: `The board is in session. I'm ${editAdvisors[i].name}, and this is how I will sound when I read you my answers.` }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      alert(err.error || 'Voice test failed');
+      return;
+    }
+    const blob = await res.blob();
+    currentAudio = new Audio(URL.createObjectURL(blob));
+    currentAudio.onended = stopSpeaking;
+    await currentAudio.play();
+  } catch (err) {
+    alert('Voice test failed: ' + err.message);
+  }
 }
 
 function toggleEditCard(i) {

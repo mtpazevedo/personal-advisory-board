@@ -13,18 +13,19 @@ async function handler(req, res) {
   if (!key) {
     return res.status(503).json({ error: 'Voices not enabled: set ELEVENLABS_API_KEY in the Vercel environment.' });
   }
-  const { advisorId, text } = req.body;
-  if (!advisorId || !text) {
-    return res.status(400).json({ error: 'advisorId and text are required' });
+  const { advisorId, text, voiceId } = req.body;
+  if ((!advisorId && !voiceId) || !text) {
+    return res.status(400).json({ error: 'advisorId (or voiceId) and text are required' });
   }
   const advisors = JSON.parse(fs.readFileSync(ADVISORS_FILE, 'utf8'));
-  const advisor = advisors.find(a => a.id === advisorId);
-  if (!advisor || !advisor.voiceId) {
+  const advisor = advisorId ? advisors.find(a => a.id === advisorId) : null;
+  const useVoice = voiceId || (advisor && advisor.voiceId);
+  if (!useVoice) {
     return res.status(404).json({ error: 'Advisor has no voiceId configured' });
   }
   try {
     const r = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${advisor.voiceId}/stream?output_format=mp3_44100_128`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128`,
       {
         method: 'POST',
         headers: { 'xi-api-key': key, 'Content-Type': 'application/json' },
