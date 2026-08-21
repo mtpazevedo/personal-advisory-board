@@ -1255,9 +1255,14 @@ function playVoice(key, params, btn) {
   audio.play().catch(() => { if (token === ttsToken) stopSpeaking(); });
 }
 
+// Voice reads the answer only: no TL;DR line, no POSITION line
+function stripTldrLine(text) {
+  return String(text || '').split('\n').filter(l => !TLDR_LINE_RE.test(l)).join('\n').trim();
+}
+
 function toggleSpeak(id, suffix) {
   const source = suffix === '2' ? round2Texts : responseTexts;
-  const text = stripPositionLine(source[id] || '');
+  const text = stripTldrLine(stripPositionLine(source[id] || ''));
   if (!text) return;
   playVoice(`${suffix}-${id}`, { advisorId: id, text }, document.getElementById(`tts${suffix}-${id}`));
 }
