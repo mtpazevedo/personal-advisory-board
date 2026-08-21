@@ -201,12 +201,13 @@ app.post('/api/quorum', async (req, res) => {
 
 // ── Text-to-speech (ElevenLabs) ──────────────────────────────────────────────
 
-app.post('/api/tts', async (req, res) => {
+async function ttsHandler(req, res) {
   const key = process.env.ELEVENLABS_API_KEY;
   if (!key) {
     return res.status(503).json({ error: 'Voices not enabled: add ELEVENLABS_API_KEY to .env and restart.' });
   }
-  const { advisorId, text, voiceId } = req.body;
+  // GET (progressive <audio> playback) reads query; POST reads body
+  const { advisorId, text, voiceId } = req.method === 'GET' ? req.query : req.body;
   if ((!advisorId && !voiceId) || !text) {
     return res.status(400).json({ error: 'advisorId (or voiceId) and text are required' });
   }
@@ -218,7 +219,7 @@ app.post('/api/tts', async (req, res) => {
   }
   try {
     const r = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128&optimize_streaming_latency=2`,
       {
         method: 'POST',
         headers: { 'xi-api-key': key, 'Content-Type': 'application/json' },
@@ -246,7 +247,10 @@ app.post('/api/tts', async (req, res) => {
     if (!res.headersSent) res.status(500).json({ error: err.message });
     else res.end();
   }
-});
+}
+
+app.post('/api/tts', ttsHandler);
+app.get('/api/tts', ttsHandler);
 
 // ── Board Synthesis (Round 1 verdict and Round 2 final verdict) ─────────────
 

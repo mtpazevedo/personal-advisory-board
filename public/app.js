@@ -1098,31 +1098,17 @@ function renderDmMessages() {
     ? `<div class="dm-msg dm-user">${escText(m.content)}</div>`
     : `<div class="dm-msg dm-advisor" style="--color:${a.color}">
          <div class="dm-advisor-text">${renderMarkdown(m.content)}</div>
-         ${a.voiceId ? `<button class="tts-btn dm-speak" onclick="speakDmMessage(${i})" title="Listen">▶</button>` : ''}
+         ${a.voiceId ? `<button class="tts-btn dm-speak" id="dmspk-${i}" onclick="speakDmMessage(${i})" title="Listen">▶</button>` : ''}
        </div>`
   ).join('');
   wrap.scrollTop = wrap.scrollHeight;
 }
 
-async function speakDmMessage(i) {
+function speakDmMessage(i) {
   const msgs = dms[currentDm] || [];
   const m = msgs[i];
   if (!m || m.role !== 'assistant') return;
-  stopSpeaking();
-  try {
-    const res = await api('/api/tts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ advisorId: currentDm, text: m.content }),
-    });
-    if (!res.ok) return;
-    const blob = await res.blob();
-    currentAudio = new Audio(URL.createObjectURL(blob));
-    currentAudio.onended = stopSpeaking;
-    await currentAudio.play();
-    const stopBtn = document.getElementById('stop-voice');
-    if (stopBtn) stopBtn.style.display = 'inline-flex';
-  } catch {}
+  playVoice(`dm-${currentDm}-${i}`, { advisorId: currentDm, text: m.content }, document.getElementById(`dmspk-${i}`));
 }
 
 async function sendDm() {
@@ -1209,68 +1195,60 @@ function toggleDictation() {
 }
 
 // ── Voice playback (ElevenLabs) ──────────────────────────────────────────────
+// One shared player. A voice starts the moment the first audio bytes arrive
+// (progressive <audio src>), a second click on the same button stops it, and
+// starting any voice silences whatever else was playing or loading.
 let currentAudio = null;
 let currentAudioKey = null;
-
-function resetSpeakBtn(key) {
-  const btn = document.getElementById(`tts${key}`);
-  if (btn) { btn.textContent = '▶'; btn.classList.remove('playing', 'loading'); }
-}
+let currentBtn = null;
+let ttsToken = 0;
 
 function stopSpeaking() {
+  ttsToken++; // invalidates any load still in flight
   if (currentAudio) {
-    currentAudio.pause();
-    if (currentAudio.src) URL.revokeObjectURL(currentAudio.src);
+    try { currentAudio.pause(); currentAudio.removeAttribute('src'); currentAudio.load(); } catch {}
   }
-  if (currentAudioKey) resetSpeakBtn(currentAudioKey);
+  if (currentBtn) { currentBtn.textContent = '▶'; currentBtn.classList.remove('playing', 'loading'); }
   currentAudio = null;
   currentAudioKey = null;
+  currentBtn = null;
   const stopBtn = document.getElementById('stop-voice');
   if (stopBtn) stopBtn.style.display = 'none';
 }
 
-async function toggleSpeak(id, suffix) {
-  const key = `${suffix}-${id}`;
+function ttsSrc(params) {
+  const q = new URLSearchParams(params);
+  if (accessCode) q.set('code', accessCode);
+  return '/api/tts?' + q.toString();
+}
+
+// key: unique per button; params: {advisorId|voiceId, text}; btn: optional ▶ button
+function playVoice(key, params, btn) {
   if (currentAudioKey === key) { stopSpeaking(); return; }
   stopSpeaking();
+  const token = ttsToken;
+  currentAudioKey = key;
+  currentBtn = btn || null;
+  if (btn) { btn.textContent = '…'; btn.classList.add('loading'); }
 
+  const audio = new Audio(ttsSrc({ ...params, text: String(params.text || '').slice(0, 4000) }));
+  currentAudio = audio;
+  audio.onplaying = () => {
+    if (token !== ttsToken) return;
+    if (btn) { btn.textContent = '■'; btn.classList.remove('loading'); btn.classList.add('playing'); }
+    const stopBtn = document.getElementById('stop-voice');
+    if (stopBtn) stopBtn.style.display = 'inline-flex';
+  };
+  audio.onended = () => { if (token === ttsToken) stopSpeaking(); };
+  audio.onerror = () => { if (token === ttsToken) stopSpeaking(); };
+  audio.play().catch(() => { if (token === ttsToken) stopSpeaking(); });
+}
+
+function toggleSpeak(id, suffix) {
   const source = suffix === '2' ? round2Texts : responseTexts;
   const text = stripPositionLine(source[id] || '');
   if (!text) return;
-
-  const btn = document.getElementById(`tts${key}`);
-  btn.textContent = '…';
-  btn.classList.add('loading');
-  currentAudioKey = key;
-
-  try {
-    const res = await api('/api/tts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ advisorId: id, text }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: res.statusText }));
-      alert(err.error || 'Voice playback failed');
-      resetSpeakBtn(key);
-      currentAudioKey = null;
-      return;
-    }
-    const blob = await res.blob();
-    if (currentAudioKey !== key) return; // user moved on while loading
-    currentAudio = new Audio(URL.createObjectURL(blob));
-    currentAudio.onended = stopSpeaking;
-    await currentAudio.play();
-    btn.textContent = '■';
-    btn.classList.remove('loading');
-    btn.classList.add('playing');
-    const stopBtn = document.getElementById('stop-voice');
-    if (stopBtn) stopBtn.style.display = 'inline-flex';
-  } catch (err) {
-    alert('Voice playback failed: ' + err.message);
-    resetSpeakBtn(key);
-    currentAudioKey = null;
-  }
+  playVoice(`${suffix}-${id}`, { advisorId: id, text }, document.getElementById(`tts${suffix}-${id}`));
 }
 
 // ── New Question ─────────────────────────────────────────────────────────────
@@ -1813,28 +1791,10 @@ function escText(str) {
 }
 
 // Audition a voice ID before saving it
-async function testVoice(i) {
+function testVoice(i) {
   const v = (editAdvisors[i].voiceId || '').trim();
   if (!v) { alert('Paste an ElevenLabs voice ID first.'); return; }
-  stopSpeaking();
-  try {
-    const res = await api('/api/tts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voiceId: v, text: `The board is in session. I'm ${editAdvisors[i].name}, and this is how I will sound when I read you my answers.` }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: res.statusText }));
-      alert(err.error || 'Voice test failed');
-      return;
-    }
-    const blob = await res.blob();
-    currentAudio = new Audio(URL.createObjectURL(blob));
-    currentAudio.onended = stopSpeaking;
-    await currentAudio.play();
-  } catch (err) {
-    alert('Voice test failed: ' + err.message);
-  }
+  playVoice(`test-${i}`, { voiceId: v, text: `The board is in session. I'm ${editAdvisors[i].name}, and this is how I will sound when I read you my answers.` }, null);
 }
 
 function toggleEditCard(i) {

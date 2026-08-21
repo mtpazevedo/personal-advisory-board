@@ -5,7 +5,7 @@ const { requireAuth } = require('../lib/auth');
 const ADVISORS_FILE = path.join(process.cwd(), 'advisors.json');
 
 async function handler(req, res) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'POST' && req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!requireAuth(req, res)) return;
@@ -13,7 +13,8 @@ async function handler(req, res) {
   if (!key) {
     return res.status(503).json({ error: 'Voices not enabled: set ELEVENLABS_API_KEY in the Vercel environment.' });
   }
-  const { advisorId, text, voiceId } = req.body;
+  // GET (progressive <audio> playback) reads query; POST reads body
+  const { advisorId, text, voiceId } = req.method === 'GET' ? req.query : req.body;
   if ((!advisorId && !voiceId) || !text) {
     return res.status(400).json({ error: 'advisorId (or voiceId) and text are required' });
   }
@@ -25,7 +26,7 @@ async function handler(req, res) {
   }
   try {
     const r = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128&optimize_streaming_latency=2`,
       {
         method: 'POST',
         headers: { 'xi-api-key': key, 'Content-Type': 'application/json' },
