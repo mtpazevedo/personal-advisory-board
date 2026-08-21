@@ -1025,9 +1025,19 @@ let dmBusy = false;
 
 function saveDms() { localStorage.setItem(LS_DMS, JSON.stringify(dms)); }
 
+function clearAllDms() {
+  const total = Object.values(dms).reduce((s, m) => s + (m ? m.length : 0), 0);
+  if (!total) { alert('No 1-on-1 conversations to clear.'); return; }
+  if (!confirm('Clear ALL 1-on-1 conversations, with every member? This cannot be undone.')) return;
+  dms = {};
+  saveDms();
+  openChatView();
+}
+
 function openChatView() {
   switchMain('main-chat');
   document.getElementById('dm-session').style.display = 'none';
+  document.getElementById('dm-footer').style.display = 'block';
   const picker = document.getElementById('dm-picker');
   picker.style.display = 'grid';
   picker.innerHTML = sortByName(advisors.filter(a => a.active)).map(a => {
@@ -1052,6 +1062,7 @@ function openDm(id) {
   if (!a) return;
   currentDm = id;
   document.getElementById('dm-picker').style.display = 'none';
+  document.getElementById('dm-footer').style.display = 'none';
   const session = document.getElementById('dm-session');
   session.style.display = 'block';
   const photo = effectivePhoto(a);

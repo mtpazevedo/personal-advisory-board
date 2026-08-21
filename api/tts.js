@@ -25,15 +25,19 @@ async function handler(req, res) {
     return res.status(404).json({ error: 'Advisor has no voiceId configured' });
   }
   try {
+    // Per-advisor engine: eleven_v3 (expressive; matches Voice Design previews)
+    // or the default multilingual v2. v3 ignores our fine-grained settings.
+    const model = (advisor && advisor.ttsModel) || 'eleven_multilingual_v2';
+    const latencyParam = model === 'eleven_multilingual_v2' ? '&optimize_streaming_latency=2' : '';
     const r = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128&optimize_streaming_latency=2`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${useVoice}/stream?output_format=mp3_44100_128${latencyParam}`,
       {
         method: 'POST',
         headers: { 'xi-api-key': key, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text: String(text).slice(0, 5000),
-          model_id: 'eleven_multilingual_v2',
-          ...(advisor && advisor.voiceSettings ? { voice_settings: advisor.voiceSettings } : {}),
+          model_id: model,
+          ...(model === 'eleven_multilingual_v2' && advisor && advisor.voiceSettings ? { voice_settings: advisor.voiceSettings } : {}),
         }),
       }
     );
