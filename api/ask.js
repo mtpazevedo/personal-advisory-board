@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { DEFAULT_MODEL, WEB_SEARCH_TOOL, ADVISOR_OUTPUT_CONFIG, buildAskSystemPrompt, buildAskMessages, buildChatSystemPrompt } = require('../lib/prompts');
+const { DEFAULT_MODEL, WEB_SEARCH_TOOL, ADVISOR_OUTPUT_CONFIG, buildAskSystemBlocks, buildAskMessages, buildChatSystemBlocks } = require('../lib/prompts');
 const { requireAuth } = require('../lib/auth');
 const { streamAnthropicToRes } = require('../lib/stream-proxy');
 
@@ -40,8 +40,8 @@ async function handler(req, res) {
         max_tokens: mode === 'chat' ? 2000 : 4000,
         output_config: ADVISOR_OUTPUT_CONFIG,
         system: mode === 'chat'
-          ? buildChatSystemPrompt(advisor, userProfile)
-          : buildAskSystemPrompt(advisor, advisors, userProfile, history),
+          ? buildChatSystemBlocks(advisor, userProfile)
+          : buildAskSystemBlocks(advisor, advisors, userProfile, history),
         messages: buildAskMessages({ question, thread, rebuttal }),
         tools: [WEB_SEARCH_TOOL],
       },

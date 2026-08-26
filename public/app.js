@@ -324,7 +324,12 @@ async function askBoard() {
 
   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  await Promise.all(selected.map(a => streamRound1(a, question)));
+  // Fire one advisor first so the shared rules block lands in the prompt
+  // cache, then the rest read it instead of each writing their own copy.
+  const [firstAdvisor, ...restAdvisors] = selected;
+  const firstStream = streamRound1(firstAdvisor, question);
+  if (restAdvisors.length) await new Promise(r => setTimeout(r, 2000));
+  await Promise.all([firstStream, ...restAdvisors.map(a => streamRound1(a, question))]);
 
   let synthesisText = '';
   if (selected.length > 1) {

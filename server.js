@@ -7,9 +7,9 @@ const {
   DEFAULT_MODEL,
   WEB_SEARCH_TOOL,
   ADVISOR_OUTPUT_CONFIG,
-  buildAskSystemPrompt,
+  buildAskSystemBlocks,
   buildAskMessages,
-  buildChatSystemPrompt,
+  buildChatSystemBlocks,
   buildGuestPersonaSystemPrompt,
   buildQuorumSystemPrompt,
   buildReviewSystemPrompt,
@@ -49,8 +49,12 @@ function startTextStream(res) {
   res.flushHeaders();
 }
 
-async function pipeTextDeltas(stream, res) {
+async function pipeTextDeltas(stream, res, label) {
   for await (const event of stream) {
+    if (event.type === 'message_start' && event.message && event.message.usage) {
+      const u = event.message.usage;
+      console.log(`[cache${label ? ' ' + label : ''}] read=${u.cache_read_input_tokens || 0} write=${u.cache_creation_input_tokens || 0} in=${u.input_tokens || 0}`);
+    }
     if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
       res.write(event.delta.text);
     }
@@ -107,8 +111,8 @@ app.post('/api/ask', async (req, res) => {
   }
 
   const systemPrompt = mode === 'chat'
-    ? buildChatSystemPrompt(advisor, userProfile)
-    : buildAskSystemPrompt(advisor, advisors, userProfile, history);
+    ? buildChatSystemBlocks(advisor, userProfile)
+    : buildAskSystemBlocks(advisor, advisors, userProfile, history);
   const messages = buildAskMessages({ question, thread, rebuttal });
 
   startTextStream(res);
@@ -121,7 +125,7 @@ app.post('/api/ask', async (req, res) => {
       messages,
       tools: [WEB_SEARCH_TOOL],
     });
-    await pipeTextDeltas(stream, res);
+    await pipeTextDeltas(stream, res, advisor.id);
   } catch (err) {
     streamError(res, err, 'Claude API error');
   }
