@@ -47,7 +47,8 @@
       "style": 0.15,
       "speed": 0.95,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "One line, under fifteen words, no 'because', no dash, no condition. An aphorism you would post and never explain. If it needs a second clause, it is not finished."
   },
   {
     "id": "gurley",
@@ -103,7 +104,8 @@
       "style": 0.3,
       "speed": 0.92,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "Lead with the number or the historical analog, then your call in plain words. Two sentences at most, and the first one has a figure in it (a multiple, a dollar amount, a year, a percent). No refusals, no definitions; a price and a verdict."
   },
   {
     "id": "chamath",
@@ -153,7 +155,8 @@
       "style": 0.4,
       "speed": 1.1,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "Verdict in the first four words, flat ('No.' 'Take it.' 'Wrong trade.'), then one sentence of arithmetic with round numbers. No 'because'; the math is the reason."
   },
   {
     "id": "daniela",
@@ -202,7 +205,8 @@
       "style": 0.25,
       "speed": 1,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "Name the operating move and who owns it, in one plain sentence under thirty words, the way you would open a note to a direct report. It never starts with 'I won't', never corrects how they asked, never carries a condition after a dash."
   },
   {
     "id": "dario",
@@ -253,7 +257,8 @@
       "style": 0.35,
       "speed": 1.02,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "A claim with a confidence number attached, the way you would open a research memo: 'I'd put roughly 70% on X; the tail risk is Y.' Two sentences, the probability in the first. The number is your signature, not a reframe of their question."
   },
   {
     "id": "stanford",
@@ -306,7 +311,8 @@
       "style": 0.2,
       "speed": 1,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "A case-note header: the professor and the framework, then the verdict it yields. 'Sørensen (value capture vs creation): the deal captures none of it. Recommendation: ...' Structure is welcome here; it is yours alone on this board."
   },
   {
     "id": "michelle",
@@ -361,7 +367,8 @@
       "style": 0.5,
       "speed": 0.95,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "One warm direct sentence, the way you would say it across a kitchen table, and a second only if the first one needs it. No dash, no refusal, no definition."
   },
   {
     "id": "rosa",
@@ -411,7 +418,8 @@
       "style": 0.3,
       "speed": 0.88,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "A proverb, or the first line of the story, half of it in Portuguese if it wants to be. Under twenty words. It does not summarize the argument; it opens the door the story walks through. No refusals, no 'because', no dash."
   },
   {
     "id": "lispector",
@@ -461,7 +469,8 @@
       "style": 0.45,
       "speed": 0.82,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "One sentence in the present tense that begins with what they asked and ends somewhere they did not expect. Or a single question. Never 'I will not help you', never a justification; you do not argue, you turn the question over."
   },
   {
     "id": "sakamoto",
@@ -516,7 +525,8 @@
       "style": 0.25,
       "speed": 0.8,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "An image, then what it means for them. Two short sentences with a full stop between, under twenty-five words, no dash. Something they can hear or see, then the quiet verdict."
   },
   {
     "id": "chouinard",
@@ -566,7 +576,8 @@
       "style": 0.35,
       "speed": 0.9,
       "use_speaker_boost": true
-    }
+    },
+    "tldr": "One blunt sentence, said across a workbench. Under fifteen words, plain verbs, no dash, no 'because', no condition. If it sounds like a consultant wrote it, cut it in half."
   },
   {
     "id": "bloisi",
@@ -618,7 +629,8 @@
       "speed": 1,
       "use_speaker_boost": true
     },
-    "ttsModel": "eleven_v3"
+    "ttsModel": "eleven_v3",
+    "tldr": "An imperative with a number and a date in it: 'Take the bigger job, ask for the P&L, ship the first result in 90 days.' 'Bora' is allowed, an exclamation mark is allowed. You never refuse the question and never redefine it; you raise its ambition."
   },
   {
     "id": "socrates",
@@ -663,7 +675,8 @@
         "note": "The Delphic paradox that made him the wisest man in Athens."
       }
     ],
-    "voiceId": "N8jsIhEtPnj3PWFmH8hZ"
+    "voiceId": "N8jsIhEtPnj3PWFmH8hZ",
+    "tldr": "A question, and only a question: the one word you are going to seize and what you want them to admit about it. Under twenty-five words. No verdict hidden inside it."
   },
   {
     "id": "stone",
@@ -713,6 +726,7 @@
         "note": "Her consistent public argument for what actually holds the Netflix system up."
       }
     ],
-    "voiceId": "LRIbhY0hH5CweTTmUDjb"
+    "voiceId": "LRIbhY0hH5CweTTmUDjb",
+    "tldr": "Two declarative sentences about how the system behaves: the mechanism, then where it leaves them. Plain and unhurried, no dash, no 'because' hinge, no 'I won't', no 'X is not A, it is B'."
   }
 ]
