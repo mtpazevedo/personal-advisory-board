@@ -1,6 +1,46 @@
 {
-  "updatedAt": "2026-08-31",
+  "updatedAt": "2026-09-07",
   "items": [
+    {
+      "advisorId": "sakamoto",
+      "type": "book",
+      "title": "Music Sets You Free: A Memoir",
+      "url": "https://www.japantimes.co.jp/culture/2026/09/07/books/ryuichi-sakamoto-biography-english/",
+      "note": "HarperVia published the first English translation, by Sam Bett, of Sakamoto's two Japanese memoirs combined as Music Sets You Free, released September 22, 2026, with the Japan Times review running September 7.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Ryuichi Sakamoto: seeing sound, hearing time",
+      "url": "https://www.smb.museum/en/press/press-releases/detail/hamburger-bahnhof-nationalgalerie-der-gegenwart-ryuichi-sakamoto-seeing-sound-hearing-time-1192026-2352027/",
+      "note": "Hamburger Bahnhof in Berlin opens Sakamoto's first major European retrospective on September 10 to 11, 2026, presenting seven works across five large scale installations in 1,500 square meters, running through May 2027.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "lispector",
+      "type": "exhibition",
+      "title": "O Ovo e a Galinha, new solo stage adaptation",
+      "url": "https://www.pressenza.com/pt-pt/2026/09/inedito-o-ovo-e-a-galinha-estreia-no-teatro-ziembinski/",
+      "note": "A new solo stage adaptation of Lispector's 1964 story O Ovo e a Galinha, directed by Joana Medeiros and performed by Ana Hartmann, premiered September 4, 2026 at Teatro Ziembinski in Rio de Janeiro and runs through September 27.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "GPT-6 Hits AGI? Tech Euphoria 2.0, SF Mansion Shortage, NYC Bans AI in Schools & Venezuela Oil Deal",
+      "url": "https://finance.biggo.com/podcast/87c5903e3e903777",
+      "note": "All-In episode recorded around Chamath's 50th birthday on September 4, 2026, debating whether OpenAI's newly released GPT-6 Astra model represents AGI, plus AI policy backlash discussion.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chouinard",
+      "type": "article",
+      "title": "Patagonia Joins Lawsuit Against Trump's Order Shrinking Utah National Monuments",
+      "url": "https://www.forbes.com/sites/zacharyfolk/2026/09/02/patagonia-joins-lawsuit-against-trumps-order-shrinking-utah-national-monuments/",
+      "note": "On September 2, 2026, Patagonia, the company Chouinard founded, sued the Trump administration with seven environmental and Indigenous rights groups over its July 2026 order cutting Bears Ears National Monument by roughly 91 percent.",
+      "date": "2026-09"
+    },
     {
       "advisorId": "chamath",
       "type": "quote",
@@ -10,11 +50,75 @@
       "date": "2026-08"
     },
     {
+      "advisorId": "chamath",
+      "type": "essay",
+      "title": "Anthropic's $30 Trillion Moonshot",
+      "url": "https://chamath.substack.com/p/anthropics-30-trillion-moonshot",
+      "note": "In his weekly newsletter, published around August 30, 2026, Chamath examines Anthropic's reported pitch to IPO investors that its addressable market exceeds 30 trillion dollars, tied to a raise of up to 100 billion dollars near a 2 trillion dollar valuation.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "Nvidia's Historic Quarter, SaaS Comeback, Bessent vs Druck",
+      "url": "https://podcasts.apple.com/us/podcast/nvidias-historic-quarter-saas-comeback-bessent-vs-druck/id1502871393?i=1000786595474",
+      "note": "All-In episode aired around August 29, 2026 covering Nvidia's roughly 96.2 billion dollar quarterly revenue, Salesforce's AI driven stock surge, and China's robot Olympics.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "How AI could uncover the hidden ways people work together",
+      "url": "https://news.stanford.edu/stories/2026/08/ai-workplace-coordination-research",
+      "note": "Published late August 2026, this Stanford Report piece covers GSB professor Amir Goldberg and PhD candidate Yankai Wang's award winning large coordination model research from the Stanford HAI and Google DeepMind AI for Organizations Grand Challenge.",
+      "date": "2026-08"
+    },
+    {
       "advisorId": "sakamoto",
       "type": "exhibition",
-      "title": "Ryuichi Sakamoto + Shiro Takatani: Ambient Kyoto, Tokyo",
+      "title": "Sakamoto + Shiro Takatani: Ambient Kyoto, Tokyo",
       "url": "https://ambientkyoto.com/en/",
-      "note": "The Ambient Kyoto exhibition opens for the first time in Tokyo at Azabudai Hills Gallery from August 28 to October 25, featuring async immersion, an installation by Ryuichi Sakamoto and Shiro Takatani built around a 26.4 meter screen with new spatial sound design.",
+      "note": "The Ambient Kyoto exhibition opens for the first time in Tokyo at Azabudai Hills Gallery from August 28 to October 25, featuring async immersion, an installation by Sakamoto and Shiro Takatani built around a 26.4 meter screen with new spatial sound design.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "TIME Reveals the 2026 TIME100 AI List",
+      "url": "https://time.com/article/2026/08/26/time-reveals-the-2026-time100-ai-list-of-the-world-s-most-influential-people-in-artificial-intelligence/",
+      "note": "TIME named Daniela Amodei to its 2026 TIME100 AI list alongside her brother Dario, published August 26, 2026, quoting her on sibling alignment and the difficulty of balancing safety with rapid AI advancement.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "dario",
+      "type": "interview",
+      "title": "Amodei and Benioff speak with CNBC's Jim Cramer on Closing Bell: Overtime",
+      "url": "https://www.cnbc.com/2026/08/26/cnbc-exclusive-transcript-salesforce-chair-ceo-marc-benioff-and-anthropic-co-founder-ceo-dario-amodei-speak-with-cnbcs-jim-cramer-on-closing-bell-overtime-today.html",
+      "note": "On August 26, 2026 Dario Amodei joined Salesforce CEO Marc Benioff on CNBC to discuss the new Claudeforce partnership and pushed back on Saaspocalypse fears, saying Anthropic is not interested in destroying anyone.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Salesforce and Anthropic Announce Claudeforce",
+      "url": "https://www.salesforce.com/news/press-releases/2026/08/26/salesforce-and-anthropic-announce-claudeforce/",
+      "note": "Anthropic and Salesforce announced Claudeforce on August 26, 2026, an expanded partnership putting Salesforce's CRM inside Claude via a plugin with 37 prebuilt sales skills, with a wider beta planned for September 2026.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "bloisi",
+      "type": "article",
+      "title": "Naspers exec pay under fire as shareholders vote against policy again",
+      "url": "https://www.africaninsider.com/business/naspers-exec-pay-under-fire-as-shareholders-vote-against-policy-again/",
+      "note": "At the Naspers AGM on August 26, 2026, ordinary N shareholders again voted non-bindingly against the remuneration policy covering CEO Fabricio Bloisi, roughly 74 percent opposed, though the resolution passed due to the high vote A shares.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "bloisi",
+      "type": "article",
+      "title": "Shareholders challenge Naspers' executive pay structure",
+      "url": "https://www.theafricareport.com/16630/shareholders-challenge-naspers-executive-pay-structure/",
+      "note": "Coverage of the same late August 2026 AGM controversy notes Naspers chairman Koos Bekker invited labour group SHARE to review conditions for the group's delivery workers, an issue investors tied back to Bloisi's earlier tenure running iFood, while also objecting to his moonshot pay award.",
       "date": "2026-08"
     },
     {
@@ -28,9 +132,25 @@
     {
       "advisorId": "dario",
       "type": "article",
+      "title": "Anthropic's potential $2 trillion IPO could turn staff into millionaires",
+      "url": "https://fortune.com/2026/08/25/anthropic-ipo-could-create-millionaires-but-company-worried-about-money-over-mission-ai-firm-ceo-dario-amodei/",
+      "note": "Fortune reported August 25, 2026 that as Anthropic prepares for a possible IPO, CEO Dario Amodei and the company are screening candidates for mission driven motivation over pure financial upside ahead of a potential windfall for staff.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
       "title": "What Anthropic's Dario Amodei can learn from the airline industry's painful lesson about marketing and the concept of safety",
       "url": "https://fortune.com/2026/08/25/airline-industry-dario-amodei-ai-distrust-safety-association/",
       "note": "A Fortune piece from August 25, 2026 argues Amodei's heavy public emphasis on AI safety risks reinforcing public fears, drawing a parallel to how airlines learned never to advertise safety directly since it implies danger.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "New AI tool compresses data without losing critical details",
+      "url": "https://news.stanford.edu/stories/2026/08/ai-tool-data-compression-scientific-discovery",
+      "note": "Published August 24, 2026, this Stanford Report article describes a SLAC and Stanford developed neural network method that compresses large scientific datasets while preserving subtle experimental details, published in Nature Machine Intelligence.",
       "date": "2026-08"
     },
     {
@@ -39,14 +159,6 @@
       "title": "Michelle Obama Talks Fashion to Sold-Out Island Crowds",
       "url": "https://vineyardgazette.com/news/2026/08/25/michelle-obama-talks-fashion-sold-out-island-crowds",
       "note": "Coverage of Michelle Obama's sold out Martha's Vineyard Author Series appearance on August 23, 2026 for her new book The Look, discussing media scrutiny of her clothing and body during the Obama presidency.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "chamath",
-      "type": "essay",
-      "title": "Anthropic's $30 Trillion Moonshot",
-      "url": "https://chamath.substack.com/p/anthropics-30-trillion-moonshot",
-      "note": "In his weekly newsletter Chamath examines Anthropic's reported pitch to IPO investors that its addressable market exceeds 30 trillion dollars, tied to a raise of up to 100 billion dollars near a 2 trillion dollar valuation.",
       "date": "2026-08"
     },
     {
@@ -127,14 +239,6 @@
       "title": "You cannot create God and put him on a leash",
       "url": "https://x.com/naval/status/2088550653497053623",
       "note": "Naval posted this one line warning about AI on X on August 15, 2026, prompting Elon Musk to reply that he hopes AI is nice to us.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "sakamoto",
-      "type": "exhibition",
-      "title": "Programme and Extended Opening Hours during Berlin Art Week at Hamburger Bahnhof",
-      "url": "https://www.smb.museum/en/whats-new/detail/programme-and-extended-opening-hours-during-berlin-art-week-2026-at-hamburger-bahnhof",
-      "note": "Berlin's Hamburger Bahnhof announced its Berlin Art Week program for the first major European retrospective of Sakamoto's work, seeing sound, hearing time, opening September 11, 2026 with large scale sound and light installations.",
       "date": "2026-08"
     },
     {
@@ -226,6 +330,22 @@
       "date": "2026-07"
     },
     {
+      "advisorId": "lispector",
+      "type": "exhibition",
+      "title": "World Premiere of Clarice Lispector's The Hour of the Star in Los Angeles",
+      "url": "https://patch.com/california/los-angeles/calendar/event/20260725/93a8fa70-9d26-4e46-8f8d-94421e2cd3d0/world-premiere-of-acclaimed-clarice-lispector-s-the-hour-of-the-star-comes-to-los-angeles",
+      "note": "Brazilian actress Bruna Fachetti premiered a one-woman stage adaptation of Lispector's novella The Hour of the Star at The Broadwater in Los Angeles, running July 25 to August 1, 2026.",
+      "date": "2026-07"
+    },
+    {
+      "advisorId": "gurley",
+      "type": "essay",
+      "title": "Open-model AI is good competition for Anthropic and OpenAI",
+      "url": "https://www.washingtonpost.com/opinions/2026/07/20/open-model-ai-is-good-competition-anthropic-openai/",
+      "note": "Washington Post op-ed where Gurley argues Chinese open-weight models are healthy free-market competition, not a security threat to ban. It set off a week of open-source AI debate.",
+      "date": "2026-07"
+    },
+    {
       "advisorId": "stone",
       "type": "podcast",
       "title": "Why Netflix is betting on systems thinkers, not specialists, in the AI era",
@@ -239,22 +359,6 @@
       "title": "Netflix wants 'AI fluency' from everyone, but craft is still scarce",
       "url": "https://thenextweb.com/news/netflix-ai-fluency-elizabeth-stone",
       "note": "This piece recaps Elizabeth Stone's comments that AI fluency means an experimentation mindset plus judgment about where AI helps, while deep craft in engineering, data science and design remains scarce and increasingly valuable.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "gurley",
-      "type": "essay",
-      "title": "Open-model AI is good competition for Anthropic and OpenAI",
-      "url": "https://www.washingtonpost.com/opinions/2026/07/20/open-model-ai-is-good-competition-anthropic-openai/",
-      "note": "Washington Post op-ed where Gurley argues Chinese open-weight models are healthy free-market competition, not a security threat to ban. It set off a week of open-source AI debate.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "lispector",
-      "type": "exhibition",
-      "title": "World Premiere of Clarice Lispector's The Hour of the Star in Los Angeles",
-      "url": "https://patch.com/california/los-angeles/calendar/event/20260725/93a8fa70-9d26-4e46-8f8d-94421e2cd3d0/world-premiere-of-acclaimed-clarice-lispector-s-the-hour-of-the-star-comes-to-los-angeles",
-      "note": "Brazilian actress Bruna Fachetti premiered a one-woman stage adaptation of Lispector's novella The Hour of the Star at The Broadwater in Los Angeles, running July 25 to August 1, 2026.",
       "date": "2026-07"
     },
     {
@@ -290,27 +394,19 @@
       "date": "2026-07"
     },
     {
-      "advisorId": "naval",
-      "type": "podcast",
-      "title": "Live in the Future",
-      "url": "https://nav.al/future",
-      "note": "Naval podcast episode from July 2 with Garry Tan, Daniel Francis and Farbood Nivi, on riding AGI, AI anxiety, defending Taiwan and the 'California Empire'.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "chouinard",
+      "advisorId": "rosa",
       "type": "book",
-      "title": "Dirtbag Billionaire: How Yvon Chouinard Built Patagonia, Made a Fortune, and Gave It All Away",
-      "url": "https://www.simonandschuster.com/books/Dirtbag-Billionaire/David-Gelles/9781668032268",
-      "note": "David Gelles' biography of Chouinard, published June 30, 2026 by Simon and Schuster, draws on exclusive access to Chouinard and the Patagonia team to trace his path from dirtbag climber to giving the company away.",
-      "date": "2026-06"
+      "title": "Grande Sertão: Veredas, edição especial de 70 anos",
+      "url": "https://www.companhiadasletras.com.br/livro/9788535946055/grande-sertao-veredas-edicao-especial-70-anos",
+      "note": "Companhia das Letras released a deluxe 70th anniversary edition of Grande Sertão: Veredas, including a 1965 interview with Gunter Lorenz and an essay by researcher Erico Melo on the novel's drafts, timed to the novel's July 1956 publication anniversary.",
+      "date": "2026-07"
     },
     {
       "advisorId": "rosa",
       "type": "book",
       "title": "Vastlands: The Crossing",
       "url": "https://www.simonandschuster.com/books/Vastlands-The-Crossing/Joao-Guimaraes-Rosa/9781668091586",
-      "note": "Alison Entrekin's long-awaited English translation of Grande Sertão: Veredas, a decade in the making, published in June 2026. The first new English version of Rosa's masterpiece since 1963, timed with the novel's 70th anniversary.",
+      "note": "Alison Entrekin's long-awaited English translation of Grande Sertão: Veredas, a decade in the making. The first new English version of Rosa's masterpiece since 1963, timed with the novel's 70th anniversary.",
       "date": "2026-06"
     }
   ]
