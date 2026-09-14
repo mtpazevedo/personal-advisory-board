@@ -1,28 +1,84 @@
 {
-  "updatedAt": "2026-09-07",
+  "updatedAt": "2026-09-14",
   "items": [
     {
-      "advisorId": "sakamoto",
-      "type": "book",
-      "title": "Music Sets You Free: A Memoir",
-      "url": "https://www.japantimes.co.jp/culture/2026/09/07/books/ryuichi-sakamoto-biography-english/",
-      "note": "HarperVia published the first English translation, by Sam Bett, of Sakamoto's two Japanese memoirs combined as Music Sets You Free, released September 22, 2026, with the Japan Times review running September 7.",
+      "advisorId": "chamath",
+      "type": "article",
+      "title": "Chamath Palihapitiya: Anthropic Employee's \"Human Extinction\" AI Warning Risks $2.3 Trillion IPO",
+      "url": "https://247wallst.com/investing/2026/09/13/chamath-palihapitiya-anthropic-employees-human-extinction-ai-warning-risks-2-3-trillion-ipo/",
+      "note": "Published September 13, 2026, this piece reports Chamath's comments on the September 11 All-In episode that a departing Anthropic safety researcher's human extinction warning complicates the company's roughly 2.3 trillion dollar IPO plans.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "essay",
+      "title": "Policy on the AI Exponential",
+      "url": "https://darioamodei.com/post/policy-on-the-ai-exponential",
+      "note": "Dario Amodei published a roughly 3,800 word essay on September 12, 2026 arguing AI companies should deliberately slow the pace of capability improvements and calling for independent evaluators embedded inside frontier labs, backed eventually by federal regulation.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "interview",
+      "title": "CBS News Sunday Morning: Anthropic CEO Dario Amodei on AI risk",
+      "url": "https://www.cbsnews.com/news/anthropic-ceo-dario-amodei-calls-slowdown-ai-development/",
+      "note": "In an interview aired September 12, 2026, Amodei said AI's exponential growth is a warning sign the industry needs to slow down, and said the industry had understated the technology's risks for too long.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Grande Sertão: Veredas, de Guimarães Rosa, a advocacia e a IA que ia, veio",
+      "url": "https://www.jornalopcao.com.br/ultimas-noticias/grande-sertao-veredas-de-guimaraes-rosa-a-advocacia-e-a-ia-que-ia-veio-867042/",
+      "note": "Jornal Opção essay published September 11, 2026 marks the novel's 70th anniversary and connects its themes to law and artificial intelligence.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Dia do Cerrado: Guimarães Rosa denunciou riscos ao bioma, diz bióloga",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-09/dia-do-cerrado-guimaraes-rosa-denunciou-riscos-ao-bioma-diz-biologa",
+      "note": "Agência Brasil piece tied to Cerrado Day, September 11, 2026, argues that Guimarães Rosa's writing anticipated environmental risks to the Cerrado biome, according to an interviewed biologist.",
       "date": "2026-09"
     },
     {
       "advisorId": "sakamoto",
       "type": "exhibition",
       "title": "Ryuichi Sakamoto: seeing sound, hearing time",
-      "url": "https://www.smb.museum/en/press/press-releases/detail/hamburger-bahnhof-nationalgalerie-der-gegenwart-ryuichi-sakamoto-seeing-sound-hearing-time-1192026-2352027/",
-      "note": "Hamburger Bahnhof in Berlin opens Sakamoto's first major European retrospective on September 10 to 11, 2026, presenting seven works across five large scale installations in 1,500 square meters, running through May 2027.",
+      "url": "https://www.smb.museum/en/exhibitions/detail/ryuichi-sakamoto/",
+      "note": "Sakamoto's first major European retrospective opened September 11, 2026 at Hamburger Bahnhof Berlin, spanning 1,500 square meters with sound installations made with Shiro Takatani, Carsten Nicolai and Apichatpong Weerasethakul, running through May 23, 2027.",
       "date": "2026-09"
     },
     {
-      "advisorId": "lispector",
-      "type": "exhibition",
-      "title": "O Ovo e a Galinha, new solo stage adaptation",
-      "url": "https://www.pressenza.com/pt-pt/2026/09/inedito-o-ovo-e-a-galinha-estreia-no-teatro-ziembinski/",
-      "note": "A new solo stage adaptation of Lispector's 1964 story O Ovo e a Galinha, directed by Joana Medeiros and performed by Ana Hartmann, premiered September 4, 2026 at Teatro Ziembinski in Rio de Janeiro and runs through September 27.",
+      "advisorId": "sakamoto",
+      "type": "video",
+      "title": "Music by Ryuichi Sakamoto (Japan Society film retrospective)",
+      "url": "https://japansociety.org/film/music-by-ryuichi-sakamoto/",
+      "note": "Japan Society New York held a two day film retrospective on September 11 and 12, 2026, screening films scored by Sakamoto including Royal Space Force and Tokyo Decadence, alongside sales of his newly translated English memoir.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "article",
+      "title": "Michelle Obama gets warm welcome at US Open during star-studded semifinal night",
+      "url": "https://thegrio.com/2026/09/11/michelle-obama-us-open-women-semifinals-2026/",
+      "note": "Michelle Obama attended the US Open women's semifinals at Arthur Ashe Stadium on September 10, 2026, seated among other notable attendees including Al Roker, Hoda Kotb and Robin Roberts.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "No. 26: Dario and Daniela Amodei: The Jewish siblings shaping AI's next frontier",
+      "url": "https://www.jpost.com/influencers-26/50jews-26/article-908079",
+      "note": "Jerusalem Post profile, published around September 10 to 11, 2026, ranks the Amodei siblings on its 50 Most Influential Jews list and discusses Daniela's role as Anthropic president overseeing safety and trust.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "book",
+      "title": "Music Sets You Free: A Memoir",
+      "url": "https://www.japantimes.co.jp/culture/2026/09/07/books/ryuichi-sakamoto-biography-english/",
+      "note": "HarperVia published the first English translation, by Sam Bett, of Sakamoto's two Japanese memoirs combined as Music Sets You Free, with the Japan Times review running September 7 ahead of the book's September 24, 2026 release.",
       "date": "2026-09"
     },
     {
@@ -34,11 +90,35 @@
       "date": "2026-09"
     },
     {
+      "advisorId": "lispector",
+      "type": "exhibition",
+      "title": "O Ovo e a Galinha, new solo stage adaptation",
+      "url": "https://www.pressenza.com/pt-pt/2026/09/inedito-o-ovo-e-a-galinha-estreia-no-teatro-ziembinski/",
+      "note": "A new solo stage adaptation of Lispector's 1964 story O Ovo e a Galinha, directed by Joana Medeiros and performed by Ana Hartmann, premiered September 4, 2026 at Teatro Ziembinski in Rio de Janeiro and runs through September 27.",
+      "date": "2026-09"
+    },
+    {
       "advisorId": "chouinard",
       "type": "article",
       "title": "Patagonia Joins Lawsuit Against Trump's Order Shrinking Utah National Monuments",
       "url": "https://www.forbes.com/sites/zacharyfolk/2026/09/02/patagonia-joins-lawsuit-against-trumps-order-shrinking-utah-national-monuments/",
       "note": "On September 2, 2026, Patagonia, the company Chouinard founded, sued the Trump administration with seven environmental and Indigenous rights groups over its July 2026 order cutting Bears Ears National Monument by roughly 91 percent.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "How Smart Leaders Build Trust",
+      "url": "https://www.gsb.stanford.edu/insights/how-smart-leaders-build-trust",
+      "note": "Stanford GSB Insights article published September 2, 2026 features the JetBlue chairman on building a high trust organizational culture, with seven practical tips for leaders.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "A Blueprint for Keeping Humans in Control of AI",
+      "url": "https://www.gsb.stanford.edu/insights/blueprint-keeping-humans-control-ai",
+      "note": "Stanford GSB Insights piece from September 2026 covers research by PhD student William Overman and professor Mohsen Bayati using game theory and reinforcement learning to design oversight frameworks for autonomous AI agents.",
       "date": "2026-09"
     },
     {
@@ -58,11 +138,19 @@
       "date": "2026-08"
     },
     {
-      "advisorId": "chamath",
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Sakamoto + Shiro Takatani: Ambient Kyoto, Tokyo",
+      "url": "https://ambientkyoto.com/en/",
+      "note": "The Ambient Kyoto exhibition opens for the first time in Tokyo at Azabudai Hills Gallery from August 28 to October 25, featuring async immersion, an installation by Sakamoto and Shiro Takatani built around a 26.4 meter screen with new spatial sound design.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "michelle",
       "type": "podcast",
-      "title": "Nvidia's Historic Quarter, SaaS Comeback, Bessent vs Druck",
-      "url": "https://podcasts.apple.com/us/podcast/nvidias-historic-quarter-saas-comeback-bessent-vs-druck/id1502871393?i=1000786595474",
-      "note": "All-In episode aired around August 29, 2026 covering Nvidia's roughly 96.2 billion dollar quarterly revenue, Salesforce's AI driven stock surge, and China's robot Olympics.",
+      "title": "You Need to Learn to Say No (Even to an Inauguration) with Taraji P. Henson",
+      "url": "https://www.imopod.com/episodes/you-need-to-learn-to-say-no-even-to-an-inauguration-with-taraji-p-henson",
+      "note": "IMO episode with Michelle Obama and Craig Robinson released August 28, 2026, featuring Taraji P. Henson on setting boundaries, why Michelle skipped a presidential inauguration, and post White House therapy.",
       "date": "2026-08"
     },
     {
@@ -74,27 +162,11 @@
       "date": "2026-08"
     },
     {
-      "advisorId": "sakamoto",
-      "type": "exhibition",
-      "title": "Sakamoto + Shiro Takatani: Ambient Kyoto, Tokyo",
-      "url": "https://ambientkyoto.com/en/",
-      "note": "The Ambient Kyoto exhibition opens for the first time in Tokyo at Azabudai Hills Gallery from August 28 to October 25, featuring async immersion, an installation by Sakamoto and Shiro Takatani built around a 26.4 meter screen with new spatial sound design.",
-      "date": "2026-08"
-    },
-    {
       "advisorId": "daniela",
       "type": "article",
       "title": "TIME Reveals the 2026 TIME100 AI List",
       "url": "https://time.com/article/2026/08/26/time-reveals-the-2026-time100-ai-list-of-the-world-s-most-influential-people-in-artificial-intelligence/",
       "note": "TIME named Daniela Amodei to its 2026 TIME100 AI list alongside her brother Dario, published August 26, 2026, quoting her on sibling alignment and the difficulty of balancing safety with rapid AI advancement.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "dario",
-      "type": "interview",
-      "title": "Amodei and Benioff speak with CNBC's Jim Cramer on Closing Bell: Overtime",
-      "url": "https://www.cnbc.com/2026/08/26/cnbc-exclusive-transcript-salesforce-chair-ceo-marc-benioff-and-anthropic-co-founder-ceo-dario-amodei-speak-with-cnbcs-jim-cramer-on-closing-bell-overtime-today.html",
-      "note": "On August 26, 2026 Dario Amodei joined Salesforce CEO Marc Benioff on CNBC to discuss the new Claudeforce partnership and pushed back on Saaspocalypse fears, saying Anthropic is not interested in destroying anyone.",
       "date": "2026-08"
     },
     {
@@ -114,46 +186,6 @@
       "date": "2026-08"
     },
     {
-      "advisorId": "bloisi",
-      "type": "article",
-      "title": "Shareholders challenge Naspers' executive pay structure",
-      "url": "https://www.theafricareport.com/16630/shareholders-challenge-naspers-executive-pay-structure/",
-      "note": "Coverage of the same late August 2026 AGM controversy notes Naspers chairman Koos Bekker invited labour group SHARE to review conditions for the group's delivery workers, an issue investors tied back to Bloisi's earlier tenure running iFood, while also objecting to his moonshot pay award.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "michelle",
-      "type": "podcast",
-      "title": "Write Down the Stupid Thoughts... (with Jon Stewart)",
-      "url": "https://podcasts.apple.com/us/podcast/write-down-the-stupid-thoughts-with-jon-stewart/id1532956108?i=1000786029431",
-      "note": "Jon Stewart joins Michelle Obama and Craig Robinson on IMO, released August 26, 2026, to discuss being a child of divorce, his early stand up years, and balancing work and family.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "dario",
-      "type": "article",
-      "title": "Anthropic's potential $2 trillion IPO could turn staff into millionaires",
-      "url": "https://fortune.com/2026/08/25/anthropic-ipo-could-create-millionaires-but-company-worried-about-money-over-mission-ai-firm-ceo-dario-amodei/",
-      "note": "Fortune reported August 25, 2026 that as Anthropic prepares for a possible IPO, CEO Dario Amodei and the company are screening candidates for mission driven motivation over pure financial upside ahead of a potential windfall for staff.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "dario",
-      "type": "article",
-      "title": "What Anthropic's Dario Amodei can learn from the airline industry's painful lesson about marketing and the concept of safety",
-      "url": "https://fortune.com/2026/08/25/airline-industry-dario-amodei-ai-distrust-safety-association/",
-      "note": "A Fortune piece from August 25, 2026 argues Amodei's heavy public emphasis on AI safety risks reinforcing public fears, drawing a parallel to how airlines learned never to advertise safety directly since it implies danger.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "stanford",
-      "type": "article",
-      "title": "New AI tool compresses data without losing critical details",
-      "url": "https://news.stanford.edu/stories/2026/08/ai-tool-data-compression-scientific-discovery",
-      "note": "Published August 24, 2026, this Stanford Report article describes a SLAC and Stanford developed neural network method that compresses large scientific datasets while preserving subtle experimental details, published in Nature Machine Intelligence.",
-      "date": "2026-08"
-    },
-    {
       "advisorId": "michelle",
       "type": "article",
       "title": "Michelle Obama Talks Fashion to Sold-Out Island Crowds",
@@ -167,30 +199,6 @@
       "title": "Os 70 anos de Grande sertão: Veredas chegam ao Museu da Língua Portuguesa",
       "url": "https://www.publishnews.com.br/materias/2026/08/13/os-70-anos-de-grande-sertao-veredas-chegam-ao-museu-da-lingua-portuguesa",
       "note": "On August 22, 2026 the Museu da Língua Portuguesa in São Paulo held panels with writers Milton Hatoum, Jeferson Tenório and Socorro Acioli marking 70 years of Grande Sertão: Veredas, alongside a Companhia das Letras commemorative edition.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "chamath",
-      "type": "podcast",
-      "title": "Dario Defends Himself, Datacenter Panic, AI Doomer Trap, Senate Toss-Up",
-      "url": "https://www.youtube.com/watch?v=Sij_v-mcZXQ",
-      "note": "All-In episode 286, released August 21, 2026, in which Chamath and co-hosts react to Dario Amodei defending Anthropic against Gavin Baker's criticism, plus discussion of AI doom narratives and the Senate.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "chamath",
-      "type": "quote",
-      "title": "AI has literally zero to do with big company earnings growth",
-      "url": "https://247wallst.com/investing/2026/08/21/chamath-palihapitiya-ai-has-literally-zero-to-do-with-big-company-earnings-as-nvidia-sits-on-a-945-five-year-run/",
-      "note": "On X around August 20, 2026, Chamath argued Global 2000 earnings growth has almost nothing to do with AI spending, a claim widely covered days before Nvidia's Q3 earnings report.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "michelle",
-      "type": "podcast",
-      "title": "Forgiving Yourself with Mary J. Blige",
-      "url": "https://podcasts.apple.com/us/podcast/forgiving-yourself-with-mary-j-blige/id1532956108?i=1000784308679",
-      "note": "IMO episode with Michelle Obama and Craig Robinson released August 19, 2026, in which Mary J. Blige discusses healing, self worth, and choosing a child free life at 55.",
       "date": "2026-08"
     },
     {
@@ -210,35 +218,11 @@
       "date": "2026-08"
     },
     {
-      "advisorId": "dario",
-      "type": "article",
-      "title": "David Sacks accuses Anthropic's Dario Amodei of trying to create a 'DMV for AI'",
-      "url": "https://fortune.com/2026/08/18/david-sacks-says-anthropics-dario-amodei-wants-a-dmv-for-ai-but-plenty-of-industries-thrive-despite-safety-regulation/",
-      "note": "Covers the public clash between venture capitalist David Sacks and Dario Amodei over Anthropic's push for AI safety regulation, which Sacks compared to a DMV style bureaucracy.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "sakamoto",
-      "type": "book",
-      "title": "Japan Society to Present Film Series on Ryuichi Sakamoto's Music",
-      "url": "https://www.broadwayworld.com/bwwtv/article/Japan-Society-to-Present-Film-Series-on-Ryuichi-Sakamotos-Music-20260818",
-      "note": "New York's Japan Society announced a September 2026 film retrospective of movies scored by Sakamoto, timed to the first English language release of his autobiography Music Sets You Free from HarperCollins and the Sakamoto estate.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "dario",
-      "type": "article",
-      "title": "Anthropic CEO says AI backlash is 'fundamentally a crisis of trust'",
-      "url": "https://techcrunch.com/2026/08/16/anthropic-ceo-says-ai-backlash-is-fundamentally-a-crisis-of-trust/",
-      "note": "TechCrunch covers Amodei's mid-August public response to investor Gavin Baker, where he pushed back on the claim that his warnings have been disproportionately negative and framed the AI backlash as a crisis of trust.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "naval",
-      "type": "quote",
-      "title": "You cannot create God and put him on a leash",
-      "url": "https://x.com/naval/status/2088550653497053623",
-      "note": "Naval posted this one line warning about AI on X on August 15, 2026, prompting Elon Musk to reply that he hopes AI is nice to us.",
+      "advisorId": "socrates",
+      "type": "essay",
+      "title": "Socrates' Turf",
+      "url": "https://www.nybooks.com/online/2026/08/18/socrates-turf-agnes-callard-merve-emre/",
+      "note": "Merve Emre interviews philosopher Agnes Callard for a New York Review of Books online series on the interview form, discussing the Socratic dialogue as a model Callard calls the philosopher's interview, published August 18, 2026.",
       "date": "2026-08"
     },
     {
@@ -258,14 +242,6 @@
       "date": "2026-08"
     },
     {
-      "advisorId": "rosa",
-      "type": "article",
-      "title": "70 anos de Grande Sertão: Veredas: nova edição e biografia de Guimarães Rosa reforçam legado do autor",
-      "url": "https://www.diariodepernambuco.com.br/viver/2026/08/11721362-70-anos-de-grande-sertao-veredas-nova-edicao-e-biografia-de-guimaraes-rosa-reforcam-legado-do-autor.html",
-      "note": "Article marking 70 years since Grande Sertao Veredas covers a new deluxe Companhia das Letras edition and the newly published biography of Guimaraes Rosa by journalist Leonencio Nossa.",
-      "date": "2026-08"
-    },
-    {
       "advisorId": "sakamoto",
       "type": "music",
       "title": "12 Conversations",
@@ -274,35 +250,11 @@
       "date": "2026-08"
     },
     {
-      "advisorId": "daniela",
-      "type": "article",
-      "title": "Who are the Anthropic 8? The new billionaires deciding the future of AI, and SF",
-      "url": "https://sfstandard.com/2026/08/10/who-anthropic-8-new-billionaires-dictating-future-ai-sf/",
-      "note": "SF Standard profile of Anthropic's founding team, built from their own writing and interviews since the company declined interview requests, describes Daniela Amodei as a self-identified generalist who runs day to day operations and the executive team while her brother Dario serves as CEO.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "stanford",
-      "type": "article",
-      "title": "Younger, wealthier households are pulling ahead on AI's benefits",
-      "url": "https://news.stanford.edu/stories/2026/08/gen-ai-chatgpt-class-age-demographics",
-      "note": "Stanford Report covers new research by Stanford GSB finance professor Michael Blank analyzing browsing data from over 200,000 US households, finding that younger and higher income households adopted ChatGPT earlier and more persistently, widening a digital divide in AI benefits.",
-      "date": "2026-08"
-    },
-    {
       "advisorId": "bloisi",
-      "type": "article",
-      "title": "Naspers: From South African publisher to global tech investor",
-      "url": "https://african.business/2026/08/innov-africa-deals/naspers-from-south-african-publisher-to-global-tech-investor",
-      "note": "African Business traces Naspers' transformation into a global tech investor under Bloisi, covering its Tencent, Flipkart, Swiggy and iFood holdings and Takealot's first full year of profitability.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "bloisi",
-      "type": "article",
-      "title": "Naspers's Brazilian makeover",
-      "url": "https://fm.co.za/features/2026-08-06-naspers-s-brazilian-makeover/",
-      "note": "Financial Mail feature published August 6, 2026 on how CEO Fabricio Bloisi is using lessons from Brazil's iFood to reshape Naspers and Prosus strategy across Europe and India.",
+      "type": "interview",
+      "title": "Fabricio Bloisi: é possível criar algo grande do nada",
+      "url": "https://sejarelevante.fdc.org.br/fabricio-bloisi-e-possivel-criar-algo-grande-do-nada/",
+      "note": "In an August 2026 interview with Seja Relevante, a Fundação Dom Cabral platform, Bloisi said entrepreneurs who anticipate the world five years out can achieve more than in the previous fifteen, citing Movile's near bankruptcies before it became a major Latin American tech company.",
       "date": "2026-08"
     },
     {
@@ -312,38 +264,6 @@
       "url": "https://www.inc.com/chris-stokel-walker/yvon-chouinard-was-destroying-the-mountains-he-loved-he-made-1-painful-decision-that-built-the-patagonia-empire/91376948",
       "note": "Inc. piece published August 4, 2026 revisiting Chouinard's decision to abandon pitons, the environmental call that reshaped his business decades before sustainability became a buzzword.",
       "date": "2026-08"
-    },
-    {
-      "advisorId": "stanford",
-      "type": "essay",
-      "title": "The Dollar's Dominance is Eroding",
-      "url": "https://www.gsb.stanford.edu/insights/dollars-dominance-eroding",
-      "note": "Stanford GSB Insights piece on finance professor Arvind Krishnamurthy's research on why investors are placing less value on the dollar's traditional safe haven status, noting a 6.5 percent drop against the euro during recent market turmoil.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "gurley",
-      "type": "quote",
-      "title": "On underestimating AI regulatory capture",
-      "url": "https://x.com/bgurley/status/2082233590952128964",
-      "note": "Gurley revisited his 2023 All-In Summit talk 2,851 Miles about AI incumbents pursuing regulatory capture against open models, saying on X around July 28, 2026 that he underestimated how aggressively they would pursue it.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "lispector",
-      "type": "exhibition",
-      "title": "World Premiere of Clarice Lispector's The Hour of the Star in Los Angeles",
-      "url": "https://patch.com/california/los-angeles/calendar/event/20260725/93a8fa70-9d26-4e46-8f8d-94421e2cd3d0/world-premiere-of-acclaimed-clarice-lispector-s-the-hour-of-the-star-comes-to-los-angeles",
-      "note": "Brazilian actress Bruna Fachetti premiered a one-woman stage adaptation of Lispector's novella The Hour of the Star at The Broadwater in Los Angeles, running July 25 to August 1, 2026.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "gurley",
-      "type": "essay",
-      "title": "Open-model AI is good competition for Anthropic and OpenAI",
-      "url": "https://www.washingtonpost.com/opinions/2026/07/20/open-model-ai-is-good-competition-anthropic-openai/",
-      "note": "Washington Post op-ed where Gurley argues Chinese open-weight models are healthy free-market competition, not a security threat to ban. It set off a week of open-source AI debate.",
-      "date": "2026-07"
     },
     {
       "advisorId": "stone",
@@ -362,11 +282,11 @@
       "date": "2026-07"
     },
     {
-      "advisorId": "rosa",
-      "type": "article",
-      "title": "70 anos de Grande Sertão: Veredas é tema de eventos gratuitos na Flip",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-07/70-anos-de-grande-sertao-veredas-e-tema-de-eventos-gratuitos-na-flip",
-      "note": "Agencia Brasil reports the 70th anniversary of Grande Sertao Veredas was a theme of free public events in the parallel programming of the 2026 Flip literary festival in Paraty.",
+      "advisorId": "gurley",
+      "type": "quote",
+      "title": "On underestimating AI regulatory capture",
+      "url": "https://x.com/bgurley/status/2082233590952128964",
+      "note": "Gurley revisited his 2023 All-In Summit talk 2,851 Miles about AI incumbents pursuing regulatory capture against open models, saying on X around July 28, 2026 that he underestimated how aggressively they would pursue it.",
       "date": "2026-07"
     },
     {
@@ -375,30 +295,6 @@
       "title": "Temporada prorrogada: Beth Goulart, em Simplesmente eu, Clarice Lispector, no Teatro Moise Safra",
       "url": "https://www.revistaprosaversoearte.com/temporada-prorrogada-beth-goulart-em-simplesmente-eu-clarice-lispector-no-teatro-moise-safra/",
       "note": "Covers the extended Sao Paulo season of Beth Goulart's long running solo play about Clarice Lispector, paired with a companion exhibition, Entre Ela e Eu, in the theater foyer.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "stanford",
-      "type": "article",
-      "title": "What AI Tells People Seeking Low-Cost Financial Advice",
-      "url": "https://www.gsb.stanford.edu/insights/what-ai-tells-people-seeking-low-cost-financial-advice",
-      "note": "A Stanford GSB Insights piece reports that large language models generally nudge simulated users toward sound financial habits such as saving more and shifting to safer investments with age, though advice quality varies with how the prompt is written.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "lispector",
-      "type": "exhibition",
-      "title": "Se Eu Fosse Eu, Clarices",
-      "url": "https://auroracultural.com/noticias/cultura/espetaculo-inspirado-em-clarice-lispector-retorna-ao-rio-em-julho/",
-      "note": "Stage production by ATA built from three Lispector stories, O Ovo e a Galinha, Miss Algrave and Perdoando Deus, which returned to Rio for a run at the Centro Cultural da Justica Federal from July 3 to 26, 2026.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "rosa",
-      "type": "book",
-      "title": "Grande Sertão: Veredas, edição especial de 70 anos",
-      "url": "https://www.companhiadasletras.com.br/livro/9788535946055/grande-sertao-veredas-edicao-especial-70-anos",
-      "note": "Companhia das Letras released a deluxe 70th anniversary edition of Grande Sertão: Veredas, including a 1965 interview with Gunter Lorenz and an essay by researcher Erico Melo on the novel's drafts, timed to the novel's July 1956 publication anniversary.",
       "date": "2026-07"
     },
     {
