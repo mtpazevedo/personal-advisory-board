@@ -1,6 +1,70 @@
 {
-  "updatedAt": "2026-09-21",
+  "updatedAt": "2026-09-28",
   "items": [
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic CEO Amodei to Meet Trump as AI Safety Fears Rise",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-27/anthropic-s-amodei-to-meet-trump-with-ai-safety-concerns-rising",
+      "note": "Bloomberg report from September 27, 2026 on Dario Amodei's first private White House dinner with President Trump, coming after months of tension between Amodei and the administration over AI safety and regulation.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic's Dario Amodei gets the SNL treatment",
+      "url": "https://techcrunch.com/2026/09/27/anthropics-dario-amodei-gets-the-snl-treatment/",
+      "note": "TechCrunch coverage of a September 27, 2026 Saturday Night Live Weekend Update sketch in which cast member Jane Wickline parodied Dario Amodei's public warnings about AI risk.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Scoop: Trump allies open new front on Anthropic CEO as face of AI 'doomerism'",
+      "url": "https://www.axios.com/2026/09/24/trump-anthropic-ai-doomerism-dario-amodei",
+      "note": "Axios scoop from September 24, 2026 detailing how Trump allies began publicly casting Dario Amodei as the face of AI doomerism, ahead of his White House dinner with the president later that week.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "bloisi",
+      "type": "article",
+      "title": "Prosus names AI and technology leaders building the next chapter",
+      "url": "https://www.prosus.com/news-insights/2026/prosus-names-ai-and-technology-leaders-building-the-next-chapter",
+      "note": "Prosus Group CEO Fabricio Bloisi announced around September 22-23, 2026 a new AI and technology leadership team, including WeTransfer co-founder Nalden as chief product officer, saying he wants Prosus to 'ship like a startup and learn like a platform, ten times faster.'",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chouinard",
+      "type": "article",
+      "title": "Patagonia announces 11.2 Million Vote Project",
+      "url": "https://www.patagoniaworks.com/press/2026/9/22/patagonia-announces-112-million-vote-project",
+      "note": "Patagonia, the company Yvon Chouinard founded and gave away to environmental trusts in 2022, announced on September 22, 2026 a nonpartisan get-out-the-vote initiative launching September 26 (Public Lands Day), committing up to 11.2 million dollars to encourage voting ahead of the midterms to protect public lands.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Can AI Be Slowed Down? Stanford HAI Experts Weigh the Risks, Rules and Race Ahead",
+      "url": "https://hai.stanford.edu/news/can-ai-be-slowed-down-stanford-hai-experts-weigh-the-risks-rules-and-race-ahead",
+      "note": "Stanford HAI writeup of a panel discussion published around September 22, 2026, featuring Rob Reich, Surya Ganguli, and Diyi Yang debating whether a broad AI capability slowdown is achievable.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "book",
+      "title": "Book Review: Music Sets You Free",
+      "url": "https://www.jazztimes.com/reviews/books/book-review-music-sets-you-free/?v=0b3b97fa6688",
+      "note": "JazzTimes published a review on September 22, 2026 of Sakamoto's posthumous English-language memoir Music Sets You Free, translated by Sam Bett and published by HarperVia, combining his two Japanese memoirs into an account spanning his early piano training through his final reflections on mortality during cancer treatment.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "stone",
+      "type": "article",
+      "title": "TIME Names Inaugural List of Executives of the Year: Tech and Data (Elizabeth Stone profile)",
+      "url": "https://time.com/collection/executives-of-the-year-tech-data/2026/elizabeth-stone/",
+      "note": "Published September 22, 2026, this TIME profile names Netflix Chief Product and Technology Officer Elizabeth Stone to its inaugural Executives of the Year: Tech and Data list, covering her oversight of Netflix's live programming, games, and mobile and vertical video product changes, quoting her that 'the future of entertainment is impossible to define as one thing.'",
+      "date": "2026-09"
+    },
     {
       "advisorId": "chamath",
       "type": "article",
@@ -12,9 +76,25 @@
     {
       "advisorId": "socrates",
       "type": "article",
+      "title": "AI is the mirror. The Sutras are the questions. Socrates is still asking.",
+      "url": "https://americanbazaaronline.com/2026/09/21/ai-is-the-mirror-the-sutra-are-the-questions-socrates-is-still-asking-488556/",
+      "note": "Published September 21, 2026 by Sreedhar Potarazu, the piece argues AI can become a modern Socratic interlocutor, questioning assumptions and evidence, or its opposite, an assistant that just affirms users and short-circuits deeper inquiry.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "article",
       "title": "The case for Socratic inquiry in the classroom",
       "url": "https://neoskosmos.com/en/2026/09/21/dialogue/opinion/the-case-for-socratic-inquiry-in-the-classroom/",
       "note": "Neos Kosmos published this opinion piece on September 21, 2026 arguing for Socratic questioning in schools, describing Socrates as a gadfly who stirred Athens out of its complacency and applying that model to today's classrooms.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "Naveen Rao: 4D Computing, AI's Energy Wall & Beating Biology",
+      "url": "https://www.youtube.com/watch?v=yAsrMA_ADPc",
+      "note": "All-In podcast episode published September 21, 2026, with Chamath Palihapitiya hosting a technical conversation with Unconventional AI's Naveen Rao about energy as AI's real bottleneck and a physical dynamical computing chip that uses far less power than conventional chips.",
       "date": "2026-09"
     },
     {
@@ -50,6 +130,22 @@
       "date": "2026-09"
     },
     {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "Brad Gerstner: No AI Bubble, Semis Eat the Nasdaq & AI's Take Off Problem",
+      "url": "https://www.youtube.com/watch?v=PJrntzMA4iQ",
+      "note": "All-In podcast episode published September 17, 2026, featuring Chamath, Jason, Sacks and Friedberg with guest Brad Gerstner debating whether AI valuations are a bubble, semiconductor stocks' outsized share of Nasdaq returns, and the compute build-out needed to sustain the AI trade.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "Embracing a New Era with H.E.R. (IMO with Michelle Obama and Craig Robinson)",
+      "url": "https://open.spotify.com/show/71mvGXupfKcmO6jlmOJQTP",
+      "note": "In this September 16, 2026 episode of her IMO podcast with brother Craig Robinson, Michelle Obama talks with Grammy winner H.E.R. about her first voice acting role in the DreamWorks animated film Forgotten Island and growing up Filipino American.",
+      "date": "2026-09"
+    },
+    {
       "advisorId": "daniela",
       "type": "article",
       "title": "Forbes 400: The 10 Richest Women In America 2026",
@@ -66,14 +162,6 @@
       "date": "2026-09"
     },
     {
-      "advisorId": "stanford",
-      "type": "article",
-      "title": "A Blueprint for Keeping Humans in Control of AI",
-      "url": "https://www.gsb.stanford.edu/insights/blueprint-keeping-humans-control-ai",
-      "note": "Stanford GSB Insights piece from September 2026 covers research by PhD student William Overman and professor Mohsen Bayati using game theory and reinforcement learning to design oversight frameworks for autonomous AI agents.",
-      "date": "2026-09"
-    },
-    {
       "advisorId": "gurley",
       "type": "article",
       "title": "Anthropic CEO Dario Amodei has a flawed view of AI regulation, heavyweight tech investor Bill Gurley warns",
@@ -82,11 +170,35 @@
       "date": "2026-09"
     },
     {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "A Blueprint for Keeping Humans in Control of AI",
+      "url": "https://www.gsb.stanford.edu/insights/blueprint-keeping-humans-control-ai",
+      "note": "Stanford GSB Insights piece from September 2026 covers research by PhD student William Overman and professor Mohsen Bayati using game theory and reinforcement learning to design oversight frameworks for autonomous AI agents.",
+      "date": "2026-09"
+    },
+    {
       "advisorId": "chouinard",
       "type": "book",
       "title": "Dirtbag Billionaire: How Yvon Chouinard Built Patagonia, Made a Fortune, and Gave It All Away (paperback)",
       "url": "https://www.simonandschuster.com/books/Dirtbag-Billionaire/David-Gelles/9781668032268",
       "note": "David Gelles' biography of Chouinard was released in paperback on September 15, 2026, prompting renewed press coverage of Chouinard's life and Patagonia's 2022 ownership giveaway.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Trilogia Grande Sertao: Veredas chega ao Teatro Glauce Rocha",
+      "url": "https://www.gov.br/funarte/pt-br/assuntos/noticias/todas-noticias/201ctrilogia-grande-sertao-veredas201d-chega-ao-teatro-glauce-rocha",
+      "note": "Funarte announced that Gilson de Barros's three part theatrical adaptation of Grande Sertao: Veredas (Riobaldo, No Meio do Redemunho, and O Julgamento de Ze Bebelo), directed by Amir Haddad, runs October 3 to 19, 2026 at Teatro Glauce Rocha in Rio de Janeiro, part of the novel's 70th anniversary programming.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Museu da Diversidade Sexual promove Clube do Livro sobre os 70 anos de Grande Sertao: Veredas",
+      "url": "https://www.amigosdolivro.com.br/2026/09/museu-da-diversidade-sexual-promove.html",
+      "note": "Sao Paulo's Museu da Diversidade Sexual announced a free, ten session virtual reading club on Grande Sertao: Veredas led by writer and critic Amara Moira, running October 8 to December 17, 2026, focused on gender, identity, and sexuality in the Riobaldo-Diadorim relationship.",
       "date": "2026-09"
     },
     {
@@ -306,6 +418,14 @@
       "date": "2026-08"
     },
     {
+      "advisorId": "lispector",
+      "type": "article",
+      "title": "Clarice Lispector por Bjork",
+      "url": "https://nespe.com.br/2026/08/12/clarice-lispector-por-bjork/",
+      "note": "Article reports that Bjork is writing a song referencing Lispector's A Paixao Segundo G.H. and has called her the best writer of the 20th century, noting Lispector's growing influence on pop artists like Rosalia, Lorde, and Olivia Rodrigo as her work continues to be translated into roughly 30 languages.",
+      "date": "2026-08"
+    },
+    {
       "advisorId": "bloisi",
       "type": "article",
       "title": "REG - Prosus NV Naspers Limited - Director/PDMR Shareholding",
@@ -328,22 +448,6 @@
       "url": "https://www.inc.com/chris-stokel-walker/yvon-chouinard-was-destroying-the-mountains-he-loved-he-made-1-painful-decision-that-built-the-patagonia-empire/91376948",
       "note": "Inc. piece published August 4, 2026 revisiting Chouinard's decision to abandon pitons, the environmental call that reshaped his business decades before sustainability became a buzzword.",
       "date": "2026-08"
-    },
-    {
-      "advisorId": "stone",
-      "type": "podcast",
-      "title": "Why Netflix is betting on systems thinkers, not specialists, in the AI era",
-      "url": "https://www.lennysnewsletter.com/p/netflix-cpto-on-ai-and-the-future",
-      "note": "On Lenny's Podcast, Netflix Chief Product and Technology Officer Elizabeth Stone explains why Netflix is hiring more systems thinkers who can work across business domains rather than narrow specialists, and describes AI fluency as a universal expectation across the company.",
-      "date": "2026-07"
-    },
-    {
-      "advisorId": "stone",
-      "type": "article",
-      "title": "Netflix wants 'AI fluency' from everyone, but craft is still scarce",
-      "url": "https://thenextweb.com/news/netflix-ai-fluency-elizabeth-stone",
-      "note": "This piece recaps Elizabeth Stone's comments that AI fluency means an experimentation mindset plus judgment about where AI helps, while deep craft in engineering, data science and design remains scarce and increasingly valuable.",
-      "date": "2026-07"
     }
   ]
 }
