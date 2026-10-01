@@ -45,4 +45,4 @@ Separate from the monthly persona refresh. The Reading Room page is fed by `read
 - Update marker: `--- RECENT VIEWS & ACTIVITY (updated YYYY-MM) ---` (regex-replaceable, idempotent).
 - Headshots live in `public/headshots/<id>.<ext>`, referenced via the `photo` field. New members: try Wikipedia REST API thumbnail first, then the person's company site.
 - New members need: id, name, title, avatar initials, photo, color, expertise[], persona (base + RECENT section), bio, picks[].
-- Last full refresh: **2026-09-01** (all 13 active members refreshed; SEP faculty roster re-verified with no changes, though gsb.stanford.edu again blocked direct fetch).
+- Last full refresh: **2026-10-01** (all 12 active members with a RECENT VIEWS marker refreshed, including the SEP composite; Socrates has no marker by design. SEP faculty roster re-verified with no changes, though gsb.stanford.edu again blocked direct fetch).
