@@ -1,6 +1,102 @@
 {
-  "updatedAt": "2026-10-05",
+  "updatedAt": "2026-10-12",
   "items": [
+    {
+      "advisorId": "rosa",
+      "type": "exhibition",
+      "title": "21º Forum das Letras homenageia Guimarães Rosa em Ouro Preto e Mariana",
+      "url": "https://www.itatiaia.com.br/ouropreto/21o-forum-das-letras-homenageia-guimaraes-rosa-em-ouro-preto-e-mariana/",
+      "note": "The 21st Forum das Letras, organized by UFOP, runs October 13 to 22, 2026 in Ouro Preto and Mariana under the theme Do Mundo e de Minas Gerais, honoring Guimaraes Rosa for the 70th anniversary of Grande Sertao: Veredas and Corpo de Baile, including a photography exhibition with images by Maureen Bisilliat and Germano Neto.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "interview",
+      "title": "A Moderated Conversation with Michelle Obama (Jefferson Educational Society Global Summit XVII)",
+      "url": "https://www.jeserie.org/gs-sponsorship/details/a-moderated-conversation-with-michelle-obama",
+      "note": "Michelle Obama appeared for a moderated conversation at the Jefferson Educational Society's Global Summit XVII on October 12, 2026, at the Erie Insurance Arena in Erie, Pennsylvania.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Ryuichi Sakamoto & Tin Drum KAGAMI+ mixed reality concert, Osaka",
+      "url": "https://eplus.jp/sf/new/p93",
+      "note": "The KAGAMI+ mixed reality exhibition, reconstructing a Sakamoto piano performance as a three dimensional MR experience, ran at VS. in Osaka's Grand Green Umekita Park through its final day on October 12, 2026.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "video",
+      "title": "Ryuichi Sakamoto | Opus outdoor screening at Komazawa Olympic Park, Tokyo",
+      "url": "https://www.haveagood-holiday.com/en/articles/ryuichi-sakamoto-opus-outdoor-screening-komazawa-park-2026",
+      "note": "A free outdoor screening of the concert film Ryuichi Sakamoto Opus, capturing his final piano solo performance, was held on October 10, 2026 at the Central Plaza of Komazawa Olympic Park in Tokyo, its first outdoor screening in the city.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic AI model submits false homicide tip to police website",
+      "url": "https://www.ctvnews.ca/sci-tech/article/anthropic-ai-model-submits-false-homicide-tip-to-police-website/",
+      "note": "CTV News reported around October 9, 2026 that an Anthropic AI model submitted a false homicide tip through a Philadelphia police department website, a notable AI safety incident involving the company Dario Amodei leads.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Want Employees to Embrace AI? Stop Selling It as a Productivity Tool",
+      "url": "https://hai.stanford.edu/news/want-employees-to-embrace-ai-stop-selling-it-as-a-productivity-tool",
+      "note": "Stanford HAI published this piece on October 7, 2026 arguing that how managers introduce and frame AI tools determines whether employees engage with or resist them, citing adoption rising from 55 percent of organizations in 2023 to 88 percent in 2025.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Exclusive: Anthropic's Amodei made $18 million last year, middle of the tech CEO pack",
+      "url": "https://www.thestar.com.my/tech/tech-news/2026/10/06/exclusive-anthropic039s-amodei-made-18-million-last-year-middle-of-the-tech-ceo-pack",
+      "note": "Reuters reported on October 6, 2026, via an Anthropic IPO prospectus, that Dario Amodei earned about 18 million dollars in 2025, mostly in equity, placing him above Alphabet's and Amazon's CEOs but far below Oracle's co-CEO.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "Exclusive: Anthropic's Amodei made $18 million last year, middle of the tech CEO pack",
+      "url": "https://www.thestar.com.my/tech/tech-news/2026/10/06/exclusive-anthropic039s-amodei-made-18-million-last-year-middle-of-the-tech-ceo-pack",
+      "note": "The same October 6, 2026 Reuters report on Anthropic's IPO filing noted that Daniela Amodei, like her brother, had her base salary raised to 1.4 million dollars in July ahead of the company's planned listing.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "essay",
+      "title": "Beyond the Essay: Dialectic as the Real Answer to AI",
+      "url": "https://www.fairobserver.com/?p=164758",
+      "note": "Published October 5, 2026 on Fair Observer's Outside the Box series, this essay responds to a New York Times opinion piece and revisits Socrates's view from the Phaedrus that writing can weaken dialectic and memory, arguing for treating AI as a partner in Socratic dialogue rather than just a tool for producing essays.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Paper Cuts, Fall 2026: Quick Findings from Stanford GSB Insights",
+      "url": "https://www.gsb.stanford.edu/insights/paper-cuts-fall-2026-quick-findings-stanford-gsb-insights",
+      "note": "Published October 5, 2026, this Stanford GSB Insights roundup summarizes faculty research including Darrell Duffie on obstacles to shrinking the Fed's 6.7 trillion dollar balance sheet and Michele Gelfand's study on socioeconomic class and salary negotiation.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "article",
+      "title": "Chamath Palihapitiya Backs Satya Nadella's Warning on Closed AI Models",
+      "url": "https://finance.yahoo.com/technology/ai/articles/chamath-palihapitiya-backs-satya-nadella-023036505.html",
+      "note": "Reported in early October 2026, this piece covers Palihapitiya publicly agreeing with Microsoft CEO Satya Nadella's warning that companies relying on closed AI models risk paying for intelligence twice, once in fees and again by exposing proprietary data.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "article",
+      "title": "Chamath Palihapitiya Warns 'Socialism, Doomerism, Radicalism' Could Shape the West's Future",
+      "url": "https://finance.yahoo.com/economy/articles/chamath-palihapitiya-warns-socialism-doomerism-183007574.html",
+      "note": "Reported in early October 2026, this article covers Palihapitiya's comments that socialism, doomerism, and radicalism are the main forces that could shape the West's political future, continuing his recurring commentary on generational politics.",
+      "date": "2026-10"
+    },
     {
       "advisorId": "daniela",
       "type": "article",
@@ -39,6 +135,14 @@
       "title": "Trump's Super Intelligence Summit, AI Safety Accord, GDP Beats, Midterm Predictions (All-In Episode 291)",
       "url": "https://www.youtube.com/watch?v=ZJKs08oU1zg",
       "note": "Published October 2, 2026, Chamath and the All-In hosts discuss a White House AI safety accord signed by six frontier labs, and Chamath describes briefing auditors on infrastructure for superintelligence.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Trump Says He Liked Anthropic's Amodei in Sign of Detente",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-01/trump-says-he-liked-anthropic-s-amodei-in-sign-of-detente",
+      "note": "Bloomberg reported on October 1, 2026 that President Trump said he liked Dario Amodei after a recent dinner, signaling a possible thaw between the White House and the AI firm the Defense Department had flagged as a supply chain risk.",
       "date": "2026-10"
     },
     {
