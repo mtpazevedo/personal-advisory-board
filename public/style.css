@@ -1622,3 +1622,22 @@ main {
   .question-footer { flex-wrap: wrap; }
   .question-hint { display: none; }
 }
+
+/* The clerk's brief shown above a member's answer in task mode */
+.card-brief {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #666;
+  font-style: italic;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 8px 0;
+  margin: 6px 0 10px;
+}
+
+/* Task mode: no ballot, one line explaining why */
+.ballot-line {
+  font-size: 0.85rem;
+  color: #555;
+  padding: 6px 0;
+}

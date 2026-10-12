@@ -10,7 +10,9 @@ let advisors = [];
 let guests = [];              // one-session guest advisors (never persisted)
 let selectedIds = new Set();
 let editAdvisors = [];
-let responseTexts = {};   // round 1 texts by advisor id
+let responseTexts = {};
+let currentBriefs = {};
+let currentBriefNote = '';   // round 1 texts by advisor id
 let round2Texts = {};     // round 2 texts by advisor id
 let threads = {};         // advisor id -> [{role, content}, ...] for follow-ups
 let currentQuestion = '';
@@ -300,6 +302,37 @@ async function askBoard() {
     btn.textContent = 'Asking…';
   }
 
+  // The Clerk: a decision goes to sealed rooms untouched; a task (write,
+  // edit, plan, name...) gets a different binding brief per member so the
+  // bench cannot hand back one answer in thirteen voices.
+  let briefs = {};
+  let briefNote = '';
+  const briefNoteEl = document.getElementById('brief-note');
+  briefNoteEl.style.display = 'none';
+  if (selected.length > 1) {
+    btn.textContent = 'Clerk reading…';
+    try {
+      const guestMember = selected.find(a => a.isGuest);
+      const bres = await api('/api/brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, ids: selected.map(a => a.id), guest: guestMember || undefined, userProfile }),
+      });
+      if (bres.ok) {
+        const b = await bres.json();
+        if (b.mode === 'task' && b.briefs && Object.keys(b.briefs).length) {
+          briefs = b.briefs;
+          briefNote = b.note || '';
+          briefNoteEl.innerHTML = `<strong>Task mode. The clerk divided the work:</strong> ${escText(briefNote)}`;
+          briefNoteEl.style.display = 'block';
+        }
+      }
+    } catch {}
+    btn.textContent = 'Asking…';
+  }
+  currentBriefs = briefs;
+  currentBriefNote = briefNote;
+
   currentQuestion = question;
   currentBench = selected;
   responseTexts = {};
@@ -327,9 +360,9 @@ async function askBoard() {
   // Fire one advisor first so the shared rules block lands in the prompt
   // cache, then the rest read it instead of each writing their own copy.
   const [firstAdvisor, ...restAdvisors] = selected;
-  const firstStream = streamRound1(firstAdvisor, question);
+  const firstStream = streamRound1(firstAdvisor, question, briefs[firstAdvisor.id]);
   if (restAdvisors.length) await new Promise(r => setTimeout(r, 2000));
-  await Promise.all([firstStream, ...restAdvisors.map(a => streamRound1(a, question))]);
+  await Promise.all([firstStream, ...restAdvisors.map(a => streamRound1(a, question, briefs[a.id]))]);
 
   let synthesisText = '';
   if (selected.length > 1) {
@@ -344,6 +377,8 @@ async function askBoard() {
     question,
     advisors: selected.map(a => ({ id: a.id, name: a.name, title: a.title, color: a.color })),
     responses: { ...responseTexts },
+    briefs: Object.keys(briefs).length ? { ...briefs } : null,
+    briefNote: briefNote || '',
     synthesis: synthesisText || '',
     threads: {},
     round2: null,
@@ -383,6 +418,7 @@ function buildResponseCard(advisor, suffix) {
       <button class="tts-btn" id="tts${suffix}-${advisor.id}" style="display:none"
               onclick="toggleSpeak('${advisor.id}', '${suffix}')" title="Listen to ${escAttr(advisor.name)}">▶</button>
     </div>
+    <div class="card-brief" id="brief${suffix}-${advisor.id}" style="display:none"></div>
     <div class="card-body" id="body${suffix}-${advisor.id}">
       <span class="thinking" style="--color:${advisor.color}">Thinking</span>
     </div>
@@ -503,15 +539,20 @@ function finishAdvisorCard(advisor, suffix, fullText) {
   }
 }
 
-async function streamRound1(advisor, question) {
+async function streamRound1(advisor, question, brief) {
   const bodyEl = document.getElementById(`body-${advisor.id}`);
   bodyEl.innerHTML = '';
+  if (brief) {
+    const briefEl = document.getElementById(`brief-${advisor.id}`);
+    if (briefEl) { briefEl.textContent = brief; briefEl.style.display = 'block'; }
+  }
   try {
     const res = await api('/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         question,
+        brief: brief || undefined,
         advisorId: advisor.id,
         userProfile,
         history: advisor.isGuest ? [] : history.slice(0, 5),
@@ -748,10 +789,13 @@ async function synthesizeBoard(question, selected) {
   const synthesisSection = document.getElementById('synthesis-section');
   const synthesisBody = document.getElementById('synthesis-body');
   synthesisSection.style.display = 'block';
-  synthesisBody.innerHTML = '<span class="thinking" style="--color:#111">Tallying the board verdict</span>';
+  const taskMode = Object.keys(currentBriefs).length > 0;
+  synthesisBody.innerHTML = `<span class="thinking" style="--color:#111">${taskMode ? 'Assembling the composite' : 'Tallying the board verdict'}</span>`;
 
   // Render the formal ballot from the independently cast POSITION lines
-  document.getElementById('ballot').innerHTML = renderBallotHTML(ballotEntries(responseTexts, selected));
+  document.getElementById('ballot').innerHTML = taskMode
+    ? '<div class="ballot-line"><strong>Task mode.</strong> No ballot; each member worked a different brief.</div>'
+    : renderBallotHTML(ballotEntries(responseTexts, selected));
 
   setTimeout(() => synthesisSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 
@@ -760,6 +804,7 @@ async function synthesizeBoard(question, selected) {
     title: a.title,
     expertise: a.expertise || [],
     text: responseTexts[a.id] || '',
+    brief: currentBriefs[a.id] || undefined,
   }));
 
   let fullText = '';
@@ -767,7 +812,7 @@ async function synthesizeBoard(question, selected) {
     const res = await api('/api/synthesize', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, responses, userProfile }),
+      body: JSON.stringify({ question, responses, userProfile, task: taskMode ? { note: currentBriefNote, briefs: currentBriefs } : undefined }),
     });
 
     if (!res.ok) {

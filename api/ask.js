@@ -17,7 +17,7 @@ async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
-  const { question, advisorId, userProfile, history, thread, rebuttal, guest, mode } = req.body;
+  const { question, advisorId, userProfile, history, thread, rebuttal, guest, mode, brief } = req.body;
   if ((!question && !rebuttal) || !advisorId) {
     return res.status(400).json({ error: 'advisorId plus question or rebuttal are required' });
   }
@@ -42,7 +42,7 @@ async function handler(req, res) {
         system: mode === 'chat'
           ? buildChatSystemBlocks(advisor, userProfile)
           : buildAskSystemBlocks(advisor, advisors, userProfile, history),
-        messages: buildAskMessages({ question, thread, rebuttal }),
+        messages: buildAskMessages({ question, thread, rebuttal, brief }),
         tools: [WEB_SEARCH_TOOL],
       },
     });

@@ -13,7 +13,7 @@ async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
-  const { question, responses, userProfile, round, round1Tally } = req.body;
+  const { question, responses, userProfile, round, round1Tally, task } = req.body;
   if (!question || !responses || !responses.length) {
     return res.status(400).json({ error: 'question and responses are required' });
   }
@@ -21,7 +21,7 @@ async function handler(req, res) {
   const advisorInputs = responses
     .map(
       (r) =>
-        `### ${r.name} (${r.title})\nExpertise: ${(r.expertise || []).join(', ')}\n\nResponse:\n${r.text}`
+        `### ${r.name} (${r.title})\nExpertise: ${(r.expertise || []).join(', ')}${r.brief ? `\nThe clerk's brief to them: ${r.brief}` : ''}\n\nResponse:\n${r.text}`
     )
     .join('\n\n---\n\n');
 
@@ -36,7 +36,7 @@ async function handler(req, res) {
       body: {
         model: DEFAULT_MODEL,
         max_tokens: 3000,
-        system: buildSynthesisSystemPrompt(userProfile, { round: round === 2 ? 2 : 1 }),
+        system: buildSynthesisSystemPrompt(userProfile, { round: round === 2 ? 2 : 1, task: task && typeof task === 'object' ? task : null }),
         messages: [
           {
             role: 'user',

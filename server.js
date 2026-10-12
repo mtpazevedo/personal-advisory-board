@@ -12,6 +12,9 @@ const {
   buildChatSystemBlocks,
   buildGuestPersonaSystemPrompt,
   buildQuorumSystemPrompt,
+  buildBriefSystemPrompt,
+  buildBriefRosterLines,
+  buildBriefOwnerLine,
   buildReviewSystemPrompt,
   buildSynthesisSystemPrompt,
 } = require('./lib/prompts');
@@ -96,7 +99,7 @@ app.get('/api/reading', (req, res) => {
 // ── Ask (streaming) — first ask, follow-ups, and Round 2 rebuttals ──────────
 
 app.post('/api/ask', async (req, res) => {
-  const { question, advisorId, userProfile, history, thread, rebuttal, guest, mode } = req.body;
+  const { question, advisorId, userProfile, history, thread, rebuttal, guest, mode, brief } = req.body;
   if ((!question && !rebuttal) || !advisorId) {
     return res.status(400).json({ error: 'advisorId plus question or rebuttal are required' });
   }
@@ -113,7 +116,7 @@ app.post('/api/ask', async (req, res) => {
   const systemPrompt = mode === 'chat'
     ? buildChatSystemBlocks(advisor, userProfile)
     : buildAskSystemBlocks(advisor, advisors, userProfile, history);
-  const messages = buildAskMessages({ question, thread, rebuttal });
+  const messages = buildAskMessages({ question, thread, rebuttal, brief });
 
   startTextStream(res);
   try {
@@ -168,6 +171,40 @@ app.post('/api/guest', async (req, res) => {
 });
 
 // ── Quorum — the Chair picks the bench for this question ────────────────────
+
+
+// ── The Clerk's brief — classify the question, divide the work for tasks ──
+
+app.post('/api/brief', async (req, res) => {
+  const { question, ids, guest, userProfile } = req.body;
+  if (!question || !Array.isArray(ids) || ids.length < 2) {
+    return res.status(400).json({ error: 'question and ids are required' });
+  }
+  const advisors = readAdvisors();
+  const rosterLines = buildBriefRosterLines(advisors, ids, guest);
+  try {
+    const msg = await client.messages.create({
+      model: DEFAULT_MODEL,
+      max_tokens: 6000,
+      system: buildBriefSystemPrompt(),
+      messages: [{ role: 'user', content: `${buildBriefOwnerLine(userProfile)}\n\nQuestion from the owner:\n"${question}"\n\nThe bench:\n${rosterLines}` }],
+    });
+    const text = msg.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const jsonText = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+    const parsed = JSON.parse(jsonText);
+    const mode = parsed.mode === 'task' ? 'task' : 'decision';
+    const briefs = {};
+    if (mode === 'task' && parsed.briefs && typeof parsed.briefs === 'object') {
+      for (const id of ids) if (typeof parsed.briefs[id] === 'string' && parsed.briefs[id].trim()) briefs[id] = parsed.briefs[id].trim();
+    }
+    console.log(`[clerk] mode=${mode} briefs=${Object.keys(briefs).length}/${ids.length}`);
+    res.json({ mode, note: parsed.note || '', briefs });
+  } catch (err) {
+    console.error('Clerk error:', err.message);
+    // Fail open: the frontend proceeds without briefs
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.post('/api/quorum', async (req, res) => {
   const { question, roster } = req.body;
@@ -263,7 +300,7 @@ app.get('/api/tts', ttsHandler);
 // ── Board Synthesis (Round 1 verdict and Round 2 final verdict) ─────────────
 
 app.post('/api/synthesize', async (req, res) => {
-  const { question, responses, userProfile, round, round1Tally } = req.body;
+  const { question, responses, userProfile, round, round1Tally, task } = req.body;
   if (!question || !responses || !responses.length) {
     return res.status(400).json({ error: 'question and responses are required' });
   }
@@ -273,7 +310,7 @@ app.post('/api/synthesize', async (req, res) => {
   const advisorInputs = responses
     .map(
       (r) =>
-        `### ${r.name} (${r.title})\nExpertise: ${(r.expertise || []).join(', ')}\n\nResponse:\n${r.text}`
+        `### ${r.name} (${r.title})\nExpertise: ${(r.expertise || []).join(', ')}${r.brief ? `\nThe clerk's brief to them: ${r.brief}` : ''}\n\nResponse:\n${r.text}`
     )
     .join('\n\n---\n\n');
 
@@ -285,7 +322,7 @@ app.post('/api/synthesize', async (req, res) => {
     const stream = client.messages.stream({
       model: DEFAULT_MODEL,
       max_tokens: 3000,
-      system: buildSynthesisSystemPrompt(userProfile, { round: round === 2 ? 2 : 1 }),
+      system: buildSynthesisSystemPrompt(userProfile, { round: round === 2 ? 2 : 1, task: task && typeof task === 'object' ? task : null }),
       messages: [
         {
           role: 'user',
