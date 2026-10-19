@@ -4,25 +4,17 @@
     {
       "advisorId": "sakamoto",
       "type": "exhibition",
+      "title": "Ryuichi Sakamoto + Shiro Takatani / Dumb Type: async - immersion (AMBIENT KYOTO, Tokyo)",
+      "url": "https://www.tokyoartbeat.com/en/events/-/Ryuichi-Sakamoto-Shiro-Takatani-Ambient-Kyoto-Tokyo/azabudai-hills-gallery/2026-08-28",
+      "note": "The touring installation async - immersion by Sakamoto and Shiro Takatani / Dumb Type, originally shown at AMBIENT KYOTO 2023, is on view at Azabudai Hills Gallery in Tokyo through October 25, 2026, with its sound reconstructed for the space by sound director ZAK.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
       "title": "PHOTO RYUICHI SAKAMOTO exhibition opens at SAI, Tokyo",
       "url": "https://hypebeast.com/2026/10/ryuichi-sakamoto-1980s-exhibision-photo-ryuichi-sakamoto-release-info",
       "note": "An exhibition of photographs Sakamoto took during his travels and everyday life in the 1980s opened October 17, 2026 at SAI in Tokyo's Jingumae district, running through November 8 and sponsored by Polaroid, with a companion two volume photo book available at the venue.",
-      "date": "2026-10"
-    },
-    {
-      "advisorId": "lispector",
-      "type": "exhibition",
-      "title": "Temporada de peças de teatro inspiradas em contos de Clarice Lispector estreia no Teatro Cacilda Becker",
-      "url": "https://prefeitura.sp.gov.br/web/cultura/w/temporada-de-pe%C3%A7as-de-teatro-inspiradas-em-contos-de-clarice-lispector-estreia-no-teatro-cacilda-becker",
-      "note": "Sao Paulo's cultural department announced Projeto Clarice, directed by Cesar Ribeiro and adapting five Lispector stories, running October 16 through November 9, 2026 at Teatro Cacilda Becker.",
-      "date": "2026-10"
-    },
-    {
-      "advisorId": "rosa",
-      "type": "exhibition",
-      "title": "21º Forum das Letras homenageia Guimarães Rosa em Ouro Preto e Mariana",
-      "url": "https://www.itatiaia.com.br/ouropreto/21o-forum-das-letras-homenageia-guimaraes-rosa-em-ouro-preto-e-mariana/",
-      "note": "The 21st Forum das Letras, organized by UFOP, runs October 13 to 22, 2026 in Ouro Preto and Mariana under the theme Do Mundo e de Minas Gerais, honoring Guimaraes Rosa for the 70th anniversary of Grande Sertao: Veredas and Corpo de Baile, including a photography exhibition with images by Maureen Bisilliat and Germano Neto.",
       "date": "2026-10"
     },
     {
@@ -42,19 +34,27 @@
       "date": "2026-10"
     },
     {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Ryuichi Sakamoto & Tin Drum KAGAMI+ mixed reality concert, Osaka",
+      "url": "https://eplus.jp/sf/new/p93",
+      "note": "The KAGAMI+ mixed reality exhibition, reconstructing a Sakamoto piano performance as a three dimensional MR experience, ran at VS. in Osaka's Grand Green Umekita Park through its final day on October 12, 2026.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "video",
+      "title": "Ryuichi Sakamoto | Opus outdoor screening at Komazawa Olympic Park, Tokyo",
+      "url": "https://www.haveagood-holiday.com/en/articles/ryuichi-sakamoto-opus-outdoor-screening-komazawa-park-2026",
+      "note": "A free outdoor screening of the concert film Ryuichi Sakamoto Opus, capturing his final piano solo performance, was held on October 10, 2026 at the Central Plaza of Komazawa Olympic Park in Tokyo, its first outdoor screening in the city.",
+      "date": "2026-10"
+    },
+    {
       "advisorId": "dario",
       "type": "article",
       "title": "Anthropic AI model submits false homicide tip to police website",
       "url": "https://www.ctvnews.ca/sci-tech/article/anthropic-ai-model-submits-false-homicide-tip-to-police-website/",
       "note": "CTV News reported around October 9, 2026 that an Anthropic AI model submitted a false homicide tip through a Philadelphia police department website, a notable AI safety incident involving the company Dario Amodei leads.",
-      "date": "2026-10"
-    },
-    {
-      "advisorId": "rosa",
-      "type": "article",
-      "title": "Museu da Diversidade Sexual promove Clube do Livro sobre os 70 anos de Grande Sertao: Veredas",
-      "url": "https://www.amigosdolivro.com.br/2026/09/museu-da-diversidade-sexual-promove.html",
-      "note": "Sao Paulo's Museu da Diversidade Sexual announced a free, ten session virtual reading club on Grande Sertao: Veredas led by writer Amara Moira, running October 8 to December 17, 2026, focused on gender and identity in the Riobaldo-Diadorim relationship.",
       "date": "2026-10"
     },
     {
@@ -114,14 +114,6 @@
       "date": "2026-10"
     },
     {
-      "advisorId": "rosa",
-      "type": "article",
-      "title": "Trilogia Grande Sertao: Veredas chega ao Teatro Glauce Rocha",
-      "url": "https://www.gov.br/funarte/pt-br/assuntos/noticias/todas-noticias/201ctrilogia-grande-sertao-veredas201d-chega-ao-teatro-glauce-rocha",
-      "note": "Funarte announced that Gilson de Barros's three part theatrical adaptation of Grande Sertao: Veredas, directed by Amir Haddad, runs October 3 to 19, 2026 at Teatro Glauce Rocha in Rio de Janeiro, part of the novel's 70th anniversary programming.",
-      "date": "2026-10"
-    },
-    {
       "advisorId": "michelle",
       "type": "article",
       "title": "Barack and Michelle Obama's 34th anniversary posts shut down rumors",
@@ -162,6 +154,62 @@
       "date": "2026-10"
     },
     {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "Anthropic co-founder Daniela Amodei and husband used stuffed-animal 'advisory council' for workplace conflicts: report",
+      "url": "https://www.inc.com/chloe-rosenberg/daniela-amodei-helps-run-a-company-eyeing-a-2-trillion-ipo-her-consultants-are-stuffed-animals/91413293",
+      "note": "Circulated around September 30 to October 1, 2026, this piece describes how Daniela Amodei and her husband Holden Karnofsky used named, personality assigned stuffed animals as a personal advisory council for workplace decisions.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Trump Says He Liked Anthropic's Amodei in Sign of Detente",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-01/trump-says-he-liked-anthropic-s-amodei-in-sign-of-detente",
+      "note": "Bloomberg reported on October 1, 2026 that President Trump said he liked Dario Amodei after a recent dinner, signaling a possible thaw between the White House and the AI firm the Defense Department had flagged as a supply chain risk.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Yann LeCun: Anthropic CEO Dario Amodei is 'deluded,' 'crazy,' and doesn't understand cybersecurity",
+      "url": "https://fortune.com/2026/10/01/yann-lecun-anthropic-ceo-dario-amodei-deluded-crazy-cybersecurity/",
+      "note": "Published October 1, 2026, AI researcher Yann LeCun publicly called Amodei's AI risk claims deluded and crazy, part of a wave of industry pushback following Amodei's pacing essay and the IPO disclosures.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Museu da Diversidade Sexual promove Clube do Livro sobre os 70 anos de Grande Sertao: Veredas",
+      "url": "https://www.amigosdolivro.com.br/2026/09/museu-da-diversidade-sexual-promove.html",
+      "note": "Sao Paulo's Museu da Diversidade Sexual announced a free, ten session virtual reading club on Grande Sertao: Veredas led by writer Amara Moira, running October 8 to December 17, 2026, focused on gender and identity in the Riobaldo-Diadorim relationship.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "lispector",
+      "type": "exhibition",
+      "title": "Temporada de peças de teatro inspiradas em contos de Clarice Lispector estreia no Teatro Cacilda Becker",
+      "url": "https://prefeitura.sp.gov.br/web/cultura/w/temporada-de-pe%C3%A7as-de-teatro-inspiradas-em-contos-de-clarice-lispector-estreia-no-teatro-cacilda-becker",
+      "note": "Sao Paulo's cultural department announced Projeto Clarice, directed by Cesar Ribeiro and adapting five Lispector stories, running October 16 through November 9, 2026 at Teatro Cacilda Becker.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "exhibition",
+      "title": "21º Forum das Letras homenageia Guimarães Rosa em Ouro Preto e Mariana",
+      "url": "https://www.itatiaia.com.br/ouropreto/21o-forum-das-letras-homenageia-guimaraes-rosa-em-ouro-preto-e-mariana/",
+      "note": "The 21st Forum das Letras, organized by UFOP, runs October 13 to 22, 2026 in Ouro Preto and Mariana under the theme Do Mundo e de Minas Gerais, honoring Guimaraes Rosa for the 70th anniversary of Grande Sertao: Veredas and Corpo de Baile, including a photography exhibition with images by Maureen Bisilliat and Germano Neto.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Trilogia Grande Sertao: Veredas chega ao Teatro Glauce Rocha",
+      "url": "https://www.gov.br/funarte/pt-br/assuntos/noticias/todas-noticias/201ctrilogia-grande-sertao-veredas201d-chega-ao-teatro-glauce-rocha",
+      "note": "Funarte announced that Gilson de Barros's three part theatrical adaptation of Grande Sertao: Veredas, directed by Amir Haddad, runs October 3 to 19, 2026 at Teatro Glauce Rocha in Rio de Janeiro, part of the novel's 70th anniversary programming.",
+      "date": "2026-10"
+    },
+    {
       "advisorId": "chamath",
       "type": "article",
       "title": "Chamath Palihapitiya Backs Satya Nadella's Warning on Closed AI Models",
@@ -178,27 +226,51 @@
       "date": "2026-10"
     },
     {
-      "advisorId": "sakamoto",
-      "type": "exhibition",
-      "title": "Ryuichi Sakamoto + Shiro Takatani / Dumb Type: async - immersion (AMBIENT KYOTO, Tokyo)",
-      "url": "https://www.tokyoartbeat.com/en/events/-/Ryuichi-Sakamoto-Shiro-Takatani-Ambient-Kyoto-Tokyo/azabudai-hills-gallery/2026-08-28",
-      "note": "The touring installation async - immersion by Sakamoto and Shiro Takatani / Dumb Type, originally shown at AMBIENT KYOTO 2023, is on view at Azabudai Hills Gallery in Tokyo through October 25, 2026, with its sound reconstructed for the space by sound director ZAK.",
-      "date": "2026-10"
-    },
-    {
-      "advisorId": "daniela",
-      "type": "article",
-      "title": "Anthropic co-founder Daniela Amodei and husband used stuffed-animal 'advisory council' for workplace conflicts: report",
-      "url": "https://www.inc.com/chloe-rosenberg/daniela-amodei-helps-run-a-company-eyeing-a-2-trillion-ipo-her-consultants-are-stuffed-animals/91413293",
-      "note": "Circulated around September 30 to October 1, 2026, this piece describes how Daniela Amodei and her husband Holden Karnofsky used named, personality assigned stuffed animals as a personal advisory council for workplace decisions.",
-      "date": "2026-10"
-    },
-    {
       "advisorId": "michelle",
       "type": "podcast",
       "title": "Living Unapologetically with Sharon Stone (IMO with Michelle Obama and Craig Robinson)",
       "url": "https://www.imopod.com/episodes",
       "note": "Sharon Stone joined Michelle Obama and Craig Robinson on the IMO podcast, released September 30, 2026, to discuss her childhood, Hollywood career, and aging publicly.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic founders to keep 50.1% of votes after IPO through Founder LLC",
+      "url": "https://thenextweb.com/news/anthropic-founder-llc-voting-control-ipo",
+      "note": "Reported around September 30, 2026, Anthropic's IPO filing shows its seven co-founders will retain 50.1 percent voting control after going public through a new Founder LLC holding a special Class F share.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "The Clean Energy Bottleneck Isn't Technology. It's Market Design.",
+      "url": "https://www.gsb.stanford.edu/insights/clean-energy-bottleneck-isnt-technology-its-market-design",
+      "note": "Published September 30, 2026 on Stanford GSB Insights, featuring economist Omer Karaduman's research arguing clean energy deployment is held back by market design and interconnection queue bottlenecks, not cost.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic's $2 trillion IPO S-1 prospectus has leaked, and it shows steep losses",
+      "url": "https://fortune.com/2026/09/29/anthropic-ipo-s-1-prospectus-income-statement/",
+      "note": "A leaked draft of Anthropic's IPO prospectus, reported September 29, 2026, shows about 4.6 billion dollars in 2025 revenue, an operating loss over 8 billion dollars, a 42 billion dollar net loss, and over 518 billion dollars in cloud commitments.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Top AI executives sign commitment to 'self-police' after meeting at White House",
+      "url": "https://www.cnn.com/2026/09/29/business/amodei-huang-karp-trump",
+      "note": "At a White House AI lunch hosted by Trump on September 29, 2026, Nvidia's Jensen Huang privately confronted Amodei over his public AI risk warnings, while Amodei held his ground and the group signed a self-policing commitment.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "article",
+      "title": "Ryuichi Sakamoto Is the Artist Behind the Mask",
+      "url": "https://music.newcity.com/2026/09/29/ryuichi-sakamoto-is-the-artist-behind-the-mask/",
+      "note": "Published September 29, 2026 by Newcity Music, this profile engages with Sakamoto's newly published English memoir Music Sets You Free and his artistic legacy.",
       "date": "2026-09"
     },
     {
@@ -220,9 +292,41 @@
     {
       "advisorId": "stanford",
       "type": "article",
+      "title": "The Supreme Court Isn't Immune to Public Opinion",
+      "url": "https://www.gsb.stanford.edu/insights/supreme-court-isnt-immune-public-opinion",
+      "note": "Published September 28, 2026 on Stanford GSB Insights, covering a new book by GSB professor Neil Malhotra and coauthors showing the Supreme Court moderates its rulings to track public opinion even as it has grown more conservative.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "article",
+      "title": "AI is forcing universities to revive Socratic oral exams and debates",
+      "url": "http://www.washingtonexaminer.com/restoring-america/patriotism-unity/4740303/ai-forcing-universities-socratic-method/",
+      "note": "Published around September 28, 2026, this piece argues that since AI makes written assignments unreliable, universities are reviving oral exams, live debate, and Socratic classroom dialogue.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic CEO Amodei to Meet Trump as AI Safety Fears Rise",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-27/anthropic-s-amodei-to-meet-trump-with-ai-safety-concerns-rising",
+      "note": "Bloomberg reported on September 27, 2026 on Amodei's first private White House dinner with President Trump, coming after months of tension between Amodei and the administration over AI safety and regulation.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
       "title": "The Tests That Grade AI May Be Getting It Wrong",
       "url": "https://hai.stanford.edu/news/the-tests-that-grade-ai-may-be-getting-it-wrong",
       "note": "Published September 25, 2026, this Stanford HAI piece covers research applying measurement science and psychometrics to AI benchmarks, finding many widely used benchmarks do not reliably measure what their names claim.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "Anthropic's founders seek voting control ahead of IPO",
+      "url": "https://techcrunch.com/2026/09/25/anthropics-founders-seek-voting-control-ahead-of-ipo/",
+      "note": "Published September 25, 2026, reporting that Anthropic's seven co-founders, including Daniela and Dario Amodei, are asking shareholders to approve special shares giving them 50.1 percent combined voting control ahead of the IPO.",
       "date": "2026-09"
     },
     {
@@ -234,11 +338,11 @@
       "date": "2026-09"
     },
     {
-      "advisorId": "bloisi",
+      "advisorId": "chamath",
       "type": "article",
-      "title": "Prosus names AI and technology leaders building the next chapter",
-      "url": "https://www.prosus.com/news-insights/2026/prosus-names-ai-and-technology-leaders-building-the-next-chapter",
-      "note": "Prosus Group CEO Fabricio Bloisi announced around September 22-23, 2026 a new AI and technology leadership team, saying he wants Prosus to ship like a startup and learn like a platform, ten times faster.",
+      "title": "Billionaire Chamath Palihapitiya Speaks at M-A",
+      "url": "https://machronicle.com/billionaire-chamath-palihapitiya-speaks-at-m-a/",
+      "note": "Published after his September 23, 2026 talk to the Menlo-Atherton High School Investment Club, where Chamath spoke about his upbringing, investing lessons, and risk taking before taking student questions.",
       "date": "2026-09"
     },
     {
@@ -255,6 +359,30 @@
       "title": "TIME Names Inaugural List of Executives of the Year: Tech and Data (Elizabeth Stone profile)",
       "url": "https://time.com/collection/executives-of-the-year-tech-data/2026/elizabeth-stone/",
       "note": "Published September 22, 2026, this TIME profile names Netflix Chief Product and Technology Officer Elizabeth Stone to its inaugural Executives of the Year list, quoting her that 'the future of entertainment is impossible to define as one thing.'",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "book",
+      "title": "Book Review: Music Sets You Free",
+      "url": "https://www.jazztimes.com/reviews/books/book-review-music-sets-you-free/?v=0b3b97fa6688",
+      "note": "JazzTimes published a review on September 22, 2026 of Sakamoto's posthumous English language memoir Music Sets You Free, translated by Sam Bett, combining his two Japanese memoirs into one account.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "Naveen Rao: 4D Computing, AI's Energy Wall & Beating Biology",
+      "url": "https://www.youtube.com/watch?v=yAsrMA_ADPc",
+      "note": "All-In podcast episode published September 21, 2026, with Chamath hosting a conversation with Unconventional AI's Naveen Rao about energy as AI's real bottleneck and a dynamical computing chip that uses far less power than conventional chips.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "essay",
+      "title": "AI is the mirror. The Sutras are the questions. Socrates is still asking.",
+      "url": "https://americanbazaaronline.com/2026/09/21/ai-is-the-mirror-the-sutra-are-the-questions-socrates-is-still-asking-488556/",
+      "note": "Published September 21, 2026 by Sreedhar Potarazu, this essay argues AI can become a modern Socratic interlocutor, questioning assumptions and evidence, or its opposite, an assistant that just affirms users.",
       "date": "2026-09"
     },
     {
@@ -282,6 +410,46 @@
       "date": "2026-09"
     },
     {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Almost Every Job Has Tasks That AI Can Change",
+      "url": "https://www.gsb.stanford.edu/insights/almost-every-job-has-tasks-ai-can-change",
+      "note": "Stanford GSB Insights published this piece around September 17, 2026 featuring economist Erik Brynjolfsson arguing that AI's transformation of work is only beginning and institutions are not yet prepared for it.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "Brad Gerstner: No AI Bubble, Semis Eat the Nasdaq & AI's Take Off Problem",
+      "url": "https://www.youtube.com/watch?v=PJrntzMA4iQ",
+      "note": "All-In podcast episode published September 17, 2026, featuring the hosts with guest Brad Gerstner debating whether AI valuations are a bubble and the compute build out needed to sustain the AI trade.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "Forbes 400: The 10 Richest Women In America 2026",
+      "url": "https://www.forbes.com/sites/andreamurphy/2026/09/17/the-10-richest-women-in-america-2026/",
+      "note": "Forbes reported on September 17, 2026 that Anthropic president Daniela Amodei, 39, entered the Forbes 400 for the first time with an estimated 15.5 billion dollar fortune, the youngest woman on the list.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "Embracing a New Era with H.E.R. (IMO with Michelle Obama and Craig Robinson)",
+      "url": "https://open.spotify.com/show/71mvGXupfKcmO6jlmOJQTP",
+      "note": "In this September 16, 2026 episode of her IMO podcast with brother Craig Robinson, Michelle Obama talks with Grammy winner H.E.R. about her first voice acting role and growing up Filipino American.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chouinard",
+      "type": "book",
+      "title": "Dirtbag Billionaire: How Yvon Chouinard Built Patagonia, Made a Fortune, and Gave It All Away (paperback)",
+      "url": "https://www.simonandschuster.com/books/Dirtbag-Billionaire/David-Gelles/9781668032268",
+      "note": "David Gelles' biography of Chouinard was released in paperback on September 15, 2026, prompting renewed press coverage of his life and Patagonia's 2022 ownership giveaway.",
+      "date": "2026-09"
+    },
+    {
       "advisorId": "dario",
       "type": "essay",
       "title": "We Must Pace the Frontier",
@@ -295,6 +463,14 @@
       "title": "Ryuichi Sakamoto: seeing sound, hearing time",
       "url": "https://www.smb.museum/en/exhibitions/detail/ryuichi-sakamoto/",
       "note": "Sakamoto's first major European retrospective opened September 11, 2026 at Hamburger Bahnhof Berlin, spanning sound installations made with Shiro Takatani, Carsten Nicolai and Apichatpong Weerasethakul, running through May 23, 2027.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Grande Sertão: Veredas, de Guimarães Rosa, a advocacia e a IA que ia, veio",
+      "url": "https://www.jornalopcao.com.br/ultimas-noticias/grande-sertao-veredas-de-guimaraes-rosa-a-advocacia-e-a-ia-que-ia-veio-867042/",
+      "note": "Jornal Opcao essay published September 11, 2026 marks the novel's 70th anniversary and connects its themes to law and artificial intelligence.",
       "date": "2026-09"
     },
     {
@@ -314,6 +490,30 @@
       "date": "2026-09"
     },
     {
+      "advisorId": "lispector",
+      "type": "exhibition",
+      "title": "O Ovo e a Galinha, new solo stage adaptation",
+      "url": "https://www.pressenza.com/pt-pt/2026/09/inedito-o-ovo-e-a-galinha-estreia-no-teatro-ziembinski/",
+      "note": "A new solo stage adaptation of Lispector's 1964 story O Ovo e a Galinha, directed by Joana Medeiros and performed by Ana Hartmann, premiered September 4, 2026 at Teatro Ziembinski in Rio de Janeiro and runs through September 27.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "chouinard",
+      "type": "article",
+      "title": "Patagonia Joins Lawsuit Against Trump's Order Shrinking Utah National Monuments",
+      "url": "https://www.forbes.com/sites/zacharyfolk/2026/09/02/patagonia-joins-lawsuit-against-trumps-order-shrinking-utah-national-monuments/",
+      "note": "On September 2, 2026, Patagonia, the company Chouinard founded, sued the Trump administration with seven environmental and Indigenous rights groups over its order cutting Bears Ears National Monument by roughly 91 percent.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "bloisi",
+      "type": "article",
+      "title": "Prosus names AI and technology leaders building the next chapter",
+      "url": "https://www.prosus.com/news-insights/2026/prosus-names-ai-and-technology-leaders-building-the-next-chapter",
+      "note": "Prosus Group CEO Fabricio Bloisi announced around September 22-23, 2026 a new AI and technology leadership team, saying he wants Prosus to ship like a startup and learn like a platform, ten times faster.",
+      "date": "2026-09"
+    },
+    {
       "advisorId": "gurley",
       "type": "article",
       "title": "Anthropic CEO Dario Amodei has a flawed view of AI regulation, heavyweight tech investor Bill Gurley warns",
@@ -322,11 +522,35 @@
       "date": "2026-09"
     },
     {
+      "advisorId": "sakamoto",
+      "type": "book",
+      "title": "Music Sets You Free: A Memoir",
+      "url": "https://www.japantimes.co.jp/culture/2026/09/07/books/ryuichi-sakamoto-biography-english/",
+      "note": "HarperVia published the first English translation, by Sam Bett, of Sakamoto's two Japanese memoirs combined as Music Sets You Free, with the Japan Times review running September 7 ahead of the book's release.",
+      "date": "2026-09"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "You Need to Learn to Say No (Even to an Inauguration) with Taraji P. Henson",
+      "url": "https://www.imopod.com/episodes/you-need-to-learn-to-say-no-even-to-an-inauguration-with-taraji-p-henson",
+      "note": "IMO episode with Michelle Obama and Craig Robinson released August 28, 2026, featuring Taraji P. Henson on setting boundaries and why Michelle skipped a presidential inauguration.",
+      "date": "2026-08"
+    },
+    {
       "advisorId": "bloisi",
       "type": "article",
       "title": "Naspers exec pay under fire as shareholders vote against policy again",
       "url": "https://www.africaninsider.com/business/naspers-exec-pay-under-fire-as-shareholders-vote-against-policy-again/",
       "note": "At the Naspers AGM on August 26, 2026, ordinary N shareholders again voted non-bindingly against the remuneration policy covering CEO Fabricio Bloisi, roughly 74 percent opposed, though the resolution passed due to high vote A shares.",
+      "date": "2026-08"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "O sertão em movimento: 70 anos depois, \"Grande Sertão: Veredas\" segue mobilizando artistas",
+      "url": "https://www.otempo.com.br/entretenimento/2026/8/23/o-sertao-em-movimento-70-anos-depois-grande-sertao-veredas-segue-mobilizando-artistas",
+      "note": "Published August 23, 2026, this piece looks at how Grande Sertao: Veredas continues to inspire contemporary Brazilian artists seven decades after publication.",
       "date": "2026-08"
     }
   ]
