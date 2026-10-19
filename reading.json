@@ -1,6 +1,14 @@
 {
-  "updatedAt": "2026-10-12",
+  "updatedAt": "2026-10-19",
   "items": [
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "PHOTO RYUICHI SAKAMOTO exhibition opens at SAI, Tokyo",
+      "url": "https://hypebeast.com/2026/10/ryuichi-sakamoto-1980s-exhibision-photo-ryuichi-sakamoto-release-info",
+      "note": "An exhibition of photographs Sakamoto took during his travels and everyday life in the 1980s opened October 17, 2026 at SAI in Tokyo's Jingumae district, running through November 8 and sponsored by Polaroid, with a companion photo book available at the venue.",
+      "date": "2026-10"
+    },
     {
       "advisorId": "rosa",
       "type": "exhibition",
