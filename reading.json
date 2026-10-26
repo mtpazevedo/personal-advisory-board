@@ -1,6 +1,142 @@
 {
-  "updatedAt": "2026-10-19",
+  "updatedAt": "2026-10-26",
   "items": [
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic's S-1 Shows $16.3B in Revenue and Compute Squeeze",
+      "url": "https://www.vktr.com/ai-market/anthropics-s1-shows-163b-in-revenue-and-compute-squeeze/",
+      "note": "Reporting around October 21, 2026 on Anthropic's draft IPO prospectus showed Dario Amodei's company posted 16.3 billion dollars in first half 2026 revenue alongside an 80.7 billion dollar net loss driven largely by non cash charges, as it prepares for a possible November listing.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Letter to Anthropic from New York City Comptroller Mark Levine",
+      "url": "https://comptroller.nyc.gov/reports/letter-to-anthropic-re-planned-initial-public-offering/",
+      "note": "New York City Comptroller Mark Levine sent a public letter to Dario Amodei on October 14, 2026 urging Anthropic to delay its planned IPO until it addresses AI safety and governance concerns, and Anthropic subsequently opened discussions with his office.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "article",
+      "title": "Anthropic Commits 5% of Shares to New Public Benefit Fund",
+      "url": "https://aimagazine.com/news/anthropic-to-invest-5-of-shares-to-its-public-benefit-fund",
+      "note": "Anthropic announced on October 18, 2026 that it will commit 5 percent of its shares to a new Public Benefit Fund, and Daniela Amodei said on LinkedIn that the fund can grow as the company does, tying its commercial business more closely to its public benefit mission.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "quote",
+      "title": "Anthropic President Says This Is a 'Terrible Use' of AI",
+      "url": "https://entrepreneur.com/business-news/anthropic-president-says-this-is-a-terrible-use-of-ai-nearly-30-of-adults-are-doing-it-anyway",
+      "note": "In an October 16, 2026 interview with Arianna Huffington for the Thrive AI health conference, Daniela Amodei called using AI as a romantic partner a terrible use of the technology, saying Claude can never be someone’s manager, therapist or partner.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "bloisi",
+      "type": "article",
+      "title": "Prosus' Just Eat Takeaway Returns to Growth",
+      "url": "https://www.businessday.co.za/companies/company-strategy/2026-10-08-prosus-just-eat-takeaway-returns-to-growth/",
+      "note": "In a voluntary business update on food delivery published October 8, 2026, Fabricio Bloisi called 2026 the year of execution as Prosus’ Just Eat Takeaway returned to order growth after 55 months of decline and said iFood holds about 80 percent of Brazil’s app market share.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "quote",
+      "title": "Chamath Palihapitiya Takes Dig at Claude as Economist Warns of AI Bubble",
+      "url": "https://www.benzinga.com/markets/tech/26/10/62579263/chamath-palihapitiya-takes-dig-at-claude-as-economist-warns-of-ai-bubble-ai-moves-in-mysterious-ways",
+      "note": "Around October 24-25, 2026, Palihapitiya amplified a satirical post from TS Lombard economist Dario Perkins joking about blaming Claude for a sloppy report, closing with the line 'AI moves in mysterious ways', while drawing attention to Perkins' broader warning about bubble risk in markets.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "AI Cyber Panic, Ken Griffin's Bubble Warning, The Fall of France?",
+      "url": "https://finance.biggo.com/podcast/0d17edbf2958080c",
+      "note": "On the All-In Podcast around October 20, 2026, Palihapitiya and co-hosts discussed Citadel founder Ken Griffin’s remark that markets are almost certainly in an AI bubble, alongside AI related cybersecurity worries and political turmoil in France.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "quote",
+      "title": "Chamath Palihapitiya Warns of AI Debt Bubble Amid Private Credit Surge",
+      "url": "https://www.aninews.in/news/business/ai-infrastructure-financing-boom-raises-risk-of-private-credit-bubble-8090-ceo-chamath-palihapitiya20261015080547/",
+      "note": "Around October 13-15, 2026, Palihapitiya posted that surging CoreWeave bond yields and the growing use of private credit to fund AI infrastructure could be creating a bubble, pointing to a 35 billion dollar Apollo and Blackstone financing vehicle for Anthropic’s chips.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "Trust Your Creativity with Mahershala Ali",
+      "url": "https://podcasts.apple.com/us/podcast/trust-your-creativity-with-mahershala-ali/id1532956108?i=1000797421135",
+      "note": "Michelle Obama and her brother Craig Robinson spoke with actor Mahershala Ali on their IMO podcast about his upbringing in the Bay Area, his conversion to Islam, and how becoming a father shaped his outlook. The episode was published October 21, 2026.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "lispector",
+      "type": "exhibition",
+      "title": "O Ovo e a Galinha ganha temporada no Teatro Oficina com Ana Hartmann na pele de Clarice Lispector",
+      "url": "https://catracalivre.com.br/gira/o-ovo-e-a-galinha-ganha-temporada-no-teatro-oficina-com-ana-hartmann-na-pele-de-clarice-lispector/",
+      "note": "A new run of Clarice Lispector's short story O Ovo e a Galinha opened at Teatro Oficina in Sao Paulo on October 19, 2026 and runs through December 8. Ana Hartmann plays Clarice reading her own story, under Joana Medeiros's direction.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "Acknowledge the Challenge with Kylie Kelce",
+      "url": "https://podcasts.apple.com/us/podcast/acknowledge-the-challenge-with-kylie-kelce/id1532956108?i=1000796287087",
+      "note": "On IMO with Michelle Obama and Craig Robinson, the siblings talked with Not Gonna Lie host and field hockey coach Kylie Kelce about her Philadelphia roots and the example she aims to set for her children and the athletes she coaches. The episode was published October 14, 2026.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "lispector",
+      "type": "article",
+      "title": "Simplesmente Eu, Clarice Lispector prorroga temporada em Sao Paulo",
+      "url": "https://baressp.com.br/eventos/simplesmente-eu-clarice-lispector-prorroga-temporada-em-sao-paulo",
+      "note": "Beth Goulart's solo show about Clarice Lispector had its Sao Paulo run at Teatro Moise Safra extended through October 31, 2026 due to sold out demand, marking six months on stage in the city.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "Stay Curious with Debbie Allen and Phylicia Rashad",
+      "url": "https://podcasts.apple.com/sr/podcast/stay-curious-with-debbie-allen-and-phylicia-rashad/id1532956108?i=1000793636080",
+      "note": "Michelle Obama and Craig Robinson welcomed actors and sisters Debbie Allen and Phylicia Rashad onto their weekly IMO podcast, part of the show’s rotating guest format. The episode was published October 7, 2026.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Ryuichi Sakamoto retrospective \"Seeing Sound, Hearing Time\" opens at Taipei Fine Arts Museum",
+      "url": "https://www.peoplenews.tw/?p=59546",
+      "note": "A major Ryuichi Sakamoto retrospective, Seeing Sound, Hearing Time, opens October 31, 2026 at the Taipei Fine Arts Museum and runs through March 2027, presenting seven large scale sound installations plus archival material from his collaborations with Shiro Takatani and other artists.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chouinard",
+      "type": "article",
+      "title": "Patagonia CEO takes aim at political apathy",
+      "url": "https://www.axios.com/2026/10/05/patagonia-ceo-political-apathy",
+      "note": "Patagonia CEO Ryan Gellert said political apathy is one of his biggest concerns, a stance tied to the activist culture Yvon Chouinard built into the company he founded, coinciding with Patagonia’s 11.2 Million Vote Project ahead of the midterms.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Stanford Study Finds Small Share of VCs Capture Most Industry Profits",
+      "url": "https://news.stanford.edu/stories/2026/10/venture-capitalists-profits-study-report",
+      "note": "Covering new Stanford GSB research by Ilya Strebulaev and Blake Jackson, this October 2026 piece reports that the top 5 percent of roughly 12,000 venture capitalists studied generated 90 percent of 1.2 trillion dollars in net profits since 1996.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Stanford HAI Welcomes 15 New Data Science Scholars",
+      "url": "https://hai.stanford.edu/news/stanford-hai-welcomes-15-new-data-science-scholars",
+      "note": "Stanford HAI announced its newest two year cohort of 15 Data Science Scholars in October 2026, PhD researchers drawn from fields including law, medicine, physics, statistics, and education.",
+      "date": "2026-10"
+    },
     {
       "advisorId": "sakamoto",
       "type": "exhibition",
@@ -487,14 +623,6 @@
       "title": "\"Li todos os livros dela e é a melhor escritora do século XX\", diz Björk sobre Clarice Lispector",
       "url": "https://jornalnota.com.br/2026/09/04/li-todos-os-livros-dela-e-considero-a-melhor-escritora-do-seculo-xx-diz-bjork-sobre-clarice-lispector/",
       "note": "Published September 4, 2026, reporting that Bjork is composing a new song inspired by A Paixao Segundo G.H. and calling Lispector the best writer of the 20th century.",
-      "date": "2026-09"
-    },
-    {
-      "advisorId": "lispector",
-      "type": "exhibition",
-      "title": "O Ovo e a Galinha, new solo stage adaptation",
-      "url": "https://www.pressenza.com/pt-pt/2026/09/inedito-o-ovo-e-a-galinha-estreia-no-teatro-ziembinski/",
-      "note": "A new solo stage adaptation of Lispector's 1964 story O Ovo e a Galinha, directed by Joana Medeiros and performed by Ana Hartmann, premiered September 4, 2026 at Teatro Ziembinski in Rio de Janeiro and runs through September 27.",
       "date": "2026-09"
     },
     {
