@@ -1,6 +1,30 @@
 {
-  "updatedAt": "2026-10-26",
+  "updatedAt": "2026-11-02",
   "items": [
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic's IPO Could Become World's Largest IPO, Surpassing SpaceX's Record Breaking IPO",
+      "url": "https://www.sharesansar.com/newsdetail/anthropics-ipo-could-become-worlds-largest-ipo-surpassing-spacexs-record-breaking-ipo-2026-10-28",
+      "note": "Reported October 28, 2026, Anthropic is said to be targeting a public listing by the end of November 2026, with analysts expecting a raise of roughly 75 billion dollars or more, potentially exceeding SpaceX's IPO.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic files for IPO as AI giant nears $1T valuation",
+      "url": "https://www.investmentnews.com/equities/anthropic-files-for-ipo-as-ai-giant-nears-1t-valuation/266819",
+      "note": "Anthropic publicly filed its Form S-1 with the SEC on October 26, 2026, intending to list on the Nasdaq Global Select Market under the ticker ANT, without yet disclosing share count or price range.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "exhibition",
+      "title": "Centro Cultural do TRT-MG celebra os 70 anos de Grande Sertão: Veredas com a exposição Guimarães Rosa: Travessias do Imaginário",
+      "url": "https://portal.trt3.jus.br/internet/institucional/centro-cultural/exposicoes/exposicao-guimaraes-rosa-travessias-do-imaginario",
+      "note": "A collective exhibition of seven artists opened around October 22, 2026 at the Centro Cultural do TRT-MG in Belo Horizonte, marking 70 years since Grande Sertao Veredas, with paintings, embroidery and sculpture organized into nine thematic groups, running through February 5, 2027.",
+      "date": "2026-10"
+    },
     {
       "advisorId": "dario",
       "type": "article",
@@ -656,22 +680,6 @@
       "url": "https://www.japantimes.co.jp/culture/2026/09/07/books/ryuichi-sakamoto-biography-english/",
       "note": "HarperVia published the first English translation, by Sam Bett, of Sakamoto's two Japanese memoirs combined as Music Sets You Free, with the Japan Times review running September 7 ahead of the book's release.",
       "date": "2026-09"
-    },
-    {
-      "advisorId": "michelle",
-      "type": "podcast",
-      "title": "You Need to Learn to Say No (Even to an Inauguration) with Taraji P. Henson",
-      "url": "https://www.imopod.com/episodes/you-need-to-learn-to-say-no-even-to-an-inauguration-with-taraji-p-henson",
-      "note": "IMO episode with Michelle Obama and Craig Robinson released August 28, 2026, featuring Taraji P. Henson on setting boundaries and why Michelle skipped a presidential inauguration.",
-      "date": "2026-08"
-    },
-    {
-      "advisorId": "bloisi",
-      "type": "article",
-      "title": "Naspers exec pay under fire as shareholders vote against policy again",
-      "url": "https://www.africaninsider.com/business/naspers-exec-pay-under-fire-as-shareholders-vote-against-policy-again/",
-      "note": "At the Naspers AGM on August 26, 2026, ordinary N shareholders again voted non-bindingly against the remuneration policy covering CEO Fabricio Bloisi, roughly 74 percent opposed, though the resolution passed due to high vote A shares.",
-      "date": "2026-08"
     },
     {
       "advisorId": "rosa",
