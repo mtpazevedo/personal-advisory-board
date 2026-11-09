@@ -1,6 +1,166 @@
 {
-  "updatedAt": "2026-11-02",
+  "updatedAt": "2026-11-09",
   "items": [
+    {
+      "advisorId": "chamath",
+      "type": "podcast",
+      "title": "All-In Podcast REACTS to Democrat Sweep!",
+      "url": "https://podwise.ai/episodes/9333613",
+      "note": "Released November 4, 2026, Palihapitiya and his All-In co-hosts react live to the projected Democratic sweep of Congress in the 2026 midterms and discuss what it could mean for AI and data center policy.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Dario Amodei wants 'a country of geniuses in a data center.' Realizing that vision requires risky financial mechanics, Anthropic's IPO filing shows",
+      "url": "https://fortune.com/2026/11/04/dario-amodei-wants-a-country-of-geniuses-in-a-data-center-realizing-that-vision-requires-tricky-financial-mechanics-anthropics-ipo-filing-shows/",
+      "note": "Published November 4, 2026, Fortune examines the financing mechanics behind Amodei's vision of AI abundance, noting Anthropic's IPO filing shows it can issue up to 42 billion dollars in convertible notes to Broadcom.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Anthropic IPO meets AI backlash after midterms show stinging rebuke of data centers",
+      "url": "https://www.cnbc.com/2026/11/07/anthropic-ipo-ai-data-center-backlash.html",
+      "note": "Published November 7, 2026, CNBC reports that Anthropic's planned IPO under Amodei is landing amid rising public backlash against AI data centers following the midterm elections.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "dario",
+      "type": "article",
+      "title": "Mind-Merging With Machines By 2040 Was Reportedly Once The Plan Of AI Billionaire Headed For Wall Street",
+      "url": "https://dailycaller.com/2026/11/05/dario-amodei-anthropic-singularity-new-york-times",
+      "note": "Published November 5, 2026, the Daily Caller covers a New York Times report resurfacing Amodei's past remarks about human machine merging, adding a controversy angle just ahead of Anthropic's Wall Street debut.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "A Look at How AI Is Working Out in the Workplace",
+      "url": "https://www.gsb.stanford.edu/insights/look-how-ai-working-out-workplace",
+      "note": "Published November 3, 2026, Stanford GSB faculty and students check in on AI as a new coworker, covering research on an AI stock picking analyst, AI generated financial guidance, and how households use AI.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "stanford",
+      "type": "article",
+      "title": "Poets&Quants 2026 Best in Class Awards: Stanford GSB Artificial Intelligence",
+      "url": "https://poetsandquants.com/2026/11/05/poetsquants-2026-best-in-class-awards-stanford-gsb-artificial-intelligence/?pq-category=best-in-class",
+      "note": "Published November 5, 2026, Poets&Quants gives Stanford GSB its 2026 Best in Class Award for Artificial Intelligence, citing how deeply the school has embedded AI into teaching, research, and operations.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "michelle",
+      "type": "podcast",
+      "title": "IMO Episode 119: Find the Upside with Zainab Johnson",
+      "url": "https://mytuner-radio.com/podcast/the-michelle-obama-podcast-1532956108",
+      "note": "Published around November 4, 2026, this new IMO episode has Michelle Obama and Craig Robinson talking with comedian Zainab Johnson about her Netflix special, dating in her thirties, and what makes material stand up worthy.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Ryuichi Sakamoto: seeing sound, hearing time",
+      "url": "https://www.smb.museum/en/museums-institutions/nationalgalerie/exhibitions/detail/ryuichi-sakamoto/",
+      "note": "Still on view as of early November 2026, this first major European retrospective of Sakamoto fills roughly 1,500 square metres of the Rieckhallen at Hamburger Bahnhof Berlin with sound installations made with Shiro Takatani and Carsten Nicolai.",
+      "date": "2026-11"
+    },
+    {
+      "advisorId": "chamath",
+      "type": "quote",
+      "title": "Chamath Says VC Cash Funds 70-75% of AI Spending Now",
+      "url": "https://fourweekmba.com/ai-chamath-says-vc-cash-funds-70-75-of-ai-spending-now/",
+      "note": "Published October 21, 2026, Palihapitiya posted on X that roughly 70 to 75 cents of every dollar of AI spending comes from venture capital flowing through AI companies, pairing the estimate with Citadel founder Ken Griffin's view that AI investing already looks like a bubble.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "dario",
+      "type": "podcast",
+      "title": "The Builders: Dario and Daniela Amodei, This Is Gonna Determine the Fate of Nations and the Future of Humanity",
+      "url": "https://podcasts.happyscribe.com/the-builders/dario-daniela-amodei-this-is-gonna-determine-the-fate-of-nations-and-the-future-of-humanity",
+      "note": "Released around October 27, 2026 on Walter Isaacson's new podcast The Builders, Dario Amodei joins his sister Daniela for a wide ranging conversation on AI's stakes for nations and humanity.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "interview",
+      "title": "Arianna Huffington Asks, As AI Gets Smarter, What Happens to Us?",
+      "url": "https://katiecouric.com/health/arianna-huffington-amodei-interview/",
+      "note": "Published October 28, 2026, Arianna Huffington interviews Anthropic president Daniela Amodei about what increasingly capable AI could mean for health, relationships, and investing in people alongside the technology.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "daniela",
+      "type": "podcast",
+      "title": "The Builders: Dario and Daniela Amodei, This Is Gonna Determine the Fate of Nations and the Future of Humanity",
+      "url": "https://podcasts.happyscribe.com/the-builders/dario-daniela-amodei-this-is-gonna-determine-the-fate-of-nations-and-the-future-of-humanity",
+      "note": "Released around October 27, 2026, Daniela Amodei appears alongside her brother Dario on Walter Isaacson's new podcast The Builders, discussing Anthropic's approach ahead of its IPO.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "article",
+      "title": "Improving Students' Critical Thinking by Trading Questions for Questions",
+      "url": "https://www.edutopia.org/article/improving-student-critical-thinking-trading-questions",
+      "note": "Published October 14, 2026, this Edutopia piece describes a classroom routine in which a teacher trades a question for a question instead of handing over answers, a modern echo of Socratic questioning that lifted grades over a nine week term.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "essay",
+      "title": "A Socratic HyperCoach for the Multipolar Age",
+      "url": "https://www.fairobserver.com/?p=164968",
+      "note": "Published October 19, 2026, Peter Isackson's Fair Observer column stages a dialogue with an AI system to argue for a renewed Socratic approach to education, describing a Socratic HyperCoach tool his team is building for a diplomacy school.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "socrates",
+      "type": "article",
+      "title": "Scaling Socratic Statistics Instruction Through Large Language Models",
+      "url": "https://www.preprints.org/manuscript/202610.0576",
+      "note": "Posted in October 2026, this preprint tests whether large language models can sustain genuine Socratic questioning in statistics tutoring, scoring forty simulated AI student dialogues on a new Socratic Learning Index.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "sakamoto",
+      "type": "exhibition",
+      "title": "Ryuichi Sakamoto retrospective opens at Taipei Fine Arts Museum",
+      "url": "https://focustaiwan.tw/culture/202610300016",
+      "note": "Published October 30, 2026, Focus Taiwan reports the museum's first large scale exhibition devoted to the late composer opens October 31 and runs through March 14, 2027, featuring nine works including a Taipei version of Sensing Streams made with Daito Manabe.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "chouinard",
+      "type": "article",
+      "title": "Patagonia offers cash incentive to boost midterm voting",
+      "url": "https://fortune.com/2026/10/06/patagonia-voting-incentive-midterms/",
+      "note": "Published October 6, 2026, Fortune reports Patagonia, the company Yvon Chouinard founded, offered 112,000 people 100 dollars each to help three friends make a plan to vote, built on research showing millions of environmentalist voters skipped the last presidential election.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Circus show inspired by Guimaraes Rosa tours Goias for 70th anniversary of Grande Sertao: Veredas",
+      "url": "https://ohoje.com/2026/10/09/aos-70-anos-de-grande-sertao-veredas-lucienne-machado-circula-por-goias-com-espetaculo-inspirado-em-classico-da-literatura/",
+      "note": "Published October 9, 2026, this piece covers Lucienne Machado's circus and literature solo Lembranca da Delicadeza, inspired by Guimaraes Rosa, with free sessions in Goiania on October 24 and in Goias on November 14 as part of the novel's 70th anniversary celebrations.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "rosa",
+      "type": "article",
+      "title": "Biblioteca Mario de Andrade stages free trilogy inspired by Guimaraes Rosa",
+      "url": "https://abcdoabc.com.br/biblioteca-mario-de-andrade-trilogia-guimaraes/",
+      "note": "Published October 24, 2026, this article announces O Julgamento de Ze Bebelo, part of a free theatrical trilogy inspired by Grande Sertao Veredas, staged at the Biblioteca Mario de Andrade in Sao Paulo as part of the 70th anniversary programming.",
+      "date": "2026-10"
+    },
+    {
+      "advisorId": "lispector",
+      "type": "essay",
+      "title": "Clarice Lispector: para sempre no Recife",
+      "url": "https://www.diariodepernambuco.com.br/colunas/opiniao/2026/10/11726408-clarice-lispector-para-sempre-no-recife.html",
+      "note": "Published in October 2026, this opinion column in Diario de Pernambuco reflects on Clarice Lispector's lasting ties to Recife and plans to turn the house where her family lived, at the Santa Casa de Misericordia, into a permanent memorial space.",
+      "date": "2026-10"
+    },
     {
       "advisorId": "dario",
       "type": "article",
@@ -127,14 +287,6 @@
       "title": "Stay Curious with Debbie Allen and Phylicia Rashad",
       "url": "https://podcasts.apple.com/sr/podcast/stay-curious-with-debbie-allen-and-phylicia-rashad/id1532956108?i=1000793636080",
       "note": "Michelle Obama and Craig Robinson welcomed actors and sisters Debbie Allen and Phylicia Rashad onto their weekly IMO podcast, part of the show’s rotating guest format. The episode was published October 7, 2026.",
-      "date": "2026-10"
-    },
-    {
-      "advisorId": "sakamoto",
-      "type": "exhibition",
-      "title": "Ryuichi Sakamoto retrospective \"Seeing Sound, Hearing Time\" opens at Taipei Fine Arts Museum",
-      "url": "https://www.peoplenews.tw/?p=59546",
-      "note": "A major Ryuichi Sakamoto retrospective, Seeing Sound, Hearing Time, opens October 31, 2026 at the Taipei Fine Arts Museum and runs through March 2027, presenting seven large scale sound installations plus archival material from his collaborations with Shiro Takatani and other artists.",
       "date": "2026-10"
     },
     {
@@ -615,14 +767,6 @@
       "title": "We Must Pace the Frontier",
       "url": "https://darioamodei.com/post/we-must-pace-the-frontier",
       "note": "Dario Amodei published this essay on September 12, 2026 arguing the AI industry should deliberately slow the pace of capability improvements, with Anthropic unilaterally committing to give outside evaluators permanent, employee level access.",
-      "date": "2026-09"
-    },
-    {
-      "advisorId": "sakamoto",
-      "type": "exhibition",
-      "title": "Ryuichi Sakamoto: seeing sound, hearing time",
-      "url": "https://www.smb.museum/en/exhibitions/detail/ryuichi-sakamoto/",
-      "note": "Sakamoto's first major European retrospective opened September 11, 2026 at Hamburger Bahnhof Berlin, spanning sound installations made with Shiro Takatani, Carsten Nicolai and Apichatpong Weerasethakul, running through May 23, 2027.",
       "date": "2026-09"
     },
     {
